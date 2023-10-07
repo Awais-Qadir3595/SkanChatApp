@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1072835182688",
+    "project_id": "chatskan-c1849",
+    "storage_bucket": "chatskan-c1849.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1072835182688:android:b074c2c03c864c5f0d4305",
+        "android_client_info": {
+          "package_name": "com.chatapplication"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDrXA9vpl-XcH4CiXuJFQeHGvpE5miksJY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
