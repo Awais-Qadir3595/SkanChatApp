@@ -12,6 +12,7 @@ import firestore from '@react-native-firebase/firestore';
  
 
 import { ROUTES } from "../../hooks/routes";
+import { getToken } from "../../components/appComponents/NotificationApp";
 const Login=({navigation})=>{
 
 
@@ -19,25 +20,27 @@ const Login=({navigation})=>{
     const [gmail,setGmail]=useState('');
     const [password,setPassword]=useState('');
     const [loading,setLoading]=useState(false);
-
+ const [token,setToken]=useState(null);
     useEffect(()=>{
         checkLoggedIn();
+     let token=getToken();
+     setToken(token);
     },[])
 
     const checkLoggedIn=async()=>{
-        console.log('checkLoggedIn');
+        
         try {
             const jsonValue = await AsyncStorage.getItem('userLogin');
             if (jsonValue !== null) {
               const myObject = JSON.parse(jsonValue);
               global.user=myObject;
-              console.log('Retrieved object:', myObject);
+              //console.log('Retrieved object:', myObject);
               navigation.navigate('Messages')
             } else {
-              console.log('No object with that key');
+             // console.log('No object with that key');
             }
           } catch (error) {
-            console.error('Error retrieving object:', error);
+          //  console.error('Error retrieving object:', error);
           }
     }
     
@@ -57,7 +60,7 @@ setLoading(true);
         .where('password','==',password)
         .get()
         .then(querySnapshot => {
-            console.log(querySnapshot.size);
+           // console.log(querySnapshot.size);
             if(querySnapshot.size==1)
             {
                
@@ -65,7 +68,7 @@ setLoading(true);
                 querySnapshot.forEach(documentSnapshot => {
                      AsyncStorage.setItem('userLogin', JSON.stringify(documentSnapshot.data()));
                      global.user=documentSnapshot.data();
-                     console.log('saved ');
+                  //   console.log('saved ');
                   });
 
                  

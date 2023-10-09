@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -18,13 +18,26 @@ import {Axios_Fetch, Axios_Post_data} from '../../hooks/axiosCode';
 import {ROUTES} from '../../hooks/routes';
 import firestore from '@react-native-firebase/firestore';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { getToken } from '../../components/appComponents/NotificationApp';
 
 const SignUp = ({navigation}) => {
   const [name, setName] = useState();
   const [gmail, setGmail] = useState();
   const [password, setPassword] = useState();
   const [loading, setLoading] = useState(false);
+  const [token,setToken]=useState(null);
+ 
 
+  useEffect(()=>{
+
+   getTokenFunction();
+   
+  },[])
+const getTokenFunction=async()=>{
+  let token= await getToken();
+console.log('useEffect',token);
+     setToken(token);
+}
   const handleName = v => {
     setName(v);
   };
@@ -37,8 +50,11 @@ const SignUp = ({navigation}) => {
     setPassword(v);
   };
 
-  const SignUp = async () => {
-    console.log('signup');
+  const handleSignUp = async () => {
+
+
+
+   // console.log('signup');
     if (name == null || gmail == null || password == null) {
       Alert.alert('please enter All field');
     } else {
@@ -52,46 +68,23 @@ const SignUp = ({navigation}) => {
           gmail,
           password,
           id,
+          token
         })
         .then(() => {
           setLoading(false);
-          console.log('User added!');
+         // console.log('User added!');
           const user={
             gmail:gmail,
             id:id,
             name:name,
-            password:password
+            password:password,
+            
           };
           AsyncStorage.setItem('userLogin', JSON.stringify(user));
           global.user=user;
           navigation.navigate('Messages')
         });
-      // let data = await Axios_Post_data(
-      //   {
-      //     userName: name,
-      //     email: gmail,
-      //     password: password,
-      //   },
-      //   ROUTES.addUser,
-      // );
-      // console.log(data,'it');
-      // if (data.status) {
-      //   global.user = data;
-      //   navigation.navigate('Messages');
-      //   setLoading(false);
-      // }
-      // else{
-      //   setLoading(false);
-      //   Alert.alert(data?.message)
-      // }
-
-      // if(data!=null)
-      // {
-      //   navigation.navigate('Messages')
-      // }
-      // else{
-      //   Alert.alert('could not signUp')
-      // }
+     
     }
   };
 
@@ -131,7 +124,7 @@ const SignUp = ({navigation}) => {
           height={mvs(60)}
           color={'white'}
           style={{marginTop: mvs(50), width: '90%'}}
-          onclick={() => SignUp()}
+          onclick={() => handleSignUp()}
           loading={loading}
         />
         <Text>

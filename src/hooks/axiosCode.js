@@ -39,7 +39,7 @@ const Axios_Post_data=(obj,url)=>{
       resolve(Response.data)
      }
      else{
-           alert('check your internet connection')
+           console.log('check net connection');
      }
     });
 

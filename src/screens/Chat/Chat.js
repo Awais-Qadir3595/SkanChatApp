@@ -12,6 +12,7 @@ import  Modal  from 'react-native-modal';
 import ImagePicker from 'react-native-image-crop-picker';
 import { saveData } from '../main';
 import firestore from '@react-native-firebase/firestore';
+import SendNotification from '../../hooks/notification';
 
 const ChatScreen = (props) => {
 let threadId=props?.route?.params?.threadId
@@ -21,7 +22,7 @@ var reciverId=props?.route?.params?.item?.id;
 const senderReceiver=[];
 senderReceiver.push(sender);
 senderReceiver.push(reciverId);
-// console.log('receiver id = ',props?.route?.params?.item?.id);
+console.log('token is = ',props?.route?.params?.item?.token);
 // console.log('sender id = ',global.user.id);
     const [loading,setLoading]=useState(false);
     const currentDate = new Date();
@@ -46,10 +47,10 @@ const getChat=async()=>{
                .collection('chat')
                .where('threadId', '==',threadId)
                .onSnapshot(querySnapshot => {
-                console.log('chat size',querySnapshot.size);
+               // console.log('chat size',querySnapshot.size);
                 querySnapshot.forEach(documentSnapshot => {
                   
-                  console.log('saved ',documentSnapshot.data());
+                  //console.log('saved ',documentSnapshot.data());
                });
                    const arr = [];
                    
@@ -57,7 +58,7 @@ const getChat=async()=>{
                        arr?.push({ ...documentSnapshot.data(), id:documentSnapshot?.id 
 })
                    });
-                   console.log('mhr',arr);
+                  // console.log('mhr',arr);
                    setChatList(arr);
                });
 
@@ -70,6 +71,8 @@ const getChat=async()=>{
 }
 
 const addChat=async()=>{
+
+  SendNotification(props?.route?.params?.item?.token,msgToSend,'skan school system');
   if(msgToSend=='')
   {
     return
@@ -100,7 +103,7 @@ else{
 
 
 const renderMsg=({item})=>{
-    console.log('item',item);
+   // console.log('item',item);
     return(
     <>       
      {
