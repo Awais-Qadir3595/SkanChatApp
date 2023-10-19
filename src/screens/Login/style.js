@@ -1,14 +1,16 @@
 import { StyleSheet } from "react-native";
 import { mvs } from "../../services/metrices";
+import { colorsTheme } from "../../services/color";
 const styles=StyleSheet.create({
     container:{
-        flex:1, 
+        flex:1,
     },
     upper :{
-          flex:5,  backgroundColor:'darkblue',padding:mvs(10),borderBottomRightRadius:30,borderBottomLeftRadius:30
+             backgroundColor:colorsTheme.primary, borderBottomRightRadius:30,borderBottomLeftRadius:30,padding:mvs(10)
+
     },
     lower:{
-        flex:7, alignItems:'center',marginTop:mvs(20),paddingHorizontal:mvs(20)
+          alignItems:'center',marginTop:mvs(20),paddingHorizontal:mvs(20),justifyContent:'space-evenly',
     },
     signUpStyle:{
         marginLeft:mvs(10), marginTop:mvs(10)

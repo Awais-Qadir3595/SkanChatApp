@@ -26,6 +26,7 @@ const PrimaryTextInput = ({
    onBlur,
    placeholderTextColor='gray',
    onFocus,
+   existThreat,
    
 }) => {
   
@@ -87,6 +88,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: mvs(10),
     height: mvs(60),
     borderBottomWidth: 1,
+    
     marginHorizontal: mvs(15),
   },
 

@@ -4,14 +4,14 @@ import { TouchableOpacity ,StyleSheet,ActivityIndicator,Text} from "react-native
 import { mvs } from "../../services/metrices";
 //import { useTheme } from "../config/theme";
 
-const PrimaryButton=({onclick,label='',color,width,height,style,bgColor,loading})=>{
+const PrimaryButton=({onclick,label='',color,width,height,style,bgColor,loading,disabled})=>{
 
     
 
 
     return(
            <TouchableOpacity style={{...styles.main,width:width,height:height,backgroundColor:bgColor,...style}} onPress={onclick}
-           disabled={loading}>
+           disabled={disabled}>
 {loading?
     <ActivityIndicator size={'small'} color={'white'} />:
     <Text style={{color:color}}>{label}</Text>

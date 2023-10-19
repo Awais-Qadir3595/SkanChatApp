@@ -1,45 +1,40 @@
-import React, {useEffect, useState} from 'react';
-import {Text, View} from 'react-native';
-import { HttpTransportType, HubConnectionBuilder, LogLevel,signalR } from '@microsoft/signalr';
-import {setJSExceptionHandler} from 'react-native-exception-handler';
-import firestore from '@react-native-firebase/firestore';
-const Test = () => {
-  //const hub_endpoint='https://test.thesalear.com/api/chatting/sendmessage';
-  const hub_endpoint = 'https://test.thesalear.com/offers';
-  //const hub_endpoint='/offers';
+import React from 'react';
+import { View, Button } from 'react-native';
+import notifee from '@notifee/react-native';
 
-  const [connectionState, setConnectedStateText] = useState('');
-  const [isConnected, setConnected] = useState(false);
-  const [conn, setConn] = useState(null);
-  const [messageLog, setMessageLog] = useState([]);
+const Test=()=> {
 
-  useEffect(() => {
-    
-    firestore()
-    .collection('user')
-    .get()
-    .then(querySnapshot => {
-      console.log('Total users: ', querySnapshot.size);
-  
-      querySnapshot.forEach(documentSnapshot => {
-        console.log('User ID: ', documentSnapshot.id, documentSnapshot.data());
-      });
+  async function onDisplayNotification() {
+
+    console.log('mmmmmm----mmmmm----mmmm');
+    // Request permissions (required for iOS)
+    await notifee.requestPermission()
+
+    // Create a channel (required for Android)
+    const channelId = await notifee.createChannel({
+      id: 'default',
+      name: 'Default Channel',
     });
-    
 
-  
-  
-     
+    // Display a notification
+    await notifee.displayNotification({
+      title: 'Notification Title',
+      body: 'Main body content of the notification',
+      android: {
+        channelId,
+         // optional, defaults to 'ic_launcher'.
+        // pressAction is needed if you want the notification to open the app when pressed
+        pressAction: {
+          id: 'default',
+        },
+      },
+    });
+  }
 
-     
-     
-   
-  }, []);
   return (
-    <View style={{justifyContent: 'center', flex: 1, alignItems: 'center'}}>
-      <Text>chat signalR</Text>
-      <Text>The Offers are given below : -</Text>
+    <View>
+      <Button title="Display Notification" onPress={() => {onDisplayNotification()}} />
     </View>
   );
-};
+}
 export default Test;

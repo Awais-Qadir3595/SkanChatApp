@@ -1,5 +1,7 @@
 import React from "react";
 import messaging from '@react-native-firebase/messaging';
+import notifee, { AndroidImportance, AndroidVisibility, AuthorizationStatus } from '@notifee/react-native';
+
 const NotificationListener=()=>{
     // Assume a message-notification contains a "type" property in the data payload of the screen to open
 
@@ -8,7 +10,6 @@ const NotificationListener=()=>{
           'Notification caused app to open from background state:',
           remoteMessage.notification,
         );
-      
       });
   
       // Check whether an initial notification is available
@@ -36,14 +37,45 @@ var token = await messaging().getToken();
 }
 
 async function requestUserPermission() {
-  const authStatus = await messaging().requestPermission();
-  const enabled =
-    authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
-    authStatus === messaging.AuthorizationStatus.PROVISIONAL;
 
-  if (enabled) {
-    console.log('Authorization status:', authStatus);
-  }
+  console.log('------------requesting for permission0-----------',);
+  const settings = await notifee.requestPermission();
+
+if (settings.authorizationStatus === AuthorizationStatus.DENIED) {
+  console.log('User denied permissions request');
+} else if (settings.authorizationStatus === AuthorizationStatus.AUTHORIZED) {
+   console.log('User granted permissions request');
+} else if (settings.authorizationStatus === AuthorizationStatus.PROVISIONAL) {
+   console.log('User provisionally granted permissions request');
 }
 
-export {NotificationListener,getToken,requestUserPermission};
+ 
+}
+
+const popUpNotification=async(msg)=>{
+  //console.log(msg.notification);
+  try {
+    const channelId = 'your_channel_id'; // Replace with your own channel ID
+
+    await notifee.createChannel({
+      id: channelId,
+      name: 'awais',
+      importance: AndroidImportance.HIGH,
+      visibility: AndroidVisibility.PUBLIC,
+    });
+
+    await notifee.displayNotification({
+      title: msg?.notification?.title,
+      body: msg?.notification?.body,
+      android: {
+        channelId: channelId,
+      },
+    });
+  } catch (error) {
+    console.error('Notification error:', error);
+  }
+
+
+}
+
+export {NotificationListener,getToken,requestUserPermission,popUpNotification};

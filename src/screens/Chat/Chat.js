@@ -22,7 +22,7 @@ var reciverId=props?.route?.params?.item?.id;
 const senderReceiver=[];
 senderReceiver.push(sender);
 senderReceiver.push(reciverId);
-console.log('token is = ',props?.route?.params?.item?.token);
+//console.log('token is = ',props?.route?.params?.item?.token);
 // console.log('sender id = ',global.user.id);
     const [loading,setLoading]=useState(false);
     const currentDate = new Date();
@@ -33,7 +33,7 @@ const [senderData,setSenderData]=useState([]);
 const [receiverData,setReceiverData]=useState([]);
 //const [totalData,setTotalData]=useState([]);
  
- 
+  
 useEffect(()=>{
     getChat();
 },[])
@@ -78,7 +78,9 @@ const addChat=async()=>{
     return
   }
   setLoading(true);
+  
   //console.log('id = ',props?.route?.params?.item?.id);
+
   let chatId= 'id-' + new Date().getTime();
 
   let result=await saveData('chat',chatId,{
