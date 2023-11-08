@@ -6,7 +6,7 @@ const Test=()=> {
 
   async function onDisplayNotification() {
 
-    console.log('mmmmmm----mmmmm----mmmm');
+    //console.log('mmmmmm----mmmmm----mmmm');
     // Request permissions (required for iOS)
     await notifee.requestPermission()
 

@@ -24,7 +24,7 @@ import Toast from 'react-native-simple-toast';
 const SignUp = props => {
  // console.log('aaaa', props?.route?.params);
   const [name, setName] = useState(null);
-  const [gmail, setGmail] = useState(null);
+  const [userMail, setUserMail] = useState(null);
   const [password, setPassword] = useState(null);
   const [loading, setLoading] = useState(false);
   const [token, setToken] = useState(null);
@@ -42,7 +42,8 @@ const SignUp = props => {
   };
 
   const handleGmail = v => {
-    setGmail(v);
+     
+    setUserMail(v);
   };
 
   const handlePassword = v => {
@@ -50,31 +51,43 @@ const SignUp = props => {
   };
 const checkExistance=async()=>{
 
- await firestore()
+  
+  let username=userMail.trim();
+ const querySnapShot=await firestore()
   .collection('user')
   .where('role', '==', 'User')
-  .where('gmail', '==', gmail)
-  .get()
-  .then(querySnapshot => {
-    console.log('====',querySnapshot.size);
-    if (querySnapshot.size > 0) {
+  .where('gmail', '==', username)
+  .get();
+
+
+   
+    if (querySnapShot.size > 0) {
       setExistThreat(true);
         Toast.show('user Exist')
+        return 0;
     } else {
       setExistThreat(false);
+      return 1;
        
     }
-  });
+  
 
 }
   const handleSignUp = async () => {
-    console.log(props?.route?.params?.sid);
-    // console.log('signup');
-    if (name == null || gmail == null || password == null) {
+   let gmail=userMail.trim();
+   
+   let check=await checkExistance();
+   console.log('check  =  ',check);
+   if(check==0)
+   {
+    return;
+   }
+    //  console.log('size = ',gmail.length);
+    //  return;
+    if (name == null || userMail == null || password == null) {
 
      Toast.show('please fill All Fields')
     } else {
-
       
         setLoading(true);
         let id = 'id-' + new Date().getTime();
@@ -98,7 +111,7 @@ const checkExistance=async()=>{
             setLoading(false);
             
              
-            setGmail('');
+            setUserMail('');
             setPassword('');
             setLoading(false);
             setName('');
@@ -130,7 +143,7 @@ const checkExistance=async()=>{
              
           }}
           resizeMode="stretch"
-          source={require('../../assets/images/skan2.jpg')}
+          source={require('../../assets/images/skan2.png')}
         />
         <Bold
           label={'Add User'}
@@ -155,7 +168,7 @@ const checkExistance=async()=>{
           placeholder="enter userName"
           style={{width: '90%', marginLeft: 0,borderBottomColor:existThreat?'red':'gray',}}
           onChangeText={handleGmail}
-          inputValue={gmail}
+          inputValue={userMail}
           existThreat={existThreat}
           onBlur={()=>checkExistance()}
         />
@@ -174,7 +187,7 @@ const checkExistance=async()=>{
           style={{marginTop: mvs(50), width: '90%'}}
           onclick={() => handleSignUp()}
           loading={loading}
-          disabled={existThreat}
+           
         />
 
         <Text>

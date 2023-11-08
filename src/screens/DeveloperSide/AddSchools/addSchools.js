@@ -6,6 +6,7 @@ import {
   Alert,
   ActivityIndicator,
   Image,
+  BackHandler,
 } from 'react-native';
 import styles from './style';
 import PrimaryTextInput from '../../../components/core/PrimaryTextInput';
@@ -19,8 +20,16 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {getToken} from '../../../components/appComponents/NotificationApp';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Toast from 'react-native-simple-toast';
+import { CommonActions } from '@react-navigation/native';
 
 const AddSchool = props => {
+
+  useEffect(()=>{
+   
+    //  BackHandler.addEventListener('hardwareBackPress', handleHardwareBackPress);
+
+    
+  },[])
    
   const [SchoolName, setName] = useState();
   const [gmail, setGmail] = useState();
@@ -28,6 +37,7 @@ const AddSchool = props => {
   const [loading, setLoading] = useState(false);
   const [name, setPrincipalName] = useState(null);
 
+   
 
   const handleName = v => {
     setName(v);
@@ -42,16 +52,18 @@ const AddSchool = props => {
   };
 
   const handleSignUp = async () => {
+    
     if (SchoolName == null || gmail == null || password == null) {
-      Alert.alert('please enter All field');
-    } else {
+      Toast.show('please Fill All fields');
+    } else {  
       setLoading(true);
-      let sid = 'sid-' + new Date().getTime();
-      let id='user-' + new Date().getTime();
+      let dateTime=new Date().getTime();
+      let sid = 'sid-' + dateTime;
+      //let id='user-' + dateTime;
       let role = 'Admin';
       await firestore()
         .collection('schools')
-        .doc(id)
+        .doc(sid)
         .set({
           SchoolName,
           sid,
@@ -60,9 +72,9 @@ const AddSchool = props => {
            console.log('enter in school');
             await firestore()
             .collection('user')
-            .doc(id)
+            .doc(sid)
             .set({
-               id,
+               id:sid,
                gmail,
                password,
                name,
@@ -77,14 +89,10 @@ const AddSchool = props => {
               setPassword('');
               setLoading(false);
               setName('');
-              Toast.show('user Added');
-              // AsyncStorage.setItem('userLogin', JSON.stringify(user));
-              //global.user = user;
-              // props.navigation.navigate('Messages');
+              Toast.show('School Added');
+              
             });
-          // AsyncStorage.setItem('userLogin', JSON.stringify(user));
-          //global.user = user;
-          // props.navigation.navigate('Messages');
+       
         });
     }
   };
@@ -98,6 +106,12 @@ const AddSchool = props => {
     try {
       await AsyncStorage.removeItem('userLogin');
       props.navigation.navigate('Login');
+      navigation.dispatch(
+        CommonActions.reset({
+          index: 0,
+          routes: [{ name: 'Login' }],
+        })
+      );
       console.log('Removed object');
     } catch (error) {
       console.error(`Error removing object with key`, error);
@@ -117,7 +131,7 @@ const AddSchool = props => {
             borderRadius: 110,
           }}
           resizeMode="stretch"
-          source={require('../../../assets/images/skan2.jpg')}
+          source={require('../../../assets/images/skan2.png')}
         />
         <Bold
           label={'Add Schools'}
@@ -169,17 +183,9 @@ const AddSchool = props => {
           loading={loading}
         />
 
-        <Text>
-          {/* <Label label="Already have account? " /> */}
-          <TouchableOpacity
-            onPress={() => props.navigation.navigate('AdminDashBoard')}>
-            <Bold label=" Back to DashBoard" color="navy" size={20} />
-          </TouchableOpacity>
-        </Text>
+       
       </View>
-      <TouchableOpacity style={{position:'absolute',top:20,right:10}} onPress={logout}>
-        <Bold label='LogOut' color={'white'}/>
-      </TouchableOpacity>
+      
     </SafeAreaView>
   );
 };

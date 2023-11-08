@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet,Text} from "react-native";
 
-const Bold=({label='',size=16,style,color})=>{
+const Bold=({label='',size=16,style,color='gray'})=>{
     return(
            
             <Text style={{...styles.main,fontSize:size,color:color,...style}}>{label}</Text>
@@ -12,5 +12,6 @@ export default Bold;
 const styles=StyleSheet.create({
     main:{
         fontWeight:'bold',
+        color:'black'
     }
 })

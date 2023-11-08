@@ -1,6 +1,6 @@
 import {StyleSheet} from 'react-native';
-import {mvs} from '../../../services/metrices';
-import {colorsTheme} from '../../../services/color';
+import {mvs} from '../../../../services/metrices';
+import {colorsTheme} from '../../../../services/color';
 const styles = StyleSheet.create({
   main: {
     flex: 1,margin:mvs(10)
@@ -16,7 +16,25 @@ const styles = StyleSheet.create({
   borderRadius:6,backgroundColor:'white',elevation:3
 },
 desc: {
-  marginLeft: mvs(20),
+  marginLeft: mvs(20),marginTop:mvs(10)
+},
+modal: {
+  
+  width: '90%',
+  backgroundColor: 'white',
+  borderWidth:1,
+  borderRadius:15,
+  borderColor:'navy',
+  padding:mvs(10)
+},
+rwModal: {
+  width:'100%',
+  alignItems: 'center',
+  justifyContent: 'space-around',
+  marginVertical: mvs(10),
+  
+   
+  paddingVertical: mvs(10),
 },
    
 });

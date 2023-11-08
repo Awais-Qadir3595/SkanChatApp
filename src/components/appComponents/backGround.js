@@ -8,11 +8,11 @@ import CustomNotification from './customNotification';
 export default function BackgroundMessageHandler() {
   const [isModalVisible, setModalVisible] = useState(false);
   const [notificationMessage, setNotificationMessage] = useState('');
-  console.log('Mesmmmmmmmmmmmmmmmmm');
+  //console.log('Mesmmmmmmmmmmmmmmmmm');
 
   useEffect(() => {
     const unsubscribe = messaging().setBackgroundMessageHandler(async remoteMessage => {
-      console.log('Message handled in the background!', remoteMessage);
+     // console.log('Message handled in the background!', remoteMessage);
 
       setNotificationMessage('A new message: ' + remoteMessage.data?.message);
       setModalVisible(true);

@@ -10,7 +10,7 @@ export async function saveData(collection, doc, jsonObject) {
       success = true;
     })
     .catch(function (error) {
-      console.error('Error writing document: ', error);
+    //  console.error('Error writing document: ', error);
       success = false;
     });
 
@@ -32,11 +32,11 @@ export async function saveDataSub(
     .doc(subid)
     .set(jsonObject, {merge: true})
     .then(e => {
-      console.log(e);
+     // console.log(e);
       success = true;
     })
     .catch(function (error) {
-      console.error('Error writing document: ', error);
+    //  console.error('Error writing document: ', error);
       success = false;
     });
   return success;
@@ -80,7 +80,7 @@ export async function getDatasub(collection, doc, subcol) {
     if (doc.exists) {
       data.push(doc.data());
     } else {
-      console.log('No document found!');
+      //console.log('No document found!');
     }
   });
   return data;
@@ -142,7 +142,7 @@ export async function getDatasubDoc2(
     if (doc.exists) {
       data.push(doc.data());
     } else {
-      console.log('No document found!');
+     // console.log('No document found!');
     }
   });
   return data;
@@ -170,7 +170,7 @@ export async function saveDataSub2(
       success = true;
     })
     .catch(function (error) {
-      console.error('Error writing document: ', error);
+     // console.error('Error writing document: ', error);
       success = false;
     });
   return success;

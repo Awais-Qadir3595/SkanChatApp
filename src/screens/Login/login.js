@@ -11,26 +11,31 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import firestore from '@react-native-firebase/firestore';
 import {getToken} from '../../components/appComponents/NotificationApp';
 import { colors, colorsTheme } from '../../services/color';
+import Toast from 'react-native-simple-toast';
+
 const Login = ({navigation}) => {
   const [gmail, setGmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
-
+ const [eyeClick,setEyeClick]=useState(true);
+ const [eye,setEye]=useState('EyeOn');
   useEffect(() => {
     
-    
+    getData();
 
-  }, []);
+  },[]);
 
-  const checkLoggedIn = async () => {
+  const getData = async () => {
     try {
-      const jsonValue = await AsyncStorage.getItem('userLogin');
+      const jsonValue = await AsyncStorage.getItem('RememberItem');
       console.log(jsonValue);
       if (jsonValue !== null) {
         const myObject = JSON.parse(jsonValue);
-        global.user = myObject;
-        //console.log('Retrieved object:', myObject);
-        navigation.navigate('Messages');
+        //global.user = myObject;
+        console.log('Retrieved object:', myObject);
+        setGmail(myObject?.gmail)
+        setPassword(myObject?.password)
+       // navigation.navigate('Messages');
       } else {
         // console.log('No object with that key');
       }
@@ -41,13 +46,13 @@ const Login = ({navigation}) => {
 
   const Login = async () => {
     if (password == '' || gmail == '') {
-      Alert.alert('please fill all fields');
+      Toast.show('please fill all fields');
     } else {
       console.log(password,'====',gmail);
 
       setLoading(true);
 
-      firestore()
+    await  firestore()
         .collection('user')
         .where('gmail', '==', gmail)
         .where('password', '==', password)
@@ -55,27 +60,39 @@ const Login = ({navigation}) => {
         .then(querySnapshot => {
         console.log(querySnapshot.size,'sizee======');
           if (querySnapshot.size == 1) {
-            console.log('docId', querySnapshot.docs[0].id);
+           // console.log('docId', querySnapshot.docs[0].id);
             querySnapshot.forEach(documentSnapshot => {
+
+
               console.log(documentSnapshot.data().role);
               AsyncStorage.setItem(
                 'userLogin',
                 JSON.stringify(documentSnapshot.data()),
               ); 
+              AsyncStorage.setItem(
+                'RememberItem',
+                JSON.stringify(documentSnapshot.data()),
+              ); 
               global.user = documentSnapshot?.data();
+              updateForToken(querySnapshot.docs[0].id);
 
               if (documentSnapshot.data().role == 'Admin') {
+                console.log('admin');
                 navigation.navigate('AdminStack');
                 setLoading(false);
               } else if (documentSnapshot.data().role == 'Developer') {
+                console.log('-------developer----',documentSnapshot.data().role);
+
                 setLoading(false);
                 navigation.navigate('DeveloperStack');
-              } else {
-                console.log(
-                  'docId in which   -----   ',
-                  querySnapshot.docs[0].id,
-                );
-                updateForToken(querySnapshot.docs[0].id);
+              } else if (documentSnapshot.data().role == 'Class') {
+                console.log('class');
+
+                setLoading(false);
+                navigation.navigate('ClassStack');
+              } else  {
+              
+               // updateForToken(querySnapshot.docs[0].id);
                 navigation.navigate('UserStack');
                 setLoading(false);
               }
@@ -84,7 +101,7 @@ const Login = ({navigation}) => {
             });
           } else {
             setLoading(false);
-            Alert.alert('wrong user credientialsss');
+            Toast.show('Wrong Credientials')
           }
         });
     }
@@ -112,6 +129,19 @@ const Login = ({navigation}) => {
     setPassword(v);
   };
 
+  const handleEyeClick=()=>{
+
+    //console.log('nnnn');
+    
+    if(eyeClick)
+    {
+      setEye('EyeOff')
+    }
+    else{
+      setEye('EyeOn')
+    }
+    setEyeClick(!eyeClick);
+  }
   return (
     <ScrollView style={styles.container}>
       <View style={styles.upper}>
@@ -130,7 +160,7 @@ const Login = ({navigation}) => {
             marginBottom: 30,
           }}
           resizeMode="stretch"
-          source={require('../../assets/images/skan2.jpg')}
+          source={require('../../assets/images/skan2.png')}
         />
         <Bold
           label={'Login'}
@@ -145,11 +175,18 @@ const Login = ({navigation}) => {
           placeholder="Enter UserName"
           style={{width: '90%'}}
           onChangeText={handleGmail}
+          inputValue={gmail}
+          
         />
         <PrimaryTextInput
           placeholder="Enter Password"
           style={{width: '90%'}}
           onChangeText={handlePassword}
+          secureTextEntry={eyeClick}
+          inputValue={password}
+          rightIcon={eye}
+          onEyeClick={handleEyeClick}
+          
         />
         <PrimaryButton
           label="Login"
@@ -159,6 +196,7 @@ const Login = ({navigation}) => {
           loading={loading}
           onclick={() => Login()}
           style={{width: '90%',marginTop:mvs(50)}}
+          
         />
 
         

@@ -38,15 +38,15 @@ var token = await messaging().getToken();
 
 async function requestUserPermission() {
 
-  console.log('------------requesting for permission0-----------',);
+ // console.log('------------requesting for permission0-----------',);
   const settings = await notifee.requestPermission();
 
 if (settings.authorizationStatus === AuthorizationStatus.DENIED) {
-  console.log('User denied permissions request');
+  //console.log('User denied permissions request');
 } else if (settings.authorizationStatus === AuthorizationStatus.AUTHORIZED) {
-   console.log('User granted permissions request');
+   //console.log('User granted permissions request');
 } else if (settings.authorizationStatus === AuthorizationStatus.PROVISIONAL) {
-   console.log('User provisionally granted permissions request');
+   //console.log('User provisionally granted permissions request');
 }
 
  
@@ -62,6 +62,7 @@ const popUpNotification=async(msg)=>{
       name: 'awais',
       importance: AndroidImportance.HIGH,
       visibility: AndroidVisibility.PUBLIC,
+      
     });
 
     await notifee.displayNotification({
@@ -69,7 +70,11 @@ const popUpNotification=async(msg)=>{
       body: msg?.notification?.body,
       android: {
         channelId: channelId,
+        clickAction: {
+          activity: 'com.chatapplication',
+        },
       },
+       
     });
   } catch (error) {
     console.error('Notification error:', error);

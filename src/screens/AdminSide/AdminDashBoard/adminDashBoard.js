@@ -8,27 +8,31 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import firestore from '@react-native-firebase/firestore';
 import {mvs} from '../../../services/metrices';
 import { Alert } from 'react-native';
+import { CommonActions } from '@react-navigation/native';
+import ListOfClasses from '../viewPosts/listOfClasses/listOfClasses';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { School } from '../../../assets/svgs';
+import notifee from '@notifee/react-native';
 const AdminDashBoard = ({navigation}) => {
 
   const [schoolData, setSchoolData] = useState('loading..');
-  console.log('global',global?.user?.sid);
+  console.log('global',global?.user);
 const sid=global?.user?.sid;
-console.log('sid====',sid);
-  useEffect(() => {
-    getData();
-  }, []);
+//console.log('sid====',sid);
+
+   
 
   useEffect(()=>{
+    getData();
+    
     const backAction = () => {
       if (navigation.isFocused()) {
-        // Handle what you want to do when the back button is pressed on this screen
-        // For example, you can exit the app using the following code:
+    
         BackHandler.exitApp();
-        // navigation.navigate(COMMON.BETBAZI)
-        return true; // Return true to prevent default behavior (e.g., going back in the navigation stack)
+        
+        return true;  
       }
-  
-      // If not on the desired screen, allow the default back navigation
+   
       return false;
     };
   
@@ -38,6 +42,7 @@ console.log('sid====',sid);
     );
   
     return () => backHandler.remove();
+
   },[])
 
 
@@ -50,7 +55,7 @@ console.log('sid====',sid);
       .then(querySnapshot => {
         if (querySnapshot.size > 0) {
           querySnapshot.forEach(documentSnapshot => {
-            console.log(documentSnapshot.data());
+           // console.log(documentSnapshot.data());
 
             setSchoolData(documentSnapshot.data());
           });
@@ -65,6 +70,12 @@ console.log('sid====',sid);
     try {
       await AsyncStorage.removeItem('userLogin');
       navigation.navigate('Login');
+      navigation.dispatch(
+        CommonActions.reset({
+          index: 0,
+          routes: [{ name: 'Login' }],
+        })
+      );
       console.log('Removed object');
     } catch (error) {
       console.error(`Error removing object with key`, error);
@@ -72,10 +83,10 @@ console.log('sid====',sid);
   };
 
   const ViewUsers=()=>{
-    navigation.navigate('ViewUsers')
+    navigation.navigate('ViewClasses')
   }
   const addUsers = () => {
-    navigation.navigate('SignUp', schoolData);
+    navigation.navigate('AddClass');
   };
 
   const addPost=()=>{
@@ -83,8 +94,8 @@ console.log('sid====',sid);
     navigation.navigate('CreatePost',schoolData)
   }
 
-  const ViewPosts=()=>{
-    navigation.navigate('ViewPosts')
+  const ListOfClasses=()=>{
+    navigation.navigate('ListOfClasses')
   }
   return (
     <View style={styles.main}>
@@ -93,20 +104,23 @@ console.log('sid====',sid);
 
       <View style={styles.upper}>
         <Image
-          source={require('../../../assets/images/skan2.jpg')}
+          source={require('../../../assets/images/skan2.png')}
           style={{borderRadius: 90, height: mvs(120), width: mvs(120)}}
         />
         <View style={styles.SchoolStyle}>
-          <Bold label={schoolData.SchoolName} color={'white'} size={20} />
+        <School  />
+          <Bold label={schoolData?.SchoolName} color={'white'} size={20} />
+         
+          {/* <Icon name="bus-school" size={30} color="#900" /> */}
         </View>
       </View>
       <View style={styles.body}>
         <Row style={styles.rw}>
           <TouchableOpacity style={styles.boxes} onPress={addUsers}>
-            <Bold label="Add User" color={'white'} />
+            <Bold label="Add Class" color={'white'} />
           </TouchableOpacity>
           <TouchableOpacity style={styles.boxes} onPress={ViewUsers}>
-            <Bold label="View Users" color={'white'} />
+            <Bold label="View Class" color={'white'} />
           </TouchableOpacity>
         </Row>
 
@@ -114,7 +128,7 @@ console.log('sid====',sid);
           <TouchableOpacity style={styles.boxes} onPress={addPost}>
             <Bold label="Add Post " color={'white'} />
           </TouchableOpacity>
-          <TouchableOpacity style={styles.boxes} onPress={ViewPosts}>
+          <TouchableOpacity style={styles.boxes} onPress={ListOfClasses}>
             <Bold label="View Posts" color={'white'} />
           </TouchableOpacity>
         </Row>

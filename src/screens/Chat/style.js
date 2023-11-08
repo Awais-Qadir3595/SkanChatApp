@@ -22,7 +22,7 @@ const styles=StyleSheet.create({
         marginHorizontal:mvs(10)
       },
       msgReceived:{
-        width:'70%',backgroundColor:'lightblue',padding:mvs(5),borderRadius:10,marginVertical:mvs(5)
+        width:'70%',backgroundColor:'#D4D9F9',padding:mvs(5),borderRadius:5,marginVertical:mvs(5)
       },
       msgSend:{
         backgroundColor:'navajowhite',width:'70%',marginVertical:mvs(5),borderRadius:10,padding:mvs(5),

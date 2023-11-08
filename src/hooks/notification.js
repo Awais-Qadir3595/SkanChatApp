@@ -30,5 +30,6 @@ fetch("https://fcm.googleapis.com/fcm/send", requestOptions)
   .then(response => response.text())
   .then(result => console.log(result))
   .catch(error => console.log('error', error));
+  console.log('yuppppppp');
 }
 export default SendNotification;

@@ -15,7 +15,9 @@ import AdminStack from './AdminStack';
 import UserStack from './UserStack';
 import DeveloperStack from './DeveloperStack';
 import SendNotification from '../hooks/notification';
-import notifee, { AndroidImportance, AndroidVisibility, AuthorizationStatus } from '@notifee/react-native';
+import notifee  from '@notifee/react-native';
+import ClassStack from './ClassStack';
+import ChatScreen from '../screens/Chat/Chat';
 
  
 const Stack = createNativeStackNavigator();
@@ -25,9 +27,9 @@ const App = () => {
   useEffect(() => {
     
    requestUserPermission();
-   popUpNotification();
+   //popUpNotification();
    
-   
+   notifee();
     NotificationListener();
   
      
@@ -40,34 +42,31 @@ const App = () => {
     return unsubscribe;
   }, []);
 
-  const displayNotification=async(msg)=>{
-    console.log(msg.notification);
-    try {
-      const channelId = 'your_channel_id'; // Replace with your own channel ID
-  
-      await notifee.createChannel({
-        id: channelId,
-        name: 'awais',
-        importance: AndroidImportance.HIGH,
-        visibility: AndroidVisibility.PUBLIC,
-      });
-  
-      await notifee.displayNotification({
-        title: msg?.notification?.title,
-        body: msg.notification.body,
-        android: {
-          channelId: channelId,
-        },
-      });
-    } catch (error) {
-      console.error('Notification error:', error);
+  const notifee=async(msg)=>{
+    
+
+
+    const initialNotification = await notifee.getInitialNotification();
+    if (initialNotification) {
+      console.log('Notification caused application to open', initialNotification.notification);
+      console.log('Press action used to open the app', initialNotification.pressAction);
     }
+    // return notifee.onForegroundEvent(({ type, detail }) => {
+    //   switch (type) {
+    //     case EventType.DISMISSED:
+    //       console.log('User dismissed notification', detail.notification);
+    //       break;
+    //     case EventType.PRESS:
+    //       console.log('User pressed notification', detail.notification);
+    //       break;
+    //   }
+    // });
 
 
   }
   return (
-    <NavigationContainer>
-      <Stack.Navigator>
+    <NavigationContainer >
+      <Stack.Navigator initialRouteName='Splash'>
       <Stack.Screen
           name={'Splash'}
           component={Splash}
@@ -91,8 +90,6 @@ const App = () => {
           options={{headerShown: false}}
         />
         
-   
-        
 
 <Stack.Screen
           name={'DeveloperStack'}
@@ -100,9 +97,17 @@ const App = () => {
           options={{headerShown: false}}
         />
 
-        
+<Stack.Screen
+          name={'ClassStack'}
+          component={ClassStack}
+          options={{headerShown: false}}
+        />
  
-         
+ <Stack.Screen
+          name={'ChatScreen'}
+          component={ChatScreen}
+          options={{headerShown: false}}
+        />
           
       </Stack.Navigator>
     </NavigationContainer>

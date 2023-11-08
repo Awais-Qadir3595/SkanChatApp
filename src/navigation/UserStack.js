@@ -8,6 +8,8 @@ import messaging from '@react-native-firebase/messaging';
 import { NotificationListener, getToken, requestUserPermission } from '../components/appComponents/NotificationApp';
 import Toast from 'react-native-simple-toast';
 import { BackHandler,View } from 'react-native';
+import Inbox from '../screens/userSide/inbox/inbox';
+import MyTabs from './tab';
  
 const Stack = createNativeStackNavigator();
 
@@ -73,11 +75,22 @@ useEffect(()=>{
    
       <Stack.Navigator>
      
-          <Stack.Screen
+     <Stack.Screen
+          name={'MyTabs'}
+          component={MyTabs}
+          options={{headerShown: false}}
+        /> 
+     {/* <Stack.Screen
           name={'Messages'}
           component={Messages}
           options={{headerShown: false}}
         />
+
+          <Stack.Screen
+          name={'Inbox'}
+          component={Inbox}
+          options={{headerShown: false}}
+        /> */}
 
       </Stack.Navigator>
        

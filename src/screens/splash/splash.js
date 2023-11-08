@@ -1,10 +1,9 @@
 import React, {useEffect, useRef} from 'react';
-import {View, Text, Animated, Image} from 'react-native';
+import {View, Animated, Image} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {
-  getToken,
-  requestUserPermission,
-} from '../../components/appComponents/NotificationApp';
+import {colors, colorsTheme} from '../../services/color';
+import {mvs} from '../../services/metrices';
+
 const Splash = ({navigation}) => {
   const slideAnim = useRef(new Animated.Value(-200)).current;
 
@@ -29,17 +28,25 @@ const Splash = ({navigation}) => {
       const jsonValue = await AsyncStorage.getItem('userLogin');
       const myObject = JSON.parse(jsonValue);
       if (myObject !== null) {
+        console.log(
+          myObject.role
+        );
         global.user = myObject;
         console.log('Retrieved object:', myObject);
         if (myObject.role == 'Admin') {
           navigation.replace('AdminStack');
-        } else {
+        } else 
           if (myObject.role == 'Developer')
+          {
             navigation.replace('DeveloperStack');
+          }
+          else
+            if(myObject.role == 'Class')
+            navigation.replace('ClassStack');
           else {
             navigation.replace('UserStack');
           }
-        }
+        
       } else {
         console.log('aaa');
         navigation.replace('Login');
@@ -55,12 +62,12 @@ const Splash = ({navigation}) => {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: 'darkblue',
+        backgroundColor: colorsTheme.primary,
       }}>
       <Animated.View style={{transform: [{translateY: slideAnim}]}}>
         <Image
-          source={require('../../assets/images/skan2.jpg')}
-          style={{borderRadius: 90}}
+          source={require('../../assets/images/skan2.png')}
+          style={{borderRadius: 90, height: mvs(150), width: mvs(150)}}
         />
       </Animated.View>
     </View>

@@ -110,3 +110,5 @@
 // });
 
 // export default App;
+// "name": "chatapplication", in pkg.json
+// android:label="@string/app_name"   in manifest

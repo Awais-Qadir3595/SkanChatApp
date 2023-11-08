@@ -3,13 +3,14 @@ import {mvs} from '../../services/metrices';
 const styles = StyleSheet.create({
   main: {
     flex: 1,
-    margin: mvs(10),
+    padding:mvs(10),
     paddingVertical: mvs(20),
+    backgroundColor:'ghostwhite'
   },
   img: {
-    height: 60,
-    width: 60,
-    borderRadius: 30,
+    height: mvs(30),
+    width: 20,
+    
   },
   rw: {
      
@@ -18,7 +19,8 @@ const styles = StyleSheet.create({
     borderRadius:6,backgroundColor:'white',elevation:3
   },
   desc: {
-    marginLeft: mvs(20),
+    marginLeft: mvs(20),marginTop:mvs(10)
+    
   },
 });
 export default styles;

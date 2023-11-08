@@ -21,7 +21,7 @@ const styles=StyleSheet.create({
         justifyContent:'center',alignItems:'center'
     },
     SchoolStyle:{
-        marginTop:mvs(30), 
+        marginTop:mvs(30), alignItems:'center'
     }
 })
 export {styles};

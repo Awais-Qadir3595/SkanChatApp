@@ -6,6 +6,7 @@ import {
   Image,
   View,
   TextInput,
+  LogBox,
 } from 'react-native';
 import { mvs } from '../../services/metrices';
 import * as SVG from '../../assets/svgs';
@@ -27,11 +28,14 @@ const PrimaryTextInput = ({
    placeholderTextColor='gray',
    onFocus,
    existThreat,
+   onEyeClick,
+   eyeClick
    
 }) => {
   
   const LeftIcon = SVG[leftIcon];
   const RightIcon = SVG[rightIcon];
+ 
 
   return (
     <Row style={{ ...styles.main, ...style }}>
@@ -54,8 +58,10 @@ const PrimaryTextInput = ({
 
         />
 
-
-      {RightIcon ? <RightIcon /> : null}
+<TouchableOpacity onPress={onEyeClick}>
+{RightIcon ? <RightIcon fill='darkblue'/> : null}
+</TouchableOpacity>
+     
       {rightPng ? (
         <View
           style={{
