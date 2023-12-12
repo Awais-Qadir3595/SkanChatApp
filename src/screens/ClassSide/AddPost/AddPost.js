@@ -10,6 +10,7 @@ import Toast from 'react-native-simple-toast';
 import SendNotification from '../../../hooks/notification';
 import messaging from '@react-native-firebase/messaging';
 import CheckBox from 'react-native-check-box';
+import LinearGradient from 'react-native-linear-gradient';
 
 const AddPost = props => {
   
@@ -125,7 +126,11 @@ const AddPost = props => {
   };
   return (
     <View style={styles.main}>
-      <View style={styles.upper}>
+      <LinearGradient
+        style={styles.upper}
+        colors={['darkblue', 'darkblue', 'rgba(0,212,255,1)']}
+        start={{x: 0, y: 0}}
+        end={{x: 0.5, y: 1.4}}>
         <Image
           source={require('../../../assets/images/skan2.png')}
           style={{borderRadius: 90, height: mvs(120), width: mvs(120)}}
@@ -135,7 +140,7 @@ const AddPost = props => {
           color={'white'}
           size={20}
         />
-      </View>
+      </LinearGradient>
       <View style={styles.body}>
         <TextInput
           style={styles.textInput}

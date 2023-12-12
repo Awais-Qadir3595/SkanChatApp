@@ -3,7 +3,7 @@ import {mvs} from '../../../services/metrices';
 import {colorsTheme} from '../../../services/color';
 const styles = StyleSheet.create({
   main: {
-    flex: 1,
+    flex: 1,backgroundColor:'white'
   },
   upper: {
     flex: 1.5,
@@ -12,6 +12,8 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: mvs(50),
     justifyContent: 'center',
     alignItems: 'center',
+    elevation:10,
+    shadowColor:'black'
   },
   body: {
     flex: 3,
@@ -32,6 +34,11 @@ const styles = StyleSheet.create({
   },
   SchoolStyle: {
     marginTop: mvs(30),alignItems:'center'
+  },
+  ModalView:{
+    height:mvs(200),width:'45%', position:'absolute',top:20,backgroundColor:"white",
+    borderRadius:10,padding:mvs(5),alignItems:'center',
+    borderRadius:3,right:10
   },
 });
 export {styles};

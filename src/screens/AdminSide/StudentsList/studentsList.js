@@ -22,22 +22,47 @@ import Clipboard from '@react-native-clipboard/clipboard';
 import {useIsFocused} from '@react-navigation/native';
 import Toast from 'react-native-simple-toast';
 import Label from '../../../components/core/Label';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import PrimaryTextInput from '../../../components/core/PrimaryTextInput';
+import {BackHandler} from 'react-native';
 
-const StudentList = (props) => {
-  const [usersList, setUsersList] = useState('');
+const StudentList = props => {
+  const [usersList, setUsersList] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [userShow, setUserShow] = useState();
   const [showUserIndex, setShowUserIndex] = useState();
   const [isNoData, setIsNoData] = useState(false);
   const [modalIsDelete, setModalIsDelete] = useState(false);
+  const [OnSearch, setOnSearch] = useState(false);
+  const [PrimeData, setPrimeData] = useState([]);
   const focus = useIsFocused();
 
-
-
   useEffect(() => {
- 
     getUsers();
   }, [focus]);
+
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      backAction,
+    );
+
+    return () => {
+      backHandler.remove();
+    };
+  }, [OnSearch]);
+
+  const backAction = () => {
+    // console.log('onsearch = ',OnSearch);
+    if (OnSearch) {
+      console.log('yup');
+      setOnSearch(false);
+      return true;
+    } else {
+      props?.navigation?.goBack();
+      return true;
+    }
+  };
 
   const getUsers = () => {
     firestore()
@@ -48,14 +73,13 @@ const StudentList = (props) => {
       .get()
       .then(querySnapshot => {
         if (querySnapshot.size > 0) {
-          
           const list = [];
           querySnapshot.forEach(documentSnapshot => {
-           
             list.push(documentSnapshot.data());
           });
           setIsNoData(false);
           setUsersList(list);
+          setPrimeData(list);
         } else {
           Toast.show('no data found');
           setIsNoData(true);
@@ -63,7 +87,7 @@ const StudentList = (props) => {
       });
   };
   const nextChatScreen = (item, index) => {
-     props?.navigation?.navigate('ChatScreen',{item,check:'Management'})
+    props?.navigation?.navigate('ChatScreen', {item, check: 'Management'});
   };
   const renderList = ({item, index}) => {
     // console.log('index = ',index);
@@ -82,10 +106,55 @@ const StudentList = (props) => {
         </Row>
       </TouchableOpacity>
     );
+  };
+
+  const searchUsers = () => {
+    setOnSearch(!OnSearch);
+  };
+
+  const handleSearch = text => {
+    // setSearchText(text);
+    // console.log('searched = ',text);
+    // console.log('prime data = ',PrimeData);
+    // console.log('userlist = ',usersList);
+
+    const filteredData = PrimeData.filter(
+      item =>
+        item.name.toLowerCase().includes(text.toLowerCase()) ||
+        text.toLowerCase().includes(item.name.toLowerCase()),
+    );
+    if (filteredData.length == 0) {
+      setIsNoData(true);
+    } else {
+      setUsersList(filteredData);
+      setIsNoData(false);
     }
- 
+
+    //  console.log('filtered data = ',filteredData);
+  };
+
   return (
     <View style={styles.main}>
+      <Row style={{alignItems: 'center'}}>
+        <Bold label="Students List" size={27} />
+        <TouchableOpacity onPress={() => searchUsers()}>
+          <Icon name="account-search" size={35} color="darkblue" />
+        </TouchableOpacity>
+        <TouchableOpacity>
+          <ThreeDots style={styles.icons} />
+        </TouchableOpacity>
+      </Row>
+      {OnSearch ? (
+        <View>
+          <PrimaryTextInput
+            placeholder="search Student"
+            style={styles.txtInput}
+            leftIcon="Search"
+            onChangeText={v => handleSearch(v)}
+          />
+        </View>
+      ) : null}
+
       {isNoData ? (
         <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
           <Bold label="No Data Found" />
@@ -96,20 +165,11 @@ const StudentList = (props) => {
         </View>
       ) : (
         <>
-          <Row>
-            <Bold label="Students List" size={27} />
-            <TouchableOpacity>
-              <ThreeDots style={styles.icons} />
-            </TouchableOpacity>
-          </Row>
-
           <FlatList
             data={usersList}
             renderItem={renderList}
             keyExtractor={(item, index) => index.toString()}
           />
-          
-       
         </>
       )}
     </View>

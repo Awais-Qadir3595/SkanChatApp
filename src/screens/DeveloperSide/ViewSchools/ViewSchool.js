@@ -26,6 +26,7 @@ import Toast from 'react-native-simple-toast';
 import Label from '../../../components/core/Label'
 
 const ViewSchools = () => {
+  
   const [usersList, setUsersList] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
   const [userShow, setUserShow] = useState();

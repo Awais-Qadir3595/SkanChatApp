@@ -19,6 +19,10 @@ target 'ChatApplication' do
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
 
+  pod 'RNFS', :path => '../node_modules/react-native-fs'
+
+  pod 'RNSound', :path => '../node_modules/react-native-sound'
+
   target 'ChatApplicationTests' do
     inherit! :complete
     # Pods for testing

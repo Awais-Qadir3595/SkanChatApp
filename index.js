@@ -9,7 +9,6 @@ import Test from './test';
 import { popUpNotification } from './src/components/appComponents/NotificationApp';
 
  messaging().setBackgroundMessageHandler(async remoteMessage => {
- 
   popUpNotification(remoteMessage)
 });
 

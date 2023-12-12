@@ -14,19 +14,23 @@ const styles = StyleSheet.create({
     borderRadius: 30,
   },
   rw: {
-    justifyContent: 'space-between',
+     justifyContent:'center',
     alignItems: 'center',
-    marginVertical: mvs(10),
+    marginVertical: mvs(5),
     borderBottomColor: 'lightgray',
     borderBottomWidth: 1,
-    paddingVertical: mvs(10),
+   
+    width:'100%',
     
   },
   desc: {
-    marginLeft: mvs(20),
+     width:'55%',justifyContent:"flex-start", alignItems:"center",paddingRight:mvs(25)
+  },
+  rwlower:{
+   width:'40%',
   },
   student:{
-    marginLeft:mvs(50),backgroundColor:colorsTheme.primary,padding:mvs(10),borderRadius:5
+    marginLeft:mvs(10),  
   },
   modal: {
      

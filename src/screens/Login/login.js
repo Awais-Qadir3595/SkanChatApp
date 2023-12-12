@@ -12,6 +12,7 @@ import firestore from '@react-native-firebase/firestore';
 import {getToken} from '../../components/appComponents/NotificationApp';
 import { colors, colorsTheme } from '../../services/color';
 import Toast from 'react-native-simple-toast';
+import LinearGradient from 'react-native-linear-gradient';
 
 const Login = ({navigation}) => {
   const [gmail, setGmail] = useState('');
@@ -144,7 +145,11 @@ const Login = ({navigation}) => {
   }
   return (
     <ScrollView style={styles.container}>
-      <View style={styles.upper}>
+      <LinearGradient
+        style={styles.upper}
+        colors={['darkblue', 'darkblue', 'rgba(0,212,255,1)']}
+        start={{x: 0, y: 0}}
+        end={{x: 0.5, y: 1.4}}> 
         <Label
           label={'Wellcome !!'}
           style={{marginVertical: mvs(10)}}
@@ -168,7 +173,7 @@ const Login = ({navigation}) => {
           style={{alignSelf: 'center'}}
           color={'white'}
         />
-      </View>
+      </LinearGradient>
 
       <View style={styles.lower}>
         <PrimaryTextInput

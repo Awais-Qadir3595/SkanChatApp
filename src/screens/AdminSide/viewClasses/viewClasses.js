@@ -77,21 +77,21 @@ const ViewClasses = (props) => {
        
         <Row style={styles.rw}>
            
-          <Row  style={{alignItems:'center'}}>
+          <Row style={styles.desc}>
             <Class />
-            <View style={styles.desc}>
-              <Bold label={item.CName} />
-            </View>
-          </Row>
-           
-          
-          <TouchableOpacity style={styles.student} onPress={() => toggleModal(item, index)}>
-            <Bold label={'Detail'} color='white'/>
-          </TouchableOpacity>
+            
+              <Bold label={item.CName} style={{marginLeft:10,}} />
+            
+              </Row>
 
-          <TouchableOpacity style={styles.student} onPress={() => studentsPage(item)}>
-            <Bold label={'Students'}  color="white"/>
-          </TouchableOpacity>
+           <Row style={styles.rwlower}>
+           <PrimaryButton label='Detail'  onclick={() => toggleModal(item, index)}
+          height={mvs(50)} width={'45%'}  color={'white'}/>
+            <PrimaryButton label='Students' style={styles.student} onclick={() => studentsPage(item)}
+          height={mvs(50)} width={'50%'}  color={'white'}/>
+           </Row>
+         
+         
         </Row>
        
     );

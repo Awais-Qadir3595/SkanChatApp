@@ -39,6 +39,7 @@ const PrimaryTextInput = ({
 
   return (
     <Row style={{ ...styles.main, ...style }}>
+      
       <TouchableOpacity onPress={onLeftPress}>
       {LeftIcon ? <LeftIcon /> : null}
       </TouchableOpacity>

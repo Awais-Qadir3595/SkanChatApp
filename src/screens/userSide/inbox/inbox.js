@@ -28,14 +28,17 @@ import {colorsTheme} from '../../../services/color';
 const Inbox = ({navigation}) => {
   const [messageList, setMessageList] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
-  
-const [isColor,setColor]=useState(false);
-let unRead=[];
+  const [imageData, setImageData] = useState(null);
+  const [fullImageModal, setFullImageModal] = useState(false);
+  const [fullImageUrl, setFullImageUrl] = useState();
+
+  const [isColor, setColor] = useState(false);
+  let unRead = [];
   const now = new Date();
   const currentTime = firestore.Timestamp.fromDate(now);
   let v = currentTime.toDate();
   const [schoolName, setSchoolName] = useState('');
-  var unreadMessages =[]
+  var unreadMessages = [];
   const dateObject = new Date(dateObject);
 
   useEffect(() => {
@@ -49,7 +52,6 @@ let unRead=[];
   }, []);
 
   const getMsgList = () => {
-
     firestore()
       .collection('chat')
       .where('receiverId', '==', global?.user?.id)
@@ -63,41 +65,35 @@ let unRead=[];
           });
           list.reverse();
           setMessageList(list);
-          unreadMessages = list.filter(message => message.read==false);
-          console.log('-------------unRead msgs------------');
-          console.log(unreadMessages);
-           
+          unreadMessages = list.filter(message => message.read == false);
+        //  console.log('-------------unRead msgs------------');
+         // console.log(unreadMessages);
         } else {
           Toast.show('no data found');
         }
       });
   };
 
-  const changeToRead = async(list) => {
-
+  const changeToRead = async list => {
     firestore()
-    .collection('chat')
-    .where('receiverId', '==', global?.user?.id)
-    .where('read', '==', false)
-    .get()
-    .then(querySnapshot => {
-       
-     
-      //  console.log(querySnapshot.size);
-      querySnapshot.forEach(documentSnapshot => {
-        firestore()
-        .collection('chat')
-        .doc(documentSnapshot.data()?.id)
-        .update({
-          read: true,
-        })
-        .then(() => {
-          console.log('User updated!');
+      .collection('chat')
+      .where('receiverId', '==', global?.user?.id)
+      .where('read', '==', false)
+      .get()
+      .then(querySnapshot => {
+        //  console.log(querySnapshot.size);
+        querySnapshot.forEach(documentSnapshot => {
+          firestore()
+            .collection('chat')
+            .doc(documentSnapshot.data()?.id)
+            .update({
+              read: true,
+            })
+            .then(() => {
+              console.log('User updated!');
+            });
         });
       });
-
-    });
-    
   };
 
   const properties = () => {
@@ -129,7 +125,7 @@ let unRead=[];
       .then(querySnapshot => {
         if (querySnapshot.size > 0) {
           querySnapshot.forEach(documentSnapshot => {
-           // console.log(documentSnapshot.data().SchoolName);
+            // console.log(documentSnapshot.data().SchoolName);
 
             setSchoolName(documentSnapshot.data().SchoolName);
           });
@@ -139,7 +135,13 @@ let unRead=[];
       });
   };
 
+  const openImage=(url)=>{
+    console.log('url = ',url);
+    setFullImageUrl(url);
+    setFullImageModal(true);
+  }
   const renderList = ({item}) => {
+   // console.log(item);
     const _seconds = item?.time?.seconds;
     const _nanoseconds = item?.time?.nanoseconds;
 
@@ -201,6 +203,24 @@ let unRead=[];
           </Row>
         )}
         <View style={styles.desc}>
+          {item.url ? (
+            <TouchableOpacity onPress={() => openImage(item.url)}>
+              <Image
+                resizeMode="stretch"
+                style={{
+                  height: mvs(200),
+                  width: 200,
+                  backgroundColor: 'white',
+                  width: '100%',
+                  marginBottom: mvs(10),
+                }}
+                source={{
+                  uri: item.url,
+                }}
+              />
+            </TouchableOpacity>
+          ) : null}
+
           <Bold label={item?.message} />
           <View style={{marginTop: mvs(20), alignSelf: 'flex-end'}}>
             <Label label={date} color="gray" size={12} />
@@ -263,6 +283,23 @@ let unRead=[];
             <Bold label="Logout" size={20} />
           </TouchableOpacity>
           <DrawHorizentalLine style={{width: '90%'}} />
+        </View>
+      </Modal>
+
+      
+
+      <Modal
+        isVisible={fullImageModal}
+        onBackButtonPress={() => setFullImageModal(false)}
+        onBackdropPress={() => setFullImageModal(false)}>
+        <View style={{flex: 1}}>
+          <Image
+            resizeMode="stretch"
+            style={{flex: 1, backgroundColor: 'white', width: '100%'}}
+            source={{
+              uri: fullImageUrl,
+            }}
+          />
         </View>
       </Modal>
     </View>

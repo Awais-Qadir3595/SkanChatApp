@@ -7,8 +7,8 @@ const styles=StyleSheet.create({
     },
     upper:{
             flex:1.5,backgroundColor:colorsTheme.primary,
-            borderBottomRightRadius:mvs(50),borderBottomLeftRadius:mvs(50),
-            justifyContent:'center',alignItems:'center'
+            borderBottomRightRadius:mvs(35),borderBottomLeftRadius:mvs(35),
+            justifyContent:'center',alignItems:'center',paddingTop:mvs(20)
     },
     body:{
         flex:3,marginHorizontal:mvs(10)
@@ -22,6 +22,14 @@ const styles=StyleSheet.create({
     },
     SchoolStyle:{
         marginTop:mvs(30), alignItems:'center'
-    }
+    },
+    deleteModal:{
+        height:mvs(200),width:'80%',backgroundColor:'white',
+        borderRadius:10,padding:mvs(20),alignItems:'center',justifyContent:'center'
+      },
+      yessNo:{
+        width:'40%',alignItems:'center',backgroundColor:colorsTheme.primary,marginHorizontal:mvs(10),marginTop:mvs(10),borderRadius:5,
+        marginTop:mvs(30),height:mvs(40),justifyContent:'center'
+      }
 })
 export {styles};

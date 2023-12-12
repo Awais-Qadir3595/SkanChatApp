@@ -22,6 +22,9 @@ import Clipboard from '@react-native-clipboard/clipboard';
 import {useIsFocused} from '@react-navigation/native';
 import Toast from 'react-native-simple-toast';
 import Label from '../../../components/core/Label';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import PrimaryTextInput from '../../../components/core/PrimaryTextInput';
+
 
 const ViewStudents = props => {
   const [usersList, setUsersList] = useState('');
@@ -30,6 +33,9 @@ const ViewStudents = props => {
   const [showUserIndex, setShowUserIndex] = useState();
   const [isNoData, setIsNoData] = useState(false);
   const [modalIsDelete, setModalIsDelete] = useState(false);
+  const [OnSearch,setOnSearch]=useState(false);
+  const [PrimeData,setPrimeData]=useState([]);
+
   const focus = useIsFocused();
 
   useEffect(() => {
@@ -54,6 +60,7 @@ const ViewStudents = props => {
           });
           setIsNoData(false);
           setUsersList(list);
+          setPrimeData(list);
         } else {
           Toast.show('no data found');
           setIsNoData(true);
@@ -86,11 +93,20 @@ const ViewStudents = props => {
             </View>
           </Row>
         </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.student}
+        <PrimaryButton 
+         height={mvs(40)}
+         width={'20%'}
+         label='Detail'
+         color={'white'}
+         onclick={()=>toggleModal(item, index)}
+        />
+
+         
+        {/* <TouchableOpacity
+          style={styles.student} 
           onPress={() => toggleModal(item, index)}>
           <Bold label={'Detail'} color="white" />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </Row>
     );
   };
@@ -124,8 +140,55 @@ const ViewStudents = props => {
         setModalIsDelete(false);
       });
   };
+
+  const searchUsers = () => {
+    setOnSearch(!OnSearch);
+  };
+
+  const handleSearch = text => {
+    // setSearchText(text);
+    // console.log('searched = ',text);
+    // console.log('prime data = ',PrimeData);
+    // console.log('userlist = ',usersList);
+
+    const filteredData = PrimeData.filter(
+      item =>
+        item.name.toLowerCase().includes(text.toLowerCase()) ||
+        text.toLowerCase().includes(item.name.toLowerCase()),
+    );
+    if (filteredData.length == 0) {
+      setIsNoData(true);
+    } else {
+      setUsersList(filteredData);
+      setIsNoData(false);
+    }
+
+    //  console.log('filtered data = ',filteredData);
+  };
   return (
     <View style={styles.main}>
+       <Row style={{alignItems:"center"}}>
+            <Bold label="Messages" size={27} />
+
+            <TouchableOpacity onPress={()=>searchUsers()}>
+               <Icon name="account-search" size={35} color="darkblue" />
+            </TouchableOpacity>
+            <TouchableOpacity>
+              <ThreeDots style={styles.icons} />
+            </TouchableOpacity>
+          </Row>
+
+          {OnSearch ? (
+        <View>
+          <PrimaryTextInput
+            placeholder="search Student"
+            style={styles.txtInput}
+            leftIcon="Search"
+            onChangeText={v => handleSearch(v)}
+          />
+        </View>
+      ) : null}
+         
       {isNoData ? (
         <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
           <Bold label="No Data Found" />
@@ -136,12 +199,7 @@ const ViewStudents = props => {
         </View>
       ) : (
         <>
-          <Row>
-            <Bold label="Messages" size={27} />
-            <TouchableOpacity>
-              <ThreeDots style={styles.icons} />
-            </TouchableOpacity>
-          </Row>
+         
 
           <FlatList
             data={usersList}
@@ -182,20 +240,22 @@ const ViewStudents = props => {
                 <Row style={styles.rwModal}>
                   <PrimaryButton
                     bgColor={colorsTheme.primary}
-                    height={mvs(40)}
-                    width={'30%'}
+                    height={mvs(45)}
+                    width={'35%'}
                     label="delete"
                     color={'white'}
+                    iconName={'delete'}
                     onclick={() => setModalIsDelete(true)}
                   />
                   <PrimaryButton
                     bgColor={colorsTheme.primary}
-                    height={mvs(40)}
-                    width={'30%'}
+                    height={mvs(45)}
+                    width={'35%'}
                     label="Copy"
                     color={'white'}
                     onclick={copyPaste}
                   />
+                  
                 </Row>
               </View>
             </View>
@@ -207,17 +267,24 @@ const ViewStudents = props => {
             backdropOpacity={0.7}>
             <View style={styles.deleteModal}>
               <Bold label="Do You want to delete this student ?" />
-              <Row>
-                <TouchableOpacity
-                  style={styles.yessNo}
-                  onPress={() => deleteUser(userShow)}>
-                  <Label label="Yess" color="white" size={14} />
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={styles.yessNo}
-                  onPress={() => setModalIsDelete(false)}>
-                  <Label label="No" color="white" size={16} />
-                </TouchableOpacity>
+              <Row style={{alignItems:'center'}}>
+                <PrimaryButton
+                label='Yes'
+                width={'40%'}
+                height={mvs(40)}
+                color={'white'}
+                style={styles.yessNo}
+                onclick={() => deleteUser(userShow)}
+                />
+                 <PrimaryButton
+                   style={styles.yessNo}
+                label='No'
+                width={'40%'}
+                height={mvs(40)}
+                color={'white'}
+                onclick={() => setModalIsDelete(false)}
+                />
+               
               </Row>
             </View>
           </Modal>

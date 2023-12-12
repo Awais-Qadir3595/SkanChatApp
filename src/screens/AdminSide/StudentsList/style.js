@@ -53,6 +53,9 @@ const styles = StyleSheet.create({
   yessNo:{
     width:'40%',alignItems:'center',backgroundColor:colorsTheme.primary,marginHorizontal:mvs(10),marginTop:mvs(10),borderRadius:5,
     marginTop:mvs(30),height:mvs(40),justifyContent:'center'
+  },
+  txtInput:{
+    borderColor:'darkblue',borderWidth:1,borderRadius:8,fontSize:20
   }
 });
 export default styles;

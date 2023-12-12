@@ -2,7 +2,7 @@ import { StyleSheet } from "react-native";
 import { mvs } from "../../services/metrices";
 const styles=StyleSheet.create({
     main:{
-        flex:1,margin:10, 
+        flex:1, 
     },
  
     img:{
@@ -10,7 +10,7 @@ const styles=StyleSheet.create({
       },
       rw:{
         justifyContent:'flex-start',alignItems:'center',marginVertical:mvs(5),borderBottomColor:'lightgray',borderBottomWidth:1,
-        paddingVertical:mvs(10)
+        paddingVertical:mvs(10),margin:10,
       },
       desc:{
         marginLeft:mvs(20)
@@ -22,7 +22,7 @@ const styles=StyleSheet.create({
         marginHorizontal:mvs(10)
       },
       msgReceived:{
-        width:'70%',backgroundColor:'#D4D9F9',padding:mvs(5),borderRadius:5,marginVertical:mvs(5)
+        width:'70%',backgroundColor:'#ecf2f9',borderRadius:10,marginVertical:mvs(15)
       },
       msgSend:{
         backgroundColor:'navajowhite',width:'70%',marginVertical:mvs(5),borderRadius:10,padding:mvs(5),
@@ -35,7 +35,7 @@ const styles=StyleSheet.create({
         position:'absolute',bottom:0,width:'100%',alignItems:'center'
       },
       msgView:{
-                 paddingBottom:mvs(180),
+                 paddingBottom:mvs(180),marginHorizontal:10,
       },
       modal:{
         

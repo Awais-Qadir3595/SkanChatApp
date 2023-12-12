@@ -21,6 +21,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {getToken} from '../../../components/appComponents/NotificationApp';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Toast from 'react-native-simple-toast';
+import LinearGradient from 'react-native-linear-gradient';
 const AddClass = props => {
  // console.log('aaaa', props?.route?.params);
   const [CName, setName] = useState(null);
@@ -148,7 +149,11 @@ const checkExistance=async()=>{
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.upper}>
+     <LinearGradient
+        style={styles.upper}
+        colors={['darkblue', 'darkblue', 'rgba(0,212,255,1)']}
+        start={{x: 0, y: 0}}
+        end={{x: 0.5, y: 1.4}}>
         <Label
           label={'Wellcome !!'}
           
@@ -174,7 +179,7 @@ const checkExistance=async()=>{
         />
         <Bold label={props.route?.params?.SchoolName}   size={20}
          color={'white'} style={{alignSelf: 'center'}}/>
-      </View>
+      </LinearGradient>
 
       <View style={styles.lower}>
         <PrimaryTextInput
@@ -212,10 +217,11 @@ const checkExistance=async()=>{
         />
 
         <Text>
-          {/* <Label label="Already have account? " /> */}
+          
           <TouchableOpacity onPress={() => props.navigation.navigate('AdminDashBoard')}>
             <Bold label=" Back to DashBoard" color="navy" size={20} />
           </TouchableOpacity>
+         
         </Text>
       </View>
     </SafeAreaView>

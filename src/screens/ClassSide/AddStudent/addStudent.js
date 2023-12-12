@@ -19,6 +19,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {getToken} from '../../../components/appComponents/NotificationApp';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Toast from 'react-native-simple-toast';
+import LinearGradient from 'react-native-linear-gradient';
 const AddStudent = props => {
   // console.log('aaaa', props?.route?.params);
   const [name, setName] = useState(null);
@@ -123,7 +124,11 @@ const AddStudent = props => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.upper}>
+     <LinearGradient
+        style={styles.upper}
+        colors={['darkblue', 'darkblue', 'rgba(0,212,255,1)']}
+        start={{x: 0, y: 0}}
+        end={{x: 0.6, y: 1.3}}>
         <Label label={'Wellcome !!'} size={20} color="white" />
         <Image
           style={{
@@ -147,7 +152,7 @@ const AddStudent = props => {
           color={'white'}
           style={{alignSelf: 'center'}}
         />
-      </View>
+      </LinearGradient>
 
       <View style={styles.lower}>
         <PrimaryTextInput

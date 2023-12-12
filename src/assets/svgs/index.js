@@ -18,3 +18,13 @@ export {default as Message} from './msgs.svg';
 export {default as NewsFeed} from './news.svg';
 export {default as Tick} from './tick.svg';
 export {default as UnSeenTick} from './unSeenTick.svg';
+export {default as StudentsIcon} from './studentsIcon.svg';
+export {default as AddStudent} from './addStudent.svg';
+export {default as AddPost} from './AddPost.svg';
+export {default as ViewPost} from './viewPost.svg';
+export {default as Scrnli1} from './scrnli1.svg';
+export {default as Scrnli2} from './scrnli2.svg';
+export {default as Border} from './border.svg';
+export {default as ViewClass} from './viewClass.svg';
+export {default as ThreeDotsWhite} from './threeDotsWhite.svg';
+

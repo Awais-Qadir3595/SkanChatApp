@@ -3,6 +3,7 @@ import {View, Animated, Image} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {colors, colorsTheme} from '../../services/color';
 import {mvs} from '../../services/metrices';
+import LinearGradient from 'react-native-linear-gradient';
 
 const Splash = ({navigation}) => {
   const slideAnim = useRef(new Animated.Value(-200)).current;
@@ -22,55 +23,48 @@ const Splash = ({navigation}) => {
   }, []);
 
   const checkLoggedIn = async () => {
-    console.log('uncle');
-    navigation.navigate('Login');
     try {
       const jsonValue = await AsyncStorage.getItem('userLogin');
       const myObject = JSON.parse(jsonValue);
+      
       if (myObject !== null) {
-        console.log(
-          myObject.role
-        );
         global.user = myObject;
-        console.log('Retrieved object:', myObject);
-        if (myObject.role == 'Admin') {
-          navigation.replace('AdminStack');
-        } else 
-          if (myObject.role == 'Developer')
-          {
+        switch (myObject.role) {
+          case 'Admin':
+            navigation.replace('AdminStack');
+            break;
+          case 'Developer':
             navigation.replace('DeveloperStack');
-          }
-          else
-            if(myObject.role == 'Class')
+            break;
+          case 'Class':
             navigation.replace('ClassStack');
-          else {
+            break;
+          default:
             navigation.replace('UserStack');
-          }
-        
+        }
       } else {
-        console.log('aaa');
-        navigation.replace('Login');
+        navigation.replace('Login'); // Navigate to Login screen if user data doesn't exist
       }
     } catch (error) {
-      //  console.error('Error retrieving object:', error);
+      console.error('Error retrieving object:', error);
+      navigation.replace('Login'); // Handle errors by navigating to Login screen
     }
   };
+  
 
   return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: colorsTheme.primary,
-      }}>
+    <LinearGradient
+      style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}
+      colors={['darkblue', 'rgba(0,212,255,1)']}
+      start={{x: 0, y: 0}}
+      end={{x: 0, y: 1.0}}>
       <Animated.View style={{transform: [{translateY: slideAnim}]}}>
         <Image
           source={require('../../assets/images/skan2.png')}
           style={{borderRadius: 90, height: mvs(150), width: mvs(150)}}
         />
       </Animated.View>
-    </View>
+    </LinearGradient>
   );
 };
 export default Splash;
