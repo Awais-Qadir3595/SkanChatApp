@@ -1,12 +1,12 @@
-import React, {useEffect, useState} from 'react';
-import {View, Text, Image, Touchable, TouchableOpacity, BackHandler} from 'react-native';
-import {styles} from './style';
+import React, { useEffect, useState } from 'react';
+import { View, Text, Image, Touchable, TouchableOpacity, BackHandler } from 'react-native';
+import { styles } from './style';
 import Row from '../../../components/core/Row';
 import Bold from '../../../components/core/bold';
-import {colorsTheme} from '../../../services/color';
+import { colorsTheme } from '../../../services/color';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import firestore from '@react-native-firebase/firestore';
-import {mvs} from '../../../services/metrices';
+import { mvs } from '../../../services/metrices';
 import { Alert } from 'react-native';
 import { CommonActions } from '@react-navigation/native';
 import ListOfClasses from '../viewPosts/listOfClasses/listOfClasses';
@@ -19,52 +19,53 @@ import Boxes from '../../../components/appComponents/boxes';
 import Modal from 'react-native-modal';
 import Label from '../../../components/core/Label';
 
-const AdminDashBoard = ({navigation}) => {
+const AdminDashBoard = ({ navigation }) => {
 
   const [schoolData, setSchoolData] = useState('loading..');
   const [modalIsDelete, setModalIsDelete] = useState(false);
 
 
-  console.log('global',global?.user);
-const sid=global?.user?.sid;
-//console.log('sid====',sid);
+  console.log('global', global?.user);
+  const sid = global?.user?.sid;
 
-   
+  //console.log('sid====',sid);
 
-  useEffect(()=>{
+
+
+  useEffect(() => {
     getData();
-    
+
     const backAction = () => {
       if (navigation.isFocused()) {
-    
+
         BackHandler.exitApp();
-        
-        return true;  
+
+        return true;
       }
-   
+
       return false;
     };
-  
+
     const backHandler = BackHandler.addEventListener(
       'hardwareBackPress',
       backAction,
     );
-  
+
     return () => backHandler.remove();
 
-  },[])
+  }, [])
 
 
 
-  const getData = async() => {
-   await firestore()
+  const getData = async () => {
+    await firestore()
       .collection('schools')
-      .where('sid','==',sid)
+      .where('sid', '==', sid)
       .get()
       .then(querySnapshot => {
         if (querySnapshot.size > 0) {
           querySnapshot.forEach(documentSnapshot => {
-           // console.log(documentSnapshot.data());
+            // console.log(documentSnapshot.data());
 
             setSchoolData(documentSnapshot.data());
           });
@@ -75,7 +76,7 @@ const sid=global?.user?.sid;
   };
 
   const logout = async () => {
-    console.log('mhr');
+
     try {
       await AsyncStorage.removeItem('userLogin');
       navigation.navigate('Login');
@@ -91,46 +92,47 @@ const sid=global?.user?.sid;
     }
   };
 
-  const ViewUsers=()=>{
+  const ViewUsers = () => {
     navigation.navigate('ViewClasses')
   }
   const addUsers = () => {
     navigation.navigate('AddClass');
   };
 
-  const addPost=()=>{
-     
-    navigation.navigate('CreatePost',schoolData)
+  const addPost = () => {
+
+    navigation.navigate('CreatePost', schoolData)
   }
 
-  const ListOfClasses=()=>{
+  const ListOfClasses = () => {
     navigation.navigate('ListOfClasses')
   }
   return (
     <View style={styles.main}>
 
-     
 
-<LinearGradient
+
+      <LinearGradient
         style={styles.upper}
         colors={['darkblue', 'darkblue', 'rgba(0,212,255,1)']}
-        start={{x: 0, y: 0}}
-        end={{x: 0.5, y: 1.4}}>
-          
+        start={{ x: 0, y: 0 }}
+        end={{ x: 0.5, y: 1.4 }}>
+
         <Image
           source={require('../../../assets/images/skan2.png')}
-          style={{borderRadius: 90, height: mvs(120), width: mvs(120)}}
+          style={{ borderRadius: 90, height: mvs(120), width: mvs(120) }}
         />
         <View style={styles.SchoolStyle}>
-        <School  />
+          <School />
           <Bold label={schoolData?.SchoolName} color={'white'} size={20} />
-         
+
           {/* <Icon name="bus-school" size={30} color="#900" /> */}
+
         </View>
       </LinearGradient>
       <View style={styles.body}>
         <Row style={styles.rw}>
-        <Boxes
+          <Boxes
             label={'Add Class'}
             icon={'AddStudent'}
             onClick={addUsers}
@@ -140,46 +142,50 @@ const sid=global?.user?.sid;
             icon={'ViewClass'}
             onClick={ViewUsers}
           />
-         
+
         </Row>
 
         <Row style={styles.rw}>
 
-        <Boxes
+          <Boxes
             label={'Add Post'}
             icon={'AddPost'}
             onClick={addPost}
           />
-            <Boxes
+          <Boxes
             label={'View Posts '}
             icon={'ViewPost'}
             onClick={ListOfClasses}
           />
 
-         
+
         </Row>
       </View>
-      <TouchableOpacity style={{position:'absolute',top:20,right:10}} onPress={()=>setModalIsDelete(true)}>
-         
+      <TouchableOpacity style={{ position: 'absolute', top: 20, right: 10 }} onPress={() => setModalIsDelete(true)}>
+
         <Icon name="logout" size={25} color="white" />
       </TouchableOpacity>
-      
+
+      {/* logout modal */}
+
       <Modal
-            isVisible={modalIsDelete}
-            onBackButtonPress={() => setModalIsDelete(false)}
-            onBackdropPress={() => setModalIsDelete(false)}
-            backdropOpacity={0.7}>
-            <View style={styles.deleteModal}>
-              <Bold label="Do you want to logout?" />
-              <Row style={{alignItems:'center',justifyContent:'space-evenly',width:'100%'}}>
-                <PrimaryButton label='Yes' height={mvs(45)} width={'40%'} color={'white'}
-                onclick={()=>logout()}/>
-                
-                <PrimaryButton label='No' height={mvs(45)} width={'40%'} color={'white'}
-                onclick={()=>console.log('hummmm')}/>
-              </Row>
-            </View>
-          </Modal>
+
+        isVisible={modalIsDelete}
+        style={{ alignSelf: 'center' }}
+        onBackButtonPress={() => setModalIsDelete(false)}
+        onBackdropPress={() => setModalIsDelete(false)}
+        backdropOpacity={0.7}>
+        <View style={styles.deleteModal}>
+          <Bold label="Do you want to logout?" />
+          <Row style={{ alignItems: 'center', justifyContent: 'space-evenly', width: '100%' }}>
+            <PrimaryButton label='Yes' height={mvs(45)} width={'40%'} color={'white'}
+              onclick={() => logout()} />
+
+            <PrimaryButton label='No' height={mvs(45)} width={'40%'} color={'white'}
+              onclick={() => setModalIsDelete(false)} />
+          </Row>
+        </View>
+      </Modal>
     </View>
   );
 };

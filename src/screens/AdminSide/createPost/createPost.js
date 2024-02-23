@@ -11,6 +11,7 @@ import SendNotification from '../../../hooks/notification';
 import messaging from '@react-native-firebase/messaging';
 import CheckBox from 'react-native-check-box';
 import LinearGradient from 'react-native-linear-gradient';
+import { PostSvg } from '../../../assets/svgs';
 
 const CreatePost = props => {
   useEffect(() => {
@@ -154,43 +155,10 @@ const CreatePost = props => {
     }
   };
 
-  //   const notifyEveryUser = async data => {
-  //     //console.log('-----');
-  //     let tokens=[];
-
-  //     data?.map(async item => {
-
-  //       await firestore()
-  //       .collection('user')
-  //       .where('cid', '==', item)
-
-  //       .onSnapshot(querySnapshot => {
-  //         let arr = [];
-
-  //         querySnapshot.forEach(documentSnapshot => {
-
-  //           tokens?.push(documentSnapshot.data().token);
-  //         });
-
-  //       });
-
-  //     })
-
-  // console.log('----+++++999009999----------',tokens);
-  //     tokens?.map(async item => {
-
-  //           SendNotification(
-  //             item,
-  //             message,
-  //             'SKAN SCHOOL SYSTEM',
-  //           );
-
-  //     })
-
-  //   };
+  
 
   const renderClasses = ({item, index}) => {
-    //console.log(item);
+    
 
     return (
       <CheckBox
@@ -213,10 +181,11 @@ const CreatePost = props => {
         colors={['darkblue', 'darkblue', 'rgba(0,212,255,1)']}
         start={{x: 0, y: 0}}
         end={{x: 0.5, y: 1.4}}>
-        <Image
+          <PostSvg/>
+        {/* <Image
           source={require('../../../assets/images/skan2.png')}
           style={{borderRadius: 90, height: mvs(120), width: mvs(120)}}
-        />
+        /> */}
         <Bold
           label={props?.route?.params.SchoolName}
           color={'white'}

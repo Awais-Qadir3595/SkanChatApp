@@ -25,7 +25,7 @@ const PrimaryButton = ({
   iconName,
   iconColor='white',
 }) => {
-  console.log('.,.,', iconName);
+   
   return (
     <TouchableOpacity
       style={{...styles.main, width: width, height: height, ...style}}

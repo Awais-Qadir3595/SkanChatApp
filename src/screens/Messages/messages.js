@@ -62,21 +62,7 @@ const Messages = ({navigation}) => {
         }
       });
   };
-  const checkLoggedIn = async () => {
-    try {
-      const jsonValue = await AsyncStorage.getItem('userLogin');
-      if (jsonValue !== null) {
-        const myObject = JSON.parse(jsonValue);
-        global.user = myObject;
-        // console.log('Retrieved object:', myObject);
-        navigation.navigate('Messages');
-      } else {
-        // console.log('No object with that key');
-      }
-    } catch (error) {
-      // console.error('Error retrieving object:', error);
-    }
-  };
+  
 
   const getUsersList = async () => {
     firestore()
@@ -258,7 +244,7 @@ const Messages = ({navigation}) => {
     <View style={styles.main}>
       <Row style={{alignItems:'center'}}>
         <Bold label={'News Feed'} size={20} color={colorsTheme.primary}/>
-        <Bold label={schoolName} size={24} />
+        <Bold label={schoolName} size={15} />
         <TouchableOpacity onPress={properties}>
           <ThreeDots style={styles.icons} />
         </TouchableOpacity>

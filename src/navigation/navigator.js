@@ -46,21 +46,7 @@ const App = () => {
     
 
 
-    // const initialNotification = await notifee.getInitialNotification();
-    // if (initialNotification) {
-    //   console.log('Notification caused application to open', initialNotification.notification);
-    //   console.log('Press action used to open the app', initialNotification.pressAction);
-    // }
-    // return notifee.onForegroundEvent(({ type, detail }) => {
-    //   switch (type) {
-    //     case EventType.DISMISSED:
-    //       console.log('User dismissed notification', detail.notification);
-    //       break;
-    //     case EventType.PRESS:
-    //       console.log('User pressed notification', detail.notification);
-    //       break;
-    //   }
-    // });
+     
 
 
   }

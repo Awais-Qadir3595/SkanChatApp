@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   FlatList,
   Text,
@@ -13,24 +13,28 @@ import styles from './style';
 import Row from '../../../components/core/Row';
 import Bold from '../../../components/core/bold';
 import PrimaryTextInput from '../../../components/core/PrimaryTextInput';
-import {mvs} from '../../../services/metrices';
+import { mvs } from '../../../services/metrices';
 import Label from '../../../components/core/Label';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {StarBlue, StarYellow, ThreeDots} from '../../../assets/svgs';
+import { SchoolIcon, StarBlue, StarYellow, ThreeDots } from '../../../assets/svgs';
 import Modal from 'react-native-modal';
 import DrawHorizentalLine from '../../../components/core/drawHorizentalLine';
 import firestore from '@react-native-firebase/firestore';
-import {saveData} from '../../main';
-import {CommonActions} from '@react-navigation/native';
+import { saveData } from '../../main';
+import { CommonActions } from '@react-navigation/native';
 import Toast from 'react-native-simple-toast';
-import {colorsTheme} from '../../../services/color';
+import { colorsTheme } from '../../../services/color';
+import { WebView } from 'react-native-webview';
 
-const Inbox = ({navigation}) => {
+
+const Inbox = ({ navigation }) => {
   const [messageList, setMessageList] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [imageData, setImageData] = useState(null);
   const [fullImageModal, setFullImageModal] = useState(false);
   const [fullImageUrl, setFullImageUrl] = useState();
+  const [fullPdfModal, setFullPdfModal] = useState(false);
+  const [fullPdfUrl, setFullPdfUrl] = useState();
 
   const [isColor, setColor] = useState(false);
   let unRead = [];
@@ -46,12 +50,11 @@ const Inbox = ({navigation}) => {
     getSchoolName();
     changeToRead();
 
-    // setTimeout(function () {
-    //   setColor(true);
-    // }, 9000);
+
   }, []);
 
   const getMsgList = () => {
+    console.log('/////////--------------------------------/////////////////')
     firestore()
       .collection('chat')
       .where('receiverId', '==', global?.user?.id)
@@ -60,14 +63,14 @@ const Inbox = ({navigation}) => {
         if (querySnapshot.size > 0) {
           const list = [];
           querySnapshot.forEach(documentSnapshot => {
-            //console.log(documentSnapshot.data());
+            console.log(documentSnapshot.data());
             list.push(documentSnapshot.data());
           });
           list.reverse();
           setMessageList(list);
           unreadMessages = list.filter(message => message.read == false);
-        //  console.log('-------------unRead msgs------------');
-         // console.log(unreadMessages);
+          //  console.log('-------------unRead msgs------------');
+          // console.log(unreadMessages);
         } else {
           Toast.show('no data found');
         }
@@ -108,7 +111,7 @@ const Inbox = ({navigation}) => {
       navigation.dispatch(
         CommonActions.reset({
           index: 0,
-          routes: [{name: 'Login'}],
+          routes: [{ name: 'Login' }],
         }),
       );
       //console.log('Removed object' );
@@ -135,13 +138,20 @@ const Inbox = ({navigation}) => {
       });
   };
 
-  const openImage=(url)=>{
-    console.log('url = ',url);
+  const openImage = (url) => {
+    console.log('url = ', url);
     setFullImageUrl(url);
     setFullImageModal(true);
   }
-  const renderList = ({item}) => {
-   // console.log(item);
+
+  const openFullPdf = item => {
+    setFullPdfModal(true);
+    setFullPdfUrl(item.pdfUri);
+  };
+
+
+  const renderList = ({ item }) => {
+    // console.log(item);
     const _seconds = item?.time?.seconds;
     const _nanoseconds = item?.time?.nanoseconds;
 
@@ -188,8 +198,8 @@ const Inbox = ({navigation}) => {
           },
         ]}>
         {item?.isAdmin ? (
-          <Row style={{justifyContent: 'flex-start', alignItems: 'center'}}>
-            <StarYellow style={{marginRight: mvs(10)}} />
+          <Row style={{ justifyContent: 'flex-start', alignItems: 'center' }}>
+            <StarYellow style={{ marginRight: mvs(10) }} />
             <Bold
               label="School Management"
               size={12}
@@ -197,14 +207,14 @@ const Inbox = ({navigation}) => {
             />
           </Row>
         ) : (
-          <Row style={{justifyContent: 'flex-start', alignItems: 'center'}}>
-            <StarBlue style={{marginRight: mvs(10)}} />
+          <Row style={{ justifyContent: 'flex-start', alignItems: 'center' }}>
+            <StarBlue style={{ marginRight: mvs(10) }} />
             <Bold label="class Teacher" size={12} color={colorsTheme.primary} />
           </Row>
         )}
         <View style={styles.desc}>
-          {item.url ? (
-            <TouchableOpacity onPress={() => openImage(item.url)}>
+          {item.imgUri ? (
+            <TouchableOpacity onPress={() => openImage(item.imgUri)}>
               <Image
                 resizeMode="stretch"
                 style={{
@@ -215,14 +225,38 @@ const Inbox = ({navigation}) => {
                   marginBottom: mvs(10),
                 }}
                 source={{
-                  uri: item.url,
+                  uri: item.imgUri,
                 }}
               />
             </TouchableOpacity>
-          ) : null}
+          ) : item.pdfUri ?
+            (
+
+
+              <TouchableOpacity
+
+                onPress={() => openFullPdf(item)}
+                style={{ borderWidth: 1, marginVertical: mvs(4) }}>
+
+                <WebView
+                  source={{
+                    uri: `https://docs.google.com/gview?embedded=true&url=${item.url}`,
+                  }}
+                  style={{ height: 150, width: '100%' }}
+                />
+                <Label
+                  label={item.pdfName}
+                  style={{ backgroundColor: 'darkblue', padding: 4 }}
+                  color="white"
+                />
+              </TouchableOpacity>
+
+            ) : null}
+
+
 
           <Bold label={item?.message} />
-          <View style={{marginTop: mvs(20), alignSelf: 'flex-end'}}>
+          <View style={{ marginTop: mvs(20), alignSelf: 'flex-end' }}>
             <Label label={date} color="gray" size={12} />
             <Label label={timeResult} color="gray" size={12} />
           </View>
@@ -233,36 +267,49 @@ const Inbox = ({navigation}) => {
 
   return (
     <View style={styles.main}>
-      <Row style={{alignItems: 'center'}}>
-        <Bold label={'Messenger'} size={20} color={colorsTheme.primary} />
-        <Bold label={schoolName} size={24} />
-        <TouchableOpacity onPress={() => properties()}>
-          <ThreeDots style={styles.icons} />
-        </TouchableOpacity>
-      </Row>
-      <Row
+      <Row style={styles.headerRow}>
+        <Row
+          style={{
+            marginVertical: mvs(10),
+            
+            justifyContent: 'flex-start',
+            alignItems: 'center',
+          }}>
+          <Image
+            style={styles.img}
+            source={require('../../../assets/images/user.png')}
+          />
+          <Bold
+            label={global?.user?.name}
+            style={{ marginHorizontal: mvs(10) }}
+            size={18}
+          />
+        </Row>
+        <Row
         style={{
-          marginVertical: mvs(20),
-          marginHorizontal: mvs(20),
-          justifyContent: 'flex-start',
+      
           alignItems: 'center',
         }}>
-        <Image
-          style={styles.img}
-          source={require('../../../assets/images/user.png')}
-        />
-        <Bold
-          label={global?.user?.name}
-          style={{marginHorizontal: mvs(10)}}
-          size={18}
-        />
+        <SchoolIcon
+        style={{
+          marginHorizontal: mvs(10),
+        }}/>
+        <Bold label={schoolName} size={15} />
+        </Row>
+      
+
       </Row>
+      <Bold label={'Messenger'} size={15} color={colorsTheme.primary} style={styles.heading} />
+
 
       <FlatList
         data={messageList}
         renderItem={renderList}
         keyExtractor={(item, index) => index.toString()}
       />
+
+
+      {/* logout modal */}
 
       <Modal
         isVisible={modalVisible}
@@ -282,23 +329,38 @@ const Inbox = ({navigation}) => {
           <TouchableOpacity onPress={() => Logout()}>
             <Bold label="Logout" size={20} />
           </TouchableOpacity>
-          <DrawHorizentalLine style={{width: '90%'}} />
+          <DrawHorizentalLine style={{ width: '90%' }} />
         </View>
       </Modal>
 
-      
+      {/*       
+image modal */}
 
       <Modal
         isVisible={fullImageModal}
         onBackButtonPress={() => setFullImageModal(false)}
         onBackdropPress={() => setFullImageModal(false)}>
-        <View style={{flex: 1}}>
+        <View style={{ flex: 1 }}>
           <Image
-            resizeMode="stretch"
-            style={{flex: 1, backgroundColor: 'white', width: '100%'}}
+            resizeMode="contain"
+            style={{ height: '100%', backgroundColor: 'black', width: '100%' }}
             source={{
               uri: fullImageUrl,
             }}
+          />
+        </View>
+      </Modal>
+
+      <Modal
+        isVisible={fullPdfModal}
+        onBackButtonPress={() => setFullPdfModal(false)}
+        onBackdropPress={() => setFullPdfModal(false)}>
+        <View style={{ flex: 1 }}>
+          <WebView
+            source={{
+              uri: `https://docs.google.com/gview?embedded=true&url=${encodeURIComponent(fullPdfUrl)}`,
+            }}
+            style={{ width: '100%' }}
           />
         </View>
       </Modal>

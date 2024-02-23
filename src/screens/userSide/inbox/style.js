@@ -23,5 +23,11 @@ const styles = StyleSheet.create({
     marginLeft: mvs(20),marginTop:mvs(10)
     
   },
+  headerRow:{
+    alignItems:'center',paddingHorizontal:10
+  },
+  heading:{
+    marginLeft:10
+  }
 });
 export default styles;

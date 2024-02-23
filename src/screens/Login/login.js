@@ -46,10 +46,12 @@ const Login = ({navigation}) => {
   };
 
   const Login = async () => {
+
+    console.log('pass = ',password, '- gmail = ',gmail);
     if (password == '' || gmail == '') {
       Toast.show('please fill all fields');
     } else {
-      console.log(password,'====',gmail);
+      
 
       setLoading(true);
 
@@ -61,11 +63,11 @@ const Login = ({navigation}) => {
         .then(querySnapshot => {
         console.log(querySnapshot.size,'sizee======');
           if (querySnapshot.size == 1) {
-           // console.log('docId', querySnapshot.docs[0].id);
+           //console.log('docId', querySnapshot.docs[0].id);
             querySnapshot.forEach(documentSnapshot => {
 
 
-              console.log(documentSnapshot.data().role);
+              console.log('role  = ',documentSnapshot.data().role);
               AsyncStorage.setItem(
                 'userLogin',
                 JSON.stringify(documentSnapshot.data()),
@@ -82,17 +84,17 @@ const Login = ({navigation}) => {
                 navigation.navigate('AdminStack');
                 setLoading(false);
               } else if (documentSnapshot.data().role == 'Developer') {
-                console.log('-------developer----',documentSnapshot.data().role);
+                
 
                 setLoading(false);
                 navigation.navigate('DeveloperStack');
               } else if (documentSnapshot.data().role == 'Class') {
-                console.log('class');
+              
 
                 setLoading(false);
                 navigation.navigate('ClassStack');
               } else  {
-              
+              console.log('no one match');
                // updateForToken(querySnapshot.docs[0].id);
                 navigation.navigate('UserStack');
                 setLoading(false);
@@ -119,7 +121,7 @@ const Login = ({navigation}) => {
         token: token,
       })
       .then(() => {
-        console.log('User updated!');
+       // console.log('User updated!');
         setLoading(false);
       });
   };

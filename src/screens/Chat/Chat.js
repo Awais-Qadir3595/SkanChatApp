@@ -1,4 +1,4 @@
-import React, {useEffect, useLayoutEffect, useRef, useState} from 'react';
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import {
   View,
   Image,
@@ -23,24 +23,24 @@ import {
   Tick,
   UnSeenTick,
 } from '../../assets/svgs';
-import {colorsTheme} from '../../services/color';
+import { colorsTheme } from '../../services/color';
 
 import Toast from 'react-native-simple-toast';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Label from '../../components/core/Label';
 import PrimaryTextInput from '../../components/core/PrimaryTextInput';
-import {mvs} from '../../services/metrices';
+import { mvs } from '../../services/metrices';
 import PrimaryButton from '../../components/core/button';
 import Modal from 'react-native-modal';
 import ImagePicker from 'react-native-image-crop-picker';
-import {saveData} from '../main';
+import { saveData } from '../main';
 import firestore from '@react-native-firebase/firestore';
 import SendNotification from '../../hooks/notification';
 import storage from '@react-native-firebase/storage';
 import DocumentPicker from 'react-native-document-picker';
-import {WebView} from 'react-native-webview';
- 
- 
+import { WebView } from 'react-native-webview';
+
+
 
 
 const ChatScreen = props => {
@@ -66,13 +66,13 @@ const ChatScreen = props => {
   const [fullPdfUrl, setFullPdfUrl] = useState();
   const [thumbnails, setThumbnails] = useState();
   const flatListRef = useRef(null);
-let fileUri='file:///data/user/0/com.chatapplication/cache/a3cacf3f-daf7-40b6-a8ee-0a2a42a0b12d/M.Ashiq-2.pdf'
+  let fileUri = 'file:///data/user/0/com.chatapplication/cache/a3cacf3f-daf7-40b6-a8ee-0a2a42a0b12d/M.Ashiq-2.pdf'
   useEffect(() => {
     getChat();
   }, []);
 
   useEffect(() => {
-    flatListRef.current?.scrollToEnd({animated: true});
+    flatListRef.current?.scrollToEnd({ animated: true });
   }, [chatList]);
 
   const getChat = async () => {
@@ -119,12 +119,12 @@ let fileUri='file:///data/user/0/com.chatapplication/cache/a3cacf3f-daf7-40b6-a8
     }
   };
   const addChat = async () => {
-     console.log('enter ---------------------------------------');
+    console.log('enter ---------------------------------------');
     setLoading(true);
 
     let imguri = null;
     let pdfUri = null;
-    let pdfName=null;
+    let pdfName = null;
 
     if (msgToSend == '' && imageData == null && pdfUrl == null) {
       setLoading(false);
@@ -141,7 +141,7 @@ let fileUri='file:///data/user/0/com.chatapplication/cache/a3cacf3f-daf7-40b6-a8
 
     if (pdfUrl != null) {
       pdfUri = await uploadPdf();
-      pdfName=pdfUrl[0].name;
+      pdfName = pdfUrl[0].name;
       // console.log('after return ==============',pdfUrl);
       // console.log(pdfUri);
     }
@@ -170,11 +170,11 @@ let fileUri='file:///data/user/0/com.chatapplication/cache/a3cacf3f-daf7-40b6-a8
       sid: props?.route?.params?.item?.sid,
       imgUri: imguri,
       pdfUri: pdfUri,
-      pdfName:pdfName
+      pdfName: pdfName
     });
-    
+
     if (result) {
-      
+
       setLoading(false);
       setMsgToSend('');
       setPdfUrl(null);
@@ -231,28 +231,28 @@ let fileUri='file:///data/user/0/com.chatapplication/cache/a3cacf3f-daf7-40b6-a8
     };
     return result;
   };
-  const renderMsg = ({item}) => {
+  const renderMsg = ({ item }) => {
     var time = getTime(item);
 
     return (
       <>
         {item?.senderId == sender ? (
-          <View style={{borderBottomColor: 'powderblue', borderBottomWidth: 1}}>
+          <View style={{ borderBottomColor: 'powderblue', borderBottomWidth: 1 }}>
             <View style={styles.msgReceived}>
               {item.pdfUri ? (
                 <TouchableOpacity
                   onPress={() => openFullPdf(item)}
-                  style={{borderWidth: 1, marginVertical: mvs(4)}}>
-              
+                  style={{ borderWidth: 1, marginVertical: mvs(4) }}>
+
                   <WebView
                     source={{
                       uri: `https://docs.google.com/gview?embedded=true&url=${item.url}`,
                     }}
-                    style={{height: 150, width: '100%'}}
+                    style={{ height: 150, width: '100%' }}
                   />
                   <Label
                     label={item.pdfName}
-                    style={{backgroundColor: 'darkblue', padding: 4}}
+                    style={{ backgroundColor: 'darkblue', padding: 4 }}
                     color="white"
                   />
                 </TouchableOpacity>
@@ -283,15 +283,15 @@ let fileUri='file:///data/user/0/com.chatapplication/cache/a3cacf3f-daf7-40b6-a8
                   <Label label={item.message} />
                 </View>
               ) : null}
-              <View style={{alignItems: 'flex-end'}}>
+              <View style={{ alignItems: 'flex-end' }}>
                 <Label label={time?.time} color="gray" size={12} />
                 <Label label={time?.date} color="gray" size={12} />
               </View>
 
               {item.read ? (
-                <Tick style={{alignSelf: 'flex-end'}} />
+                <Tick style={{ alignSelf: 'flex-end' }} />
               ) : (
-                <UnSeenTick style={{alignSelf: 'flex-end'}} />
+                <UnSeenTick style={{ alignSelf: 'flex-end' }} />
               )}
             </View>
           </View>
@@ -312,7 +312,7 @@ let fileUri='file:///data/user/0/com.chatapplication/cache/a3cacf3f-daf7-40b6-a8
       width: 300,
       height: 400,
       cropping: false,
-    }).then(image => {});
+    }).then(image => { });
   };
   const imageFromGallery = () => {
     ImagePicker.openPicker({
@@ -343,11 +343,11 @@ let fileUri='file:///data/user/0/com.chatapplication/cache/a3cacf3f-daf7-40b6-a8
         copyTo: 'cachesDirectory',
       });
 
-       console.log(res);
+      console.log(res);
       setModalVisible(false);
-       
+
       setPdfUrl(res);
-     
+
     } catch (err) {
       if (DocumentPicker.isCancel(err)) {
       } else {
@@ -370,9 +370,9 @@ let fileUri='file:///data/user/0/com.chatapplication/cache/a3cacf3f-daf7-40b6-a8
         <View style={styles.desc}>
           <Bold label={props?.route?.params?.item?.name} size={25} />
         </View>
-        
+
         <View style={styles.Options}>
-          <Row style={{alignItems: 'center'}}></Row>
+          <Row style={{ alignItems: 'center' }}></Row>
         </View>
       </Row>
 
@@ -383,7 +383,7 @@ let fileUri='file:///data/user/0/com.chatapplication/cache/a3cacf3f-daf7-40b6-a8
           renderItem={renderMsg}
           keyExtractor={(item, index) => index.toString()}
           onContentSizeChange={() => {
-            flatListRef.current?.scrollToEnd({animated: true});
+            flatListRef.current?.scrollToEnd({ animated: true });
           }}
         />
       </View>
@@ -406,12 +406,13 @@ let fileUri='file:///data/user/0/com.chatapplication/cache/a3cacf3f-daf7-40b6-a8
         ) : null}
         {pdfUrl !== null ? (
           <View
-            style={{width: '100%',  backgroundColor: '#ecf2f9'}}>
+            style={{ width: '100%', backgroundColor: '#ecf2f9' }}>
             <Row
-              style={{alignItems:'center',
-                 borderWidth:1,
-                 borderColor:'darkblue',
-                 paddingVertical:10,
+              style={{
+                alignItems: 'center',
+                borderWidth: 1,
+                borderColor: 'darkblue',
+                paddingVertical: 10,
                 paddingHorizontal: mvs(10),
                 justifyContent: 'space-between',
               }}>
@@ -422,7 +423,7 @@ let fileUri='file:///data/user/0/com.chatapplication/cache/a3cacf3f-daf7-40b6-a8
               <Label
                 label={pdfUrl[0].name}
                 color="black"
-                style={{marginHorizontal: 10}}
+                style={{ marginHorizontal: 10 }}
               />
             </Row>
             {/* <Image source={{ uri: thumbnails }} style={{height:200,width:200}} /> */}
@@ -438,7 +439,7 @@ let fileUri='file:///data/user/0/com.chatapplication/cache/a3cacf3f-daf7-40b6-a8
             /> */}
           </View>
         ) : null}
-        <Row style={{alignItems: 'center'}}>
+        <Row style={{ alignItems: 'center' }}>
           <TouchableOpacity onPress={() => setModalVisible(true)}>
             <ImagePick />
           </TouchableOpacity>
@@ -449,13 +450,13 @@ let fileUri='file:///data/user/0/com.chatapplication/cache/a3cacf3f-daf7-40b6-a8
             inputValue={msgToSend}
           />
           <PrimaryButton
-          height={mvs(45)}
-          width={'17%'}
-          onPress={() => addChat()}
-          iconName={'send-outline'}
-          iconColor='white'
-          onclick={() => addChat()}
-          loading={loading}
+            height={mvs(45)}
+            width={'17%'}
+            onPress={() => addChat()}
+            iconName={'send-outline'}
+            iconColor='white'
+            onclick={() => addChat()}
+            loading={loading}
           />
           {/* <TouchableOpacity
             style={{
@@ -494,18 +495,18 @@ let fileUri='file:///data/user/0/com.chatapplication/cache/a3cacf3f-daf7-40b6-a8
         isVisible={modalVisible}
         onBackdropPress={() => setModalVisible(false)}
         onBackButtonPress={() => setModalVisible(false)}>
-        <View style={{justifyContent: 'center', alignItems: 'center',backgroundColor:"white",borderRadius:5,padding:mvs(20)}}>
-          <View style={{padding:mvs(10)}}>
+        <View style={{ justifyContent: 'center', alignItems: 'center', backgroundColor: "white", borderRadius: 5, padding: mvs(20) }}>
+          <View style={{ padding: mvs(10) }}>
             <Label label='Please Select' size={20} />
           </View>
 
 
-           
+
 
 
           <Row
             style={{
-              padding:mvs(20),
+              padding: mvs(20),
               alignItems: 'center',
               justifyContent: 'space-around',
               width: '100%',
@@ -524,9 +525,9 @@ let fileUri='file:///data/user/0/com.chatapplication/cache/a3cacf3f-daf7-40b6-a8
                 borderRadius: 10,
               }}
               onPress={() => documentPicker()}>
-                
+
               <Bold label="Document" />
-           
+
             </TouchableOpacity>
             <TouchableOpacity
               style={{
@@ -548,7 +549,7 @@ let fileUri='file:///data/user/0/com.chatapplication/cache/a3cacf3f-daf7-40b6-a8
         isVisible={fullImageModal}
         onBackButtonPress={() => setFullImageModal(false)}
         onBackdropPress={() => setFullImageModal(false)}>
-        <View style={{justifyContent: 'center'}}>
+        <View style={{ justifyContent: 'center' }}>
           <Image
             resizeMode="stretch"
             style={{
@@ -569,12 +570,12 @@ let fileUri='file:///data/user/0/com.chatapplication/cache/a3cacf3f-daf7-40b6-a8
         isVisible={fullPdfModal}
         onBackButtonPress={() => setFullPdfModal(false)}
         onBackdropPress={() => setFullPdfModal(false)}>
-        <View style={{flex: 1}}>
+        <View style={{ flex: 1 }}>
           <WebView
             source={{
               uri: `https://docs.google.com/gview?embedded=true&url=${encodeURIComponent(fullPdfUrl)}`,
             }}
-            style={{width: '100%'}}
+            style={{ width: '100%' }}
           />
         </View>
       </Modal>

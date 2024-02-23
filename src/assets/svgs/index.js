@@ -27,4 +27,10 @@ export {default as Scrnli2} from './scrnli2.svg';
 export {default as Border} from './border.svg';
 export {default as ViewClass} from './viewClass.svg';
 export {default as ThreeDotsWhite} from './threeDotsWhite.svg';
+export {default as SchoolIcon} from './schoolIcon.svg';
+export {default as Banner} from './banner.svg';
+export {default as Messenger} from './messenger.svg';
+export {default as Speaker} from './speaker.svg';
+export {default as Logout} from './logout.svg';
+export {default as PostSvg} from './postSvg.svg';
 
