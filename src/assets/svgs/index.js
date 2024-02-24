@@ -33,4 +33,6 @@ export {default as Messenger} from './messenger.svg';
 export {default as Speaker} from './speaker.svg';
 export {default as Logout} from './logout.svg';
 export {default as PostSvg} from './postSvg.svg';
+export {default as ImageSvg} from './image.svg';
+export {default as PdfSvg} from './pdfsvg.svg';
 

@@ -30,5 +30,13 @@ const styles = StyleSheet.create({
     alignSelf:'center',
     
   },
+  imgpdfRow:{
+    margin:10,
+   
+    
+  },
+  innerData:{
+    alignItems:'center',justifyContent:"flex-start",width:'50%', }
+  
 });
 export {styles};

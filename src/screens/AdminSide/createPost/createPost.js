@@ -1,18 +1,18 @@
-import React, {useEffect, useState} from 'react';
-import {View, Text, Image, TextInput, Switch, FlatList} from 'react-native';
-import {styles} from './style';
+import React, { useEffect, useState } from 'react';
+import { View, Text, Image, TextInput, Switch, FlatList, LayoutAnimation } from 'react-native';
+import { styles } from './style';
 import Bold from '../../../components/core/bold';
-import {mvs} from '../../../services/metrices';
+import { mvs } from '../../../services/metrices';
 import PrimaryButton from '../../../components/core/button';
-import {colorsTheme} from '../../../services/color';
+import { colorsTheme } from '../../../services/color';
 import firestore from '@react-native-firebase/firestore';
 import Toast from 'react-native-simple-toast';
 import SendNotification from '../../../hooks/notification';
 import messaging from '@react-native-firebase/messaging';
 import CheckBox from 'react-native-check-box';
 import LinearGradient from 'react-native-linear-gradient';
-import { PostSvg } from '../../../assets/svgs';
-
+import { ImageSvg, PdfSvg, PostSvg } from '../../../assets/svgs';
+import Row from '../../../components/core/Row';
 const CreatePost = props => {
   useEffect(() => {
     getClasses();
@@ -39,7 +39,7 @@ const CreatePost = props => {
             list.push(documentSnapshot.data());
           });
 
-          const newList = list.map(item => ({...item, checked: false}));
+          const newList = list.map(item => ({ ...item, checked: false }));
 
           setClasses(newList);
         } else {
@@ -76,8 +76,8 @@ const CreatePost = props => {
         let sid = global?.user?.sid;
         let cid = item.id;
         var date = new Date();
-        let isAdmin=true;
-        console.log(isAdmin,'---====---');
+        let isAdmin = true;
+        console.log(isAdmin, '---====---');
         await firestore()
           .collection('post')
           .doc(id)
@@ -111,7 +111,7 @@ const CreatePost = props => {
   const notifyEveryUser = async data => {
     try {
       let tokens = [];
-// item contain classIds
+      // item contain classIds
       // Create an array of Promises for Firestore queries
       const queryPromises = data.map(async item => {
         const querySnapshot = await firestore()
@@ -119,7 +119,7 @@ const CreatePost = props => {
           .where('cid', '==', item)
           .get();
 
-          const querySnapshot2 = await firestore()
+        const querySnapshot2 = await firestore()
           .collection('user')
           .where('id', '==', item)
           .get();
@@ -137,7 +137,7 @@ const CreatePost = props => {
         tokens.push(...combinedArr);
 
 
-         
+
 
         return combinedArr; // Resolve the promise with the array of tokens
       });
@@ -145,20 +145,20 @@ const CreatePost = props => {
       // Wait for all Firestore queries to complete
       await Promise.all(queryPromises);
 
-      console.log('----+++++999009999----------', tokens.length);
+
 
       tokens.forEach(async item => {
-        SendNotification(item, message, 'SKAN SCHOOL SYSTEM');
+        SendNotification(item, message);
       });
     } catch (error) {
       console.error(error);
     }
   };
 
-  
 
-  const renderClasses = ({item, index}) => {
-    
+
+  const renderClasses = ({ item, index }) => {
+
 
     return (
       <CheckBox
@@ -176,12 +176,12 @@ const CreatePost = props => {
   };
   return (
     <View style={styles.main}>
-     <LinearGradient
+      <LinearGradient
         style={styles.upper}
         colors={['darkblue', 'darkblue', 'rgba(0,212,255,1)']}
-        start={{x: 0, y: 0}}
-        end={{x: 0.5, y: 1.4}}>
-          <PostSvg/>
+        start={{ x: 0, y: 0 }}
+        end={{ x: 0.5, y: 1.4 }}>
+        <PostSvg />
         {/* <Image
           source={require('../../../assets/images/skan2.png')}
           style={{borderRadius: 90, height: mvs(120), width: mvs(120)}}
@@ -200,15 +200,24 @@ const CreatePost = props => {
           placeholder="Enter your text here..."
           onChangeText={v => setMessage(v)}
           value={message}
-          // Other props like onChangeText, value, etc. can be added here
+        // Other props like onChangeText, value, etc. can be added here
         />
-
+        <Row style={styles.imgpdfRow}>
+          <Row style={styles.innerData}>
+            <ImageSvg />
+            <Bold label={'image'} />
+          </Row>
+          <Row style={styles.innerData}>
+            <PdfSvg />
+            <Bold label='Documents' />
+          </Row>
+        </Row>
         <Bold
-          style={{marginTop: mvs(10)}}
+          style={{ marginTop: mvs(10) }}
           label="Please Select Classes whome you want to show your post"
         />
         <FlatList
-          style={{marginTop: mvs(20)}}
+          style={{ marginTop: mvs(20) }}
           numColumns={2}
           columnWrapperStyle={{
             marginBottom: 15,
@@ -225,7 +234,7 @@ const CreatePost = props => {
           width={'25%'}
           color={'white'}
           height={mvs(40)}
-          style={{alignSelf: 'flex-end'}}
+          style={{ alignSelf: 'flex-end' }}
           onclick={handlePost}
           loading={loading}
         />
