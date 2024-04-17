@@ -129,7 +129,7 @@ const AddStudent = props => {
         colors={['darkblue', 'darkblue', 'rgba(0,212,255,1)']}
         start={{x: 0, y: 0}}
         end={{x: 0.6, y: 1.3}}>
-        <Label label={'Wellcome !!'} size={20} color="white" />
+        <Label label={'Wellcome !!'} size={20} color="white" style={{alignSelf:'center', }}/>
         <Image
           style={{
             height: mvs(110),
@@ -156,14 +156,14 @@ const AddStudent = props => {
 
       <View style={styles.lower}>
         <PrimaryTextInput
-          placeholder="enter Name"
+          placeholder="Enter Name"
           style={{width: '90%', marginLeft: 0}}
           onChangeText={handleName}
           inputValue={name}
         />
 
         <PrimaryTextInput
-          placeholder="enter userName"
+          placeholder="Enter userName"
           style={{
             width: '90%',
             marginLeft: 0,
@@ -175,7 +175,7 @@ const AddStudent = props => {
           onBlur={() => checkExistance()}
         />
         <PrimaryTextInput
-          placeholder="enter Password"
+          placeholder="Enter Password"
           style={{width: '90%', marginLeft: 0}}
           onChangeText={handlePassword}
           inputValue={password}

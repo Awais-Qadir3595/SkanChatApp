@@ -1,4 +1,4 @@
-package com.chatapplication.newarchitecture.modules;
+package com.skanchatapp.newarchitecture.modules;
 
 import com.facebook.jni.HybridData;
 import com.facebook.react.ReactPackage;

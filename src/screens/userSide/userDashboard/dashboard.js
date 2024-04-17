@@ -11,7 +11,7 @@ import { Alert } from 'react-native';
 import { CommonActions } from '@react-navigation/native';
 import MarqueeText from 'react-native-marquee';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { Banner, Logout, Messenger, School, Speaker, ThreeDotsWhite } from '../../../assets/svgs';
+import { Banner, Logout, Messenger, School, Speaker, StudentDegree, ThreeDotsWhite } from '../../../assets/svgs';
 import notifee from '@notifee/react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import PrimaryButton from '../../../components/core/button';
@@ -24,20 +24,17 @@ const DashBoard = ({ navigation }) => {
     const [schoolData, setSchoolData] = useState('loading..');
     const [modalIsDelete, setModalIsDelete] = useState(false);
     const [modalLogout, setModalLogout] = useState(false);
-
-    console.log('global', global?.user);
+    const [banners, setBanners] = useState();
+    //console.log('global', global?.user);
     const sid = global?.user?.sid;
     //console.log('sid====',sid);
 
-    const bannerList = [
-        { id: 0, name: 'banner' },
-        { id: 1, name: 'banner2' }
-    ]
+
 
 
     useEffect(() => {
         getData();
-
+        getBanners();
         const backAction = () => {
             if (navigation.isFocused()) {
 
@@ -59,7 +56,24 @@ const DashBoard = ({ navigation }) => {
     }, [])
 
 
+    const getBanners = async () => {
+        let data = [];
+        await firestore()
+            .collection('media')
+            .get()
+            .then(querySnapshot => {
+                if (querySnapshot.size > 0) {
+                    querySnapshot.forEach(documentSnapshot => {
+                        //console.log(documentSnapshot.data());
+                        data.push(documentSnapshot.data())
 
+                    });
+                    setBanners(data)
+                } else {
+                   console.log('no data found');
+                }
+            });
+    }
     const getData = async () => {
         await firestore()
             .collection('schools')
@@ -95,28 +109,23 @@ const DashBoard = ({ navigation }) => {
         }
     };
 
-    const ViewUsers = () => {
-        navigation.navigate('ViewClasses')
-    }
-    const addUsers = () => {
-        navigation.navigate('AddClass');
-    };
-
-    const addPost = () => {
-
-        navigation.navigate('CreatePost', schoolData)
-    }
-
-    const ListOfClasses = () => {
-        navigation.navigate('ListOfClasses')
-    }
-
     const renderBanners = ({ item }) => {
-
-
+        console.log('innnn');
+        console.log(item);
         return (
 
-            <Banner />
+            <Image
+            resizeMode="contain"
+            style={{
+              height: mvs(200),
+              width: 300,
+             borderRadius:10,
+              margin: mvs(10),
+            }}
+            source={{
+              uri: item.banner,
+            }}
+          />
 
 
         )
@@ -128,6 +137,11 @@ const DashBoard = ({ navigation }) => {
 
     const onAnnouncementClick = () => {
         navigation.navigate('Announcement');
+    }
+
+    const onStudentPortalClick = () => {
+        navigation.navigate('StudentPortal');
+
     }
     return (
         <View style={styles.main}>
@@ -154,18 +168,19 @@ const DashBoard = ({ navigation }) => {
                 <FlatList
                     style={styles.banner}
                     horizontal
-                    data={bannerList}
+                    data={banners}
                     renderItem={renderBanners}
                 />
-                <MarqueeText
+                {/* <MarqueeText
                     style={{ fontSize: 24 }}
                     speed={1}
                     marqueeOnStart={true}
                     loop={true}
-                    delay={1000}
+                    delay={2000}
+
                 >
-                    <Bold label='Welcome back students! Have a great school year see u happy!' color='white' size={22} />
-                </MarqueeText>
+                    <Bold label='Welcome back students! Have a great school year see u happy! we are going to arrange a wellcome party for freshers , wait for our plan thanks stay tune' color='white' size={22} />
+                </MarqueeText> */}
             </LinearGradient>
             <View style={styles.body}>
 
@@ -183,6 +198,14 @@ const DashBoard = ({ navigation }) => {
                         </View>
                         <Bold label='Announcement' size={12} />
                     </TouchableOpacity>
+
+                    {/* <TouchableOpacity style={styles.menuActionView} onPress={onStudentPortalClick}>
+                        <View style={styles.roundButton}>
+                            <StudentDegree />
+                        </View>
+                        <Bold label='student Portal' size={12} />
+                    </TouchableOpacity> */}
+
 
                     <TouchableOpacity style={styles.menuActionView} >
                         {/* <TouchableOpacity style={styles.roundButton}>

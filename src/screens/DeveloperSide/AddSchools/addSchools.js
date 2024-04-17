@@ -32,7 +32,7 @@ const AddSchool = props => {
   },[])
    
   const [SchoolName, setName] = useState();
-  const [gmail, setGmail] = useState();
+  const [userGmail, setUserGmail] = useState();
   const [password, setPassword] = useState();
   const [loading, setLoading] = useState(false);
   const [name, setPrincipalName] = useState(null);
@@ -44,7 +44,7 @@ const AddSchool = props => {
   };
 
   const handleGmail = v => {
-    setGmail(v);
+    setUserGmail(v);
   };
 
   const handlePassword = v => {
@@ -53,12 +53,13 @@ const AddSchool = props => {
 
   const handleSignUp = async () => {
     
-    if (SchoolName == null || gmail == null || password == null) {
+    if (SchoolName == null || userGmail == null || password == null) {
       Toast.show('please Fill All fields');
     } else {  
       setLoading(true);
       let dateTime=new Date().getTime();
       let sid = 'sid-' + dateTime;
+      let gmail=userGmail.toLowerCase();
       //let id='user-' + dateTime;
       let role = 'Admin';
       await firestore()
@@ -85,7 +86,7 @@ const AddSchool = props => {
                
                console.log('enter in user');
               setPrincipalName('');
-              setGmail('');
+              setUserGmail('');
               setPassword('');
               setLoading(false);
               setName('');
@@ -164,7 +165,7 @@ const AddSchool = props => {
           placeholder="enter gmail"
           style={{width: '90%', marginLeft: 0}}
           onChangeText={handleGmail}
-          inputValue={gmail}
+          inputValue={userGmail}
         />
         <PrimaryTextInput
           placeholder="enter Password"

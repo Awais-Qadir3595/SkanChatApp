@@ -14,11 +14,12 @@ const styles=StyleSheet.create({
         flex:3,marginHorizontal:mvs(10)
     },
     rw:{
-        width:'100%', marginVertical:mvs(20),justifyContent:'space-around'
+        width:'100%', marginVertical:mvs(10),justifyContent:'space-around'
     },
     boxes:{
-        width:'40%',backgroundColor:colorsTheme.primary,height:mvs(150),borderRadius:20,
-        justifyContent:'center',alignItems:'center'
+        backgroundColor:colorsTheme.primary, borderRadius:20,
+        justifyContent:'center',alignItems:'center',
+        padding:10
     },
     SchoolStyle:{
         marginTop:mvs(30), 

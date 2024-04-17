@@ -1,4 +1,4 @@
-package com.chatapplication.newarchitecture;
+package com.skanchatapp.newarchitecture;
 
 import android.app.Application;
 import androidx.annotation.NonNull;
@@ -19,9 +19,9 @@ import com.facebook.react.fabric.CoreComponentsRegistry;
 import com.facebook.react.fabric.EmptyReactNativeConfig;
 import com.facebook.react.fabric.FabricJSIModuleProvider;
 import com.facebook.react.uimanager.ViewManagerRegistry;
-import com.chatapplication.BuildConfig;
-import com.chatapplication.newarchitecture.components.MainComponentsRegistry;
-import com.chatapplication.newarchitecture.modules.MainApplicationTurboModuleManagerDelegate;
+import com.skanchatapp.BuildConfig;
+import com.skanchatapp.newarchitecture.components.MainComponentsRegistry;
+import com.skanchatapp.newarchitecture.modules.MainApplicationTurboModuleManagerDelegate;
 import java.util.ArrayList;
 import java.util.List;
 

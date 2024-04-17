@@ -139,7 +139,7 @@ const Inbox = ({ navigation }) => {
   };
 
   const openImage = (url) => {
-    console.log('url = ', url);
+  
     setFullImageUrl(url);
     setFullImageModal(true);
   }

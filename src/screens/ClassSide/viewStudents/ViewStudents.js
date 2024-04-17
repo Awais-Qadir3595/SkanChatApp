@@ -96,7 +96,7 @@ const ViewStudents = props => {
         <PrimaryButton 
          height={mvs(40)}
          width={'20%'}
-         label='Detail'
+         label='Details'
          color={'white'}
          onclick={()=>toggleModal(item, index)}
         />

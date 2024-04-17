@@ -11,6 +11,8 @@ import { BackHandler,View } from 'react-native';
 import Inbox from '../screens/userSide/inbox/inbox';
 import MyTabs from './tab';
 import DashBoard from '../screens/userSide/userDashboard/dashboard';
+import { StudentDegree } from '../assets/svgs';
+import StudentPortal from '../screens/userSide/studentPortal/studentPortal';
  
 const Stack = createNativeStackNavigator();
 
@@ -63,6 +65,12 @@ const UserStack = ({navigation}) => {
       <Stack.Screen
           name={'Announcement'}
           component={Messages}
+          options={{headerShown: false}}
+        /> 
+
+<Stack.Screen
+          name={'StudentPortal'}
+          component={StudentPortal}
           options={{headerShown: false}}
         /> 
 

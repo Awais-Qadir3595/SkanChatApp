@@ -44,6 +44,7 @@ import { WebView } from 'react-native-webview';
 
 
 const ChatScreen = props => {
+
   let threadId = props?.route?.params?.threadId;
   var sender = global.user.id;
   var reciverId = props?.route?.params?.item?.id;
@@ -66,7 +67,7 @@ const ChatScreen = props => {
   const [fullPdfUrl, setFullPdfUrl] = useState();
   const [thumbnails, setThumbnails] = useState();
   const flatListRef = useRef(null);
-  let fileUri = 'file:///data/user/0/com.chatapplication/cache/a3cacf3f-daf7-40b6-a8ee-0a2a42a0b12d/M.Ashiq-2.pdf'
+  let fileUri = 'file:///data/user/0/com.skanchatapp/cache/a3cacf3f-daf7-40b6-a8ee-0a2a42a0b12d/M.Ashiq-2.pdf'
   useEffect(() => {
     getChat();
   }, []);
@@ -259,7 +260,7 @@ const ChatScreen = props => {
               ) : item.imgUri ? (
                 <TouchableOpacity onPress={() => openFullImage(item)}>
                   <Image
-                    resizeMode="stretch"
+                    resizeMode="contain"
                     style={{
                       width: '80%',
                       height: mvs(200),
@@ -343,7 +344,6 @@ const ChatScreen = props => {
         copyTo: 'cachesDirectory',
       });
 
-      console.log(res);
       setModalVisible(false);
 
       setPdfUrl(res);
@@ -426,17 +426,7 @@ const ChatScreen = props => {
                 style={{ marginHorizontal: 10 }}
               />
             </Row>
-            {/* <Image source={{ uri: thumbnails }} style={{height:200,width:200}} /> */}
-            {/* <WebView
-              source={{
-               // uri:`https://drive.google.com/viewerng/viewer?embedded=true&url=${pdfUrl[0].fileCopyUri}`
-              uri: `https://docs.google.com/gview?embedded=true&url=${encodeURIComponent(fileUri)}`,
-              // uri: `https://docs.google.com/gview?embedded=true&url=${encodeURIComponent(pdfUrl[0].fileCopyUri)}`,
-              }}
-              onError={(error) => console.error('WebView error : ', error)
-            }
-              style={{height: 200, width: '100%'}}
-            /> */}
+
           </View>
         ) : null}
         <Row style={{ alignItems: 'center' }}>
@@ -449,6 +439,7 @@ const ChatScreen = props => {
             onChangeText={v => setMsgToSend(v)}
             inputValue={msgToSend}
           />
+
           <PrimaryButton
             height={mvs(45)}
             width={'17%'}
@@ -458,38 +449,15 @@ const ChatScreen = props => {
             onclick={() => addChat()}
             loading={loading}
           />
-          {/* <TouchableOpacity
-            style={{
-               
-              width: '17%',
-              backgroundColor: 'white',
-              height: mvs(45),
-              alignItems: 'center',
-              justifyContent: 'center',
-              borderRadius: 10,
-              borderWidth: 1,
-              borderColor: 'darkblue',
-              backgroundColor: 'powderblue',
-            }}
-            onPress={() => addChat()}>
-            {loading ? (
-              <ActivityIndicator size="large" color={colorsTheme.primary} />
-            ) : (
-              <Icon name="send-outline" size={30} color="darkblue" />
-            )}
-          </TouchableOpacity> */}
 
-          {/* <PrimaryButton
-            label="send"
-            bgColor={'teal'}
-            height={40}
-            width={60}
-            color={'white'}
-            onclick={() => addChat()}
-            loading={loading}
-          /> */}
+
+
+
         </Row>
       </View>
+
+      {/* modal for image and document */}
+
 
       <Modal
         isVisible={modalVisible}
@@ -514,6 +482,9 @@ const ChatScreen = props => {
               borderRadius: 20,
             }}>
 
+
+            {/* document picker */}
+
             <TouchableOpacity
               style={{
                 borderWidth: 1,
@@ -529,6 +500,9 @@ const ChatScreen = props => {
               <Bold label="Document" />
 
             </TouchableOpacity>
+
+            {/* image from gallery */}
+
             <TouchableOpacity
               style={{
                 borderWidth: 1,
@@ -551,7 +525,7 @@ const ChatScreen = props => {
         onBackdropPress={() => setFullImageModal(false)}>
         <View style={{ justifyContent: 'center' }}>
           <Image
-            resizeMode="stretch"
+            resizeMode="contain"
             style={{
               backgroundColor: 'white',
               width: '100%',

@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
     borderRadius:6,backgroundColor:'white',elevation:3
   },
   desc: {
-    marginLeft: mvs(20),marginTop:mvs(10)
+    marginLeft: mvs(20),marginTop:mvs(10), 
     
   },
 });

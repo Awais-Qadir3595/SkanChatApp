@@ -1,4 +1,4 @@
-package com.chatapplication;
+package com.skanchatapp;
 
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;

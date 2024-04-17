@@ -99,7 +99,9 @@ arr.map((item)=>{
   
   }
 
-  
+  const AddMedia=()=>{
+    navigation.navigate('AddMedia')
+  }
   return (
     <View style={styles.main}>
       <View style={styles.upper}>
@@ -119,11 +121,16 @@ arr.map((item)=>{
           <TouchableOpacity style={styles.boxes} onPress={ViewSchools}>
             <Bold label="View School" color={'white'} />
           </TouchableOpacity>
+          
         
         </Row>
-        {/* <TouchableOpacity style={styles.boxes} onPress={deleteAll}>
-            <Bold label="Delete All" color={'white'} />
-          </TouchableOpacity> */}
+        <Row style={styles.rw}>
+          <TouchableOpacity style={styles.boxes} onPress={AddMedia}>
+            <Bold label="Add Media" color={'white'} />
+          </TouchableOpacity>
+          
+        </Row>
+        
       </View>
       <TouchableOpacity style={{position:'absolute',top:20,right:10}} onPress={logout}>
         <Bold label='LogOut' color={'white'}/>
