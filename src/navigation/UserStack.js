@@ -11,6 +11,8 @@ import { BackHandler,View } from 'react-native';
 import Inbox from '../screens/userSide/inbox/inbox';
 import MyTabs from './tab';
 import DashBoard from '../screens/userSide/userDashboard/dashboard';
+import SkansSchoolList from '../screens/userSide/skansSchools/skansSchools';
+import SchoolDescription from '../screens/userSide/schoolDescription/schoolDescription';
  
 const Stack = createNativeStackNavigator();
 
@@ -49,7 +51,7 @@ const UserStack = ({navigation}) => {
       <Stack.Navigator>
      
      <Stack.Screen
-          name={'Dashboard'}
+          name={'UserStack'}
           component={DashBoard}
           options={{headerShown: false}}
         /> 
@@ -63,6 +65,16 @@ const UserStack = ({navigation}) => {
       <Stack.Screen
           name={'Announcement'}
           component={Messages}
+          options={{headerShown: false}}
+        /> 
+        <Stack.Screen
+          name={'SkansSchoolList'}
+          component={SkansSchoolList}
+          options={{headerShown: false}}
+        /> 
+         <Stack.Screen
+          name={'SchoolDescription'}
+          component={SchoolDescription}
           options={{headerShown: false}}
         /> 
 

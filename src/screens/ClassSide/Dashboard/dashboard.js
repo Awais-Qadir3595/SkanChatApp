@@ -22,18 +22,45 @@ import Boxes from '../../../components/appComponents/boxes';
 import Icon from 'react-native-vector-icons/SimpleLineIcons';
 import Modal from 'react-native-modal';
 import Label from '../../../components/core/Label';
+import Iconimp from 'react-native-vector-icons/MaterialIcons'; 
+
 
 const ClassDashboard = ({navigation}) => {
   const [schoolData, setSchoolData] = useState('loading..');
   const [classData, setClassData] = useState('loading..');
   const [options, setOption] = useState(false);
+  const [version,setVersion]=useState();
+
   const sid = global?.user?.sid;
   console.log('...../////......', options);
 
   useEffect(() => {
+    getVersion();
     getDataSchool();
   }, []);
 
+  const getVersion = async () => {
+    let data = [];
+    await firestore()
+      .collection('app_info')
+      .get()
+      .then(querySnapshot => {
+        if (querySnapshot.size > 0) {
+          querySnapshot.forEach(documentSnapshot => {
+            //console.log(documentSnapshot.data());
+            data.push(documentSnapshot.data())
+
+          });
+          setVersion(data[0].version)
+          console.log(data[0].version);
+
+
+        } else {
+          setIsBanners(false);
+          console.log('no data found', data);
+        }
+      });
+  }
   useEffect(() => {
     const backAction = () => {
       if (navigation.isFocused()) {
@@ -127,6 +154,14 @@ const ClassDashboard = ({navigation}) => {
             style={{marginTop: mvs(10)}}
           />
         </View>
+        {
+                    version!=8?
+                    <View style={styles.version}>
+                         <Iconimp name="label-important" size={25} color={colorsTheme.primary} />
+                    <Label label='Please Update , new version is available'   style={styles.version}/>
+                    </View>
+                    :null
+                }
       </LinearGradient>
       <View style={styles.body}>
         <Row style={styles.rw}>

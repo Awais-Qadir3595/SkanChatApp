@@ -15,6 +15,10 @@ const styles = StyleSheet.create({
     elevation:10,
     shadowColor:'black'
   },
+  version:{
+    marginHorizontal:10,backgroundColor:'yellow',padding:3,borderRadius:10,flexDirection:'row',
+    alignItems:'center'
+},
   body: {
     flex: 3,
     marginHorizontal: mvs(10),

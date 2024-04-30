@@ -46,6 +46,10 @@ const styles = StyleSheet.create({
     },
     logoutModal:{
         alignItems:'center',
+    },
+    version:{
+        marginHorizontal:10,backgroundColor:'yellow',padding:3,borderRadius:10,flexDirection:'row',
+        alignItems:'center'
     }
 })
 export { styles };

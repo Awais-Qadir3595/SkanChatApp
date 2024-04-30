@@ -6,7 +6,7 @@ const styles=StyleSheet.create({
         flex:1,
     },
     upper :{
-             backgroundColor:colorsTheme.primary, borderBottomRightRadius:30,borderBottomLeftRadius:30,padding:mvs(10)
+             backgroundColor:colorsTheme.primary, borderBottomRightRadius:30,borderBottomLeftRadius:30,padding:mvs(20)
 
     },
     lower:{

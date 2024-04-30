@@ -1,5 +1,5 @@
 import React, {useEffect, useRef} from 'react';
-import {View, Animated, Image} from 'react-native';
+import {View, Animated, Image, NavigatorIOS} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {colors, colorsTheme} from '../../services/color';
 import {mvs} from '../../services/metrices';
@@ -23,10 +23,17 @@ const Splash = ({navigation}) => {
   }, []);
 
   const checkLoggedIn = async () => {
+   
+   
     try {
       const jsonValue = await AsyncStorage.getItem('userLogin');
       const myObject = JSON.parse(jsonValue);
-      
+      // const myObject={"cid": "class-1712828189242", "gmail": "adminstudent", 
+      // "id": "id-1712828260459", "name": "Admin student", "password": "adminstudent@123",
+      //  "role": "User", "sid": "sid-1712828105866",
+      //  }
+      // console.log('user Login');
+      console.log(myObject);
       if (myObject !== null) {
         global.user = myObject;
         switch (myObject.role) {

@@ -66,7 +66,7 @@ const ChatScreen = props => {
   const [fullPdfUrl, setFullPdfUrl] = useState();
   const [thumbnails, setThumbnails] = useState();
   const flatListRef = useRef(null);
-  let fileUri = 'file:///data/user/0/com.chatapplication/cache/a3cacf3f-daf7-40b6-a8ee-0a2a42a0b12d/M.Ashiq-2.pdf'
+  let fileUri = 'file:///data/user/0/com.chatapplication1/cache/a3cacf3f-daf7-40b6-a8ee-0a2a42a0b12d/M.Ashiq-2.pdf'
   useEffect(() => {
     getChat();
   }, []);
@@ -256,7 +256,8 @@ const ChatScreen = props => {
                     color="white"
                   />
                 </TouchableOpacity>
-              ) : item.imgUri ? (
+              ) : null}
+              {item.imgUri ? (
                 <TouchableOpacity onPress={() => openFullImage(item)}>
                   <Image
                     resizeMode="stretch"

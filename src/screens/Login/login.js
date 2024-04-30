@@ -1,30 +1,30 @@
-import React, {useEffect, useState} from 'react';
-import {View, Text, TouchableOpacity, Alert, Image, ScrollView} from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, TouchableOpacity, Alert, Image, ScrollView } from 'react-native';
 import styles from './style';
 import PrimaryTextInput from '../../components/core/PrimaryTextInput';
 import Bold from '../../components/core/bold';
 import Label from '../../components/core/Label';
-import {mvs} from '../../services/metrices';
+import { mvs } from '../../services/metrices';
 import PrimaryButton from '../../components/core/button';
-import {Axios_Fetch, Axios_Post_data} from '../../hooks/axiosCode';
+import { Axios_Fetch, Axios_Post_data } from '../../hooks/axiosCode';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import firestore from '@react-native-firebase/firestore';
-import {getToken} from '../../components/appComponents/NotificationApp';
+import { getToken } from '../../components/appComponents/NotificationApp';
 import { colors, colorsTheme } from '../../services/color';
 import Toast from 'react-native-simple-toast';
 import LinearGradient from 'react-native-linear-gradient';
 
-const Login = ({navigation}) => {
-  const [gmail, setGmail] = useState('');
+const Login = ({ navigation }) => {
+  const [id, setId] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
- const [eyeClick,setEyeClick]=useState(true);
- const [eye,setEye]=useState('EyeOn');
+  const [eyeClick, setEyeClick] = useState(true);
+  const [eye, setEye] = useState('EyeOn');
   useEffect(() => {
-    
+
     getData();
 
-  },[]);
+  }, []);
 
   const getData = async () => {
     try {
@@ -34,9 +34,9 @@ const Login = ({navigation}) => {
         const myObject = JSON.parse(jsonValue);
         //global.user = myObject;
         console.log('Retrieved object:', myObject);
-        setGmail(myObject?.gmail)
+        setId(myObject?.system_id)
         setPassword(myObject?.password)
-       // navigation.navigate('Messages');
+        // navigation.navigate('Messages');
       } else {
         // console.log('No object with that key');
       }
@@ -46,56 +46,57 @@ const Login = ({navigation}) => {
   };
 
   const Login = async () => {
-
-    console.log('pass = ',password, '- gmail = ',gmail);
-    if (password == '' || gmail == '') {
+console.log(password);
+console.log(id);
+    console.log('pass = ', password, '- gmail = ', id);
+    if (password == '' || id == '') {
       Toast.show('please fill all fields');
     } else {
-      
+
 
       setLoading(true);
 
-    await  firestore()
+      await firestore()
         .collection('user')
-        .where('gmail', '==', gmail)
-        .where('password', '==', password)
+        .where('system_id', '==', id.trim().toLowerCase())
+        .where('password', '==', password.trim().toLowerCase())
         .get()
         .then(querySnapshot => {
-        console.log(querySnapshot.size,'sizee======');
+          console.log(querySnapshot.size, 'sizee======');
           if (querySnapshot.size == 1) {
-           //console.log('docId', querySnapshot.docs[0].id);
+            //console.log('docId', querySnapshot.docs[0].id);
             querySnapshot.forEach(documentSnapshot => {
 
 
-              console.log('role  = ',documentSnapshot.data().role);
+              console.log('role  = ', documentSnapshot.data().role);
               AsyncStorage.setItem(
                 'userLogin',
                 JSON.stringify(documentSnapshot.data()),
-              ); 
+              );
               AsyncStorage.setItem(
                 'RememberItem',
                 JSON.stringify(documentSnapshot.data()),
-              ); 
+              );
               global.user = documentSnapshot?.data();
               updateForToken(querySnapshot.docs[0].id);
 
               if (documentSnapshot.data().role == 'Admin') {
-                console.log('admin');
+               
                 navigation.navigate('AdminStack');
                 setLoading(false);
               } else if (documentSnapshot.data().role == 'Developer') {
-                
+
 
                 setLoading(false);
                 navigation.navigate('DeveloperStack');
               } else if (documentSnapshot.data().role == 'Class') {
-              
+
 
                 setLoading(false);
                 navigation.navigate('ClassStack');
-              } else  {
-              console.log('no one match');
-               // updateForToken(querySnapshot.docs[0].id);
+              } else {
+                console.log('no one match');
+                // updateForToken(querySnapshot.docs[0].id);
                 navigation.navigate('UserStack');
                 setLoading(false);
               }
@@ -121,26 +122,25 @@ const Login = ({navigation}) => {
         token: token,
       })
       .then(() => {
-       // console.log('User updated!');
+        // console.log('User updated!');
         setLoading(false);
       });
   };
-  const handleGmail = v => {
-    setGmail(v);
+  const handleId = v => {
+    setId(v);
   };
   const handlePassword = v => {
     setPassword(v);
   };
 
-  const handleEyeClick=()=>{
+  const handleEyeClick = () => {
 
     //console.log('nnnn');
-    
-    if(eyeClick)
-    {
+
+    if (eyeClick) {
       setEye('EyeOff')
     }
-    else{
+    else {
       setEye('EyeOn')
     }
     setEyeClick(!eyeClick);
@@ -150,14 +150,14 @@ const Login = ({navigation}) => {
       <LinearGradient
         style={styles.upper}
         colors={['darkblue', 'darkblue', 'rgba(0,212,255,1)']}
-        start={{x: 0, y: 0}}
-        end={{x: 0.5, y: 1.4}}> 
-        <Label
+        start={{ x: 0, y: 0 }}
+        end={{ x: 0.5, y: 1.4 }}>
+        {/* <Label
           label={'Wellcome !!'}
           style={{marginVertical: mvs(10)}}
           size={20}
           color="white"
-        />
+        /> */}
         <Image
           style={{
             height: mvs(120),
@@ -172,28 +172,28 @@ const Login = ({navigation}) => {
         <Bold
           label={'Login'}
           size={35}
-          style={{alignSelf: 'center'}}
+          style={{ alignSelf: 'center' }}
           color={'white'}
         />
       </LinearGradient>
 
       <View style={styles.lower}>
         <PrimaryTextInput
-          placeholder="Enter UserName"
-          style={{width: '90%'}}
-          onChangeText={handleGmail}
-          inputValue={gmail}
-          
+          placeholder="Enter id"
+          style={{ width: '90%' }}
+          onChangeText={handleId}
+          inputValue={id}
+
         />
         <PrimaryTextInput
           placeholder="Enter Password"
-          style={{width: '90%'}}
+          style={{ width: '90%' }}
           onChangeText={handlePassword}
           secureTextEntry={eyeClick}
           inputValue={password}
           rightIcon={eye}
           onEyeClick={handleEyeClick}
-          
+
         />
         <PrimaryButton
           label="Login"
@@ -202,11 +202,14 @@ const Login = ({navigation}) => {
           color={'white'}
           loading={loading}
           onclick={() => Login()}
-          style={{width: '90%',marginTop:mvs(50)}}
-          
-        />
+          style={{ width: '90%', marginTop: mvs(50) }}
 
-        
+        />
+        <TouchableOpacity onPress={() => navigation.navigate('UserStack')}>
+          <Text>Continue without login? <Bold label='Continue' color={colorsTheme.primary} /></Text>
+        </TouchableOpacity>
+
+
       </View>
     </ScrollView>
   );

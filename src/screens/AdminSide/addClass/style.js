@@ -6,9 +6,9 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   upper: {
-    flex: 5,
+     
     backgroundColor:colorsTheme.primary,
-    padding: mvs(10),
+    paddingVertical: mvs(40),
     borderBottomRightRadius: 30,
     borderBottomLeftRadius: 30,
     justifyContent: 'space-around',

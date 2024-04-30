@@ -32,8 +32,8 @@ const AddSchool = props => {
   },[])
    
   const [SchoolName, setName] = useState();
-  const [gmail, setGmail] = useState();
-  const [password, setPassword] = useState();
+  const [email, setEmail] = useState();
+  const [passwd, setPassword] = useState();
   const [loading, setLoading] = useState(false);
   const [name, setPrincipalName] = useState(null);
 
@@ -43,8 +43,8 @@ const AddSchool = props => {
     setName(v);
   };
 
-  const handleGmail = v => {
-    setGmail(v);
+  const handleEmail = v => {
+    setEmail(v);
   };
 
   const handlePassword = v => {
@@ -53,9 +53,12 @@ const AddSchool = props => {
 
   const handleSignUp = async () => {
     
-    if (SchoolName == null || gmail == null || password == null) {
+    if (SchoolName == null || email == null || passwd == null) {
       Toast.show('please Fill All fields');
     } else {  
+       let gmail=email.toLowerCase();
+       let password=passwd.toLowerCase();
+        
       setLoading(true);
       let dateTime=new Date().getTime();
       let sid = 'sid-' + dateTime;
@@ -85,7 +88,7 @@ const AddSchool = props => {
                
                console.log('enter in user');
               setPrincipalName('');
-              setGmail('');
+              setEmail('');
               setPassword('');
               setLoading(false);
               setName('');
@@ -163,14 +166,14 @@ const AddSchool = props => {
         <PrimaryTextInput
           placeholder="enter gmail"
           style={{width: '90%', marginLeft: 0}}
-          onChangeText={handleGmail}
-          inputValue={gmail}
+          onChangeText={handleEmail}
+          inputValue={email}
         />
         <PrimaryTextInput
           placeholder="enter Password"
           style={{width: '90%', marginLeft: 0}}
           onChangeText={handlePassword}
-          inputValue={password}
+          inputValue={passwd}
         />
 
         <PrimaryButton

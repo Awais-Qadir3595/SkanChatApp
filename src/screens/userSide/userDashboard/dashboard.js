@@ -11,33 +11,36 @@ import { Alert } from 'react-native';
 import { CommonActions } from '@react-navigation/native';
 import MarqueeText from 'react-native-marquee';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { Banner, Logout, Messenger, School, Speaker, ThreeDotsWhite } from '../../../assets/svgs';
+import { Banner, Logout, Messenger, School, Speaker, StudentDegree, ThreeDotsWhite } from '../../../assets/svgs';
 import notifee from '@notifee/react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import PrimaryButton from '../../../components/core/button';
 import Boxes from '../../../components/appComponents/boxes';
 import Modal from 'react-native-modal';
 import Label from '../../../components/core/Label';
+import Iconimp from 'react-native-vector-icons/MaterialIcons'; 
 
 const DashBoard = ({ navigation }) => {
 
     const [schoolData, setSchoolData] = useState('loading..');
     const [modalIsDelete, setModalIsDelete] = useState(false);
     const [modalLogout, setModalLogout] = useState(false);
-
-    console.log('global', global?.user);
+    const [banners, setBanners] = useState();
+    const [isBanners, setIsBanners] = useState(true);
+    const [version,setVersion]=useState();
+    const [isGuest,setIsGuest]=useState(false);
+    //console.log('global', global?.user);
     const sid = global?.user?.sid;
     //console.log('sid====',sid);
 
-    const bannerList = [
-        { id: 0, name: 'banner' },
-        { id: 1, name: 'banner2' }
-    ]
+
 
 
     useEffect(() => {
+        checkGuestOrNot();
+        getVersion();
         getData();
-
+        getBanners();
         const backAction = () => {
             if (navigation.isFocused()) {
 
@@ -58,8 +61,64 @@ const DashBoard = ({ navigation }) => {
 
     }, [])
 
+    const checkGuestOrNot=async()=>{
+        const jsonValue = await AsyncStorage.getItem('userLogin');
+      const myObject = JSON.parse(jsonValue);
+      console.log(myObject);
 
+      if(myObject==null)
+      {
+        setIsGuest(true)
+      }
+      else{
+        setIsGuest(false)
+      }
 
+    }
+const getVersion=async()=>{
+    let data = [];
+        await firestore()
+            .collection('app_info')
+            .get()
+            .then(querySnapshot => {
+                if (querySnapshot.size > 0) {
+                    querySnapshot.forEach(documentSnapshot => {
+                        //console.log(documentSnapshot.data());
+                        data.push(documentSnapshot.data())
+
+                    });
+                    setVersion(data[0].version)
+                     
+                    
+
+                } else {
+                    setIsBanners(false);
+                    console.log('no data found', data);
+                }
+            });
+}
+
+    const getBanners = async () => {
+        let data = [];
+        await firestore()
+            .collection('media')
+            .get()
+            .then(querySnapshot => {
+                if (querySnapshot.size > 0) {
+                    querySnapshot.forEach(documentSnapshot => {
+                        //console.log(documentSnapshot.data());
+                        data.push(documentSnapshot.data())
+
+                    });
+                    setBanners(data)
+                    
+
+                } else {
+                    setIsBanners(false);
+                    console.log('no data found', data);
+                }
+            });
+    }
     const getData = async () => {
         await firestore()
             .collection('schools')
@@ -95,31 +154,25 @@ const DashBoard = ({ navigation }) => {
         }
     };
 
-    const ViewUsers = () => {
-        navigation.navigate('ViewClasses')
-    }
-    const addUsers = () => {
-        navigation.navigate('AddClass');
-    };
-
-    const addPost = () => {
-
-        navigation.navigate('CreatePost', schoolData)
-    }
-
-    const ListOfClasses = () => {
-        navigation.navigate('ListOfClasses')
-    }
-
     const renderBanners = ({ item }) => {
 
 
         return (
-
-            <Banner />
-
-
+            <Image
+                resizeMode="contain"
+                style={{
+                    height: mvs(200),
+                    width: 300,
+                    borderRadius: 10,
+                    margin: mvs(10),
+                }}
+                source={{
+                    uri: item.banner,
+                }}
+            />
         )
+
+
     }
 
     const onMessengerClick = () => {
@@ -128,6 +181,15 @@ const DashBoard = ({ navigation }) => {
 
     const onAnnouncementClick = () => {
         navigation.navigate('Announcement');
+    }
+
+    const onStudentPortalClick = () => {
+        navigation.navigate('StudentPortal');
+
+    }
+
+    const onSkansSchoolList=()=>{
+        navigation.navigate('SkansSchoolList');
     }
     return (
         <View style={styles.main}>
@@ -142,8 +204,11 @@ const DashBoard = ({ navigation }) => {
 
 
                 <Row style={styles.SchoolStyle}>
-
+{isGuest?
+                    <Bold label={'Guest User'} color={'white'} size={20} />:
                     <Bold label={schoolData?.SchoolName} color={'white'} size={20} />
+
+}
                     <TouchableOpacity onPress={() => setModalLogout(true)}>
                         <Icon name="logout" size={25} color="white" />
                     </TouchableOpacity>
@@ -151,25 +216,44 @@ const DashBoard = ({ navigation }) => {
                     {/* <Icon name="bus-school" size={30} color="#900" /> */}
                 </Row>
 
-                <FlatList
-                    style={styles.banner}
-                    horizontal
-                    data={bannerList}
-                    renderItem={renderBanners}
-                />
-                <MarqueeText
+                {
+                    isBanners ?
+                        <FlatList
+                            style={styles.banner}
+                            horizontal
+                            data={banners}
+                            renderItem={renderBanners}
+                        /> :
+                        <Banner />
+                }
+                {
+                    version!=8?
+                    <View style={styles.version}>
+                         <Iconimp name="label-important" size={25} color={colorsTheme.primary} />
+                    <Label label='Please Update , new version is available'   style={styles.version}/>
+                    </View>
+                    :null
+                }
+                {/* <MarqueeText
                     style={{ fontSize: 24 }}
                     speed={1}
                     marqueeOnStart={true}
                     loop={true}
-                    delay={1000}
+                    delay={2000}
+
                 >
-                    <Bold label='Welcome back students! Have a great school year see u happy!' color='white' size={22} />
-                </MarqueeText>
+                    <Bold label='Welcome back students! Have a great school year see u happy! we are going to arrange a wellcome party for freshers , wait for our plan thanks stay tune' color='white' size={22} />
+                </MarqueeText> */}
             </LinearGradient>
             <View style={styles.body}>
 
                 <Row style={styles.rowIcon}>
+
+                    {
+                    isGuest==false?
+
+
+                    <>
                     <TouchableOpacity style={styles.menuActionView} onPress={onMessengerClick}>
                         <View style={styles.roundButton}>
                             <Messenger />
@@ -183,6 +267,24 @@ const DashBoard = ({ navigation }) => {
                         </View>
                         <Bold label='Announcement' size={12} />
                     </TouchableOpacity>
+                    </>
+                    :null
+                }
+
+                    <TouchableOpacity style={styles.menuActionView} onPress={onSkansSchoolList}>
+                        <View style={styles.roundButton}>
+                            <Speaker />
+                        </View>
+                        <Bold label='SKANS SCHOOLS' size={12} />
+                    </TouchableOpacity>
+
+                    {/* <TouchableOpacity style={styles.menuActionView} onPress={onStudentPortalClick}>
+                        <View style={styles.roundButton}>
+                            <StudentDegree />
+                        </View>
+                        <Bold label='student Portal' size={12} />
+                    </TouchableOpacity> */}
+
 
                     <TouchableOpacity style={styles.menuActionView} >
                         {/* <TouchableOpacity style={styles.roundButton}>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Image, TextInput, Switch, FlatList, LayoutAnimation } from 'react-native';
+import { View, Text, Image, TextInput, Switch, FlatList, TouchableOpacity } from 'react-native';
 import { styles } from './style';
 import Bold from '../../../components/core/bold';
 import { mvs } from '../../../services/metrices';
@@ -13,6 +13,12 @@ import CheckBox from 'react-native-check-box';
 import LinearGradient from 'react-native-linear-gradient';
 import { ImageSvg, PdfSvg, PostSvg } from '../../../assets/svgs';
 import Row from '../../../components/core/Row';
+import ImagePicker from 'react-native-image-crop-picker';
+import storage from '@react-native-firebase/storage';
+import DocumentPicker from 'react-native-document-picker';
+import { WebView } from 'react-native-webview';
+
+
 const CreatePost = props => {
   useEffect(() => {
     getClasses();
@@ -22,9 +28,10 @@ const CreatePost = props => {
   const [loading, setLoading] = useState(false);
   const [listOfToken, setListOfToken] = useState();
   const [isChecked, setIsChecked] = useState(false);
-
+  const [imageData, setImageData] = useState(null);
   const [classes, setClasses] = useState([]);
-
+  const [pdfUrl, setPdfUrl] = useState(null);
+  
   const getClasses = () => {
     //console.log(global.user);
     //get all the classes on basis of sid
@@ -54,12 +61,40 @@ const CreatePost = props => {
     setClasses(arr);
   };
 
-  const handlePost = async () => {
-    const notificationClassId = [];
+  const uploadImage = async (uri, name) => {
+    const reference = storage().ref(name);
+    const pathToFile = uri;
 
-    if (message == '') {
+    await reference.putFile(pathToFile);
+    const url = await storage().ref(name).getDownloadURL();
+    return url;
+  };
+
+  const handlePost = async () => {
+
+    setLoading(true);
+    if (message == '' && imageData == null && pdfUrl == null) {
       Toast.show('please enter a message..');
       return;
+    }
+
+
+    let imgUri = null;
+    let pdfUri = null;
+    let pdfName = null;
+
+    if (imageData != null) {
+      let path = imageData.path.split('/').pop().split('.')[0];
+
+      imgUri = await uploadImage(imageData.path, path);
+    }
+    const notificationClassId = [];
+
+    if (pdfUrl != null) {
+      pdfUri = await uploadPdf();
+      pdfName = pdfUrl[0].name;
+      // console.log('after return ==============',pdfUrl);
+      // console.log(pdfUri);
     }
     let check = false;
 
@@ -77,7 +112,7 @@ const CreatePost = props => {
         let cid = item.id;
         var date = new Date();
         let isAdmin = true;
-        console.log(isAdmin, '---====---');
+
         await firestore()
           .collection('post')
           .doc(id)
@@ -88,6 +123,10 @@ const CreatePost = props => {
             cid,
             dateTime: date,
             isAdmin,
+            imgUri,
+            pdfUri,
+            pdfName
+
           })
           .then(() => {
             setLoading(false);
@@ -99,6 +138,7 @@ const CreatePost = props => {
             setLoading(false);
             setMessage('');
             Toast.show('post created');
+
           });
       }
     });
@@ -106,7 +146,43 @@ const CreatePost = props => {
       console.log('check = ', check);
       Toast.show('please select any class ');
     }
+    setLoading(false)
   };
+
+  const imageFromGallery = () => {
+    ImagePicker.openPicker({
+      cropping: false,
+    }).then(image => {
+      setImageData(image);
+
+    });
+  };
+
+  const uploadPdf = async () => {
+    try {
+      // console.log('pdfUrl = ', pdfUrl[0]);
+      const name = pdfUrl[0].name;
+      const uri = pdfUrl[0].fileCopyUri;
+      // console.log('name = ', name);
+      // console.log('uri = ', uri);
+
+      const reference = storage().ref(name);
+      await reference.putFile(uri);
+
+      const downloadURL = await reference.getDownloadURL();
+
+      if (downloadURL != null) {
+        setLoading(false);
+        return downloadURL;
+      }
+
+      // Here, you can save the 'downloadURL' to your Firebase database or perform other operations.
+    } catch (err) {
+      // Error handling
+      return -1;
+    }
+  };
+
 
   const notifyEveryUser = async data => {
     try {
@@ -174,6 +250,27 @@ const CreatePost = props => {
       />
     );
   };
+
+  const documentPicker = async () => {
+    var a = null;
+    try {
+      const res = await DocumentPicker.pick({
+        type: [DocumentPicker.types.pdf],
+        copyTo: 'cachesDirectory',
+      });
+
+      console.log(res);
+
+
+      setPdfUrl(res);
+
+    } catch (err) {
+      if (DocumentPicker.isCancel(err)) {
+      } else {
+        // console.error('Error picking PDF:', err);
+      }
+    }
+  };
   return (
     <View style={styles.main}>
       <LinearGradient
@@ -197,24 +294,60 @@ const CreatePost = props => {
           style={styles.textInput}
           multiline={true}
           numberOfLines={4} // Adjust the number of lines as needed
-          placeholder="Enter your text here..."
+          placeholder="Enter your text here."
           onChangeText={v => setMessage(v)}
           value={message}
         // Other props like onChangeText, value, etc. can be added here
         />
         <Row style={styles.imgpdfRow}>
-          <Row style={styles.innerData}>
-            <ImageSvg />
-            <Bold label={'image'} />
-          </Row>
-          <Row style={styles.innerData}>
-            <PdfSvg />
-            <Bold label='Documents' />
-          </Row>
+          <TouchableOpacity style={styles.innerData}  onPress={() => imageFromGallery()}>
+          
+              <ImageSvg />
+              <Bold label={'Image'} style={styles.itemMargin} size={12} />
+            
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.innerData} onPress={documentPicker}>
+            
+              <PdfSvg />
+              <Bold label=' Documents' style={styles.itemMargin} size={12} />
+           
+          </TouchableOpacity>
+
+
         </Row>
+
+        {
+          imageData !== null ?
+            <Image
+              resizeMode="stretch"
+              style={{
+                width: '30%',
+                height: mvs(100),
+                borderRadius: 20,
+                borderWidth: 3,
+                borderColor: 'darkblue',
+              }}
+              source={{
+                uri: imageData?.path,
+              }}
+            /> : null
+        }
+        {
+          pdfUrl !== null ?
+            <View style={{ flex: 1 }}>
+              <WebView
+                source={{
+                  uri: `https://docs.google.com/gview?embedded=true&url=${encodeURIComponent(pdfUrl)}`,
+                }}
+                style={{ width: '100%' }}
+              />
+            </View> : null
+        }
+
         <Bold
-          style={{ marginTop: mvs(10) }}
-          label="Please Select Classes whome you want to show your post"
+          style={{ margin: mvs(10) ,}}
+          label="Please select the classes with whom you want to share the post."
         />
         <FlatList
           style={{ marginTop: mvs(20) }}
@@ -229,12 +362,12 @@ const CreatePost = props => {
         />
 
         <PrimaryButton
-          label="save"
+          label="Save"
           bgColor={colorsTheme.primary}
           width={'25%'}
           color={'white'}
           height={mvs(40)}
-          style={{ alignSelf: 'flex-end' }}
+          style={{ alignSelf: 'flex-end',margin:10 }}
           onclick={handlePost}
           loading={loading}
         />

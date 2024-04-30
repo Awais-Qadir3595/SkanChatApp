@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -8,18 +8,18 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
-import {useSafeAreaFrame} from 'react-native-safe-area-context';
+import { useSafeAreaFrame } from 'react-native-safe-area-context';
 import styles from './style';
 import Row from '../../../components/core/Row';
 import Bold from '../../../components/core/bold';
-import {ThreeDots} from '../../../assets/svgs';
-import {Alert} from 'react-native';
+import { ThreeDots } from '../../../assets/svgs';
+import { Alert } from 'react-native';
 import Modal from 'react-native-modal';
 import PrimaryButton from '../../../components/core/button';
-import {colorsTheme} from '../../../services/color';
-import {mvs} from '../../../services/metrices';
+import { colorsTheme } from '../../../services/color';
+import { mvs } from '../../../services/metrices';
 import Clipboard from '@react-native-clipboard/clipboard';
-import {useIsFocused} from '@react-navigation/native';
+import { useIsFocused } from '@react-navigation/native';
 import Toast from 'react-native-simple-toast';
 import Label from '../../../components/core/Label';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -33,8 +33,8 @@ const ViewStudents = props => {
   const [showUserIndex, setShowUserIndex] = useState();
   const [isNoData, setIsNoData] = useState(false);
   const [modalIsDelete, setModalIsDelete] = useState(false);
-  const [OnSearch,setOnSearch]=useState(false);
-  const [PrimeData,setPrimeData]=useState([]);
+  const [OnSearch, setOnSearch] = useState(false);
+  const [PrimeData, setPrimeData] = useState([]);
 
   const focus = useIsFocused();
 
@@ -74,14 +74,14 @@ const ViewStudents = props => {
   };
 
   const studentsPage = (item, index) => {
-    props?.navigation?.navigate('ChatScreen', {item, check: 'Class'});
+    props?.navigation?.navigate('ChatScreen', { item, check: 'Class' });
   };
-  const renderList = ({item, index}) => {
+  const renderList = ({ item, index }) => {
     // console.log('index = ',index);
     return (
       <Row style={styles.rw}>
-        <TouchableOpacity style={{flex:2,paddingVertical: mvs(10),}} onPress={() => studentsPage(item)}>
-          <Row style={{alignItems: 'center',justifyContent:'flex-start',alignItems:'center'}}>
+        <TouchableOpacity style={{ flex: 2, paddingVertical: mvs(10), }} onPress={() => studentsPage(item)}>
+          <Row style={{ alignItems: 'center', justifyContent: 'flex-start', alignItems: 'center' }}>
             <View>
               <Image
                 style={styles.img}
@@ -93,15 +93,15 @@ const ViewStudents = props => {
             </View>
           </Row>
         </TouchableOpacity>
-        <PrimaryButton 
-         height={mvs(40)}
-         width={'20%'}
-         label='Detail'
-         color={'white'}
-         onclick={()=>toggleModal(item, index)}
+        <PrimaryButton
+          height={mvs(40)}
+          width={'20%'}
+          label='Detail'
+          color={'white'}
+          onclick={() => toggleModal(item, index)}
         />
 
-         
+
         {/* <TouchableOpacity
           style={styles.student} 
           onPress={() => toggleModal(item, index)}>
@@ -167,18 +167,18 @@ const ViewStudents = props => {
   };
   return (
     <View style={styles.main}>
-       <Row style={{alignItems:"center"}}>
-            <Bold label="Messages" size={27} />
+      <Row style={{ alignItems: "center" }}>
+        <Bold label="Messages" size={27} />
 
-            <TouchableOpacity onPress={()=>searchUsers()}>
-               <Icon name="account-search" size={35} color="darkblue" />
-            </TouchableOpacity>
-            <TouchableOpacity>
-              <ThreeDots style={styles.icons} />
-            </TouchableOpacity>
-          </Row>
+        <TouchableOpacity onPress={() => searchUsers()}>
+          <Icon name="account-search" size={35} color="darkblue" />
+        </TouchableOpacity>
+        <TouchableOpacity>
+          <ThreeDots style={styles.icons} />
+        </TouchableOpacity>
+      </Row>
 
-          {OnSearch ? (
+      {OnSearch ? (
         <View>
           <PrimaryTextInput
             placeholder="search Student"
@@ -188,18 +188,18 @@ const ViewStudents = props => {
           />
         </View>
       ) : null}
-         
+
       {isNoData ? (
-        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
           <Bold label="No Data Found" />
         </View>
       ) : usersList == '' ? (
-        <View style={{flex: 1, justifyContent: 'center'}}>
+        <View style={{ flex: 1, justifyContent: 'center' }}>
           <ActivityIndicator size="large" color={colorsTheme.primary} />
         </View>
       ) : (
         <>
-         
+
 
           <FlatList
             data={usersList}
@@ -223,10 +223,10 @@ const ViewStudents = props => {
                 </Row>
                 <Row style={styles.rwModal}>
                   <View style={styles.linewise}>
-                    <Bold label="UserName" />
+                    <Bold label="User id" />
                   </View>
                   <View style={styles.linewise}>
-                    <Bold label={userShow?.gmail} />
+                    <Bold label={userShow?.system_id} />
                   </View>
                 </Row>
                 <Row style={styles.rwModal}>
@@ -255,7 +255,7 @@ const ViewStudents = props => {
                     color={'white'}
                     onclick={copyPaste}
                   />
-                  
+
                 </Row>
               </View>
             </View>
@@ -267,24 +267,24 @@ const ViewStudents = props => {
             backdropOpacity={0.7}>
             <View style={styles.deleteModal}>
               <Bold label="Do You want to delete this student ?" />
-              <Row style={{alignItems:'center'}}>
+              <Row style={{ alignItems: 'center' }}>
                 <PrimaryButton
-                label='Yes'
-                width={'40%'}
-                height={mvs(40)}
-                color={'white'}
-                style={styles.yessNo}
-                onclick={() => deleteUser(userShow)}
+                  label='Yes'
+                  width={'40%'}
+                  height={mvs(40)}
+                  color={'white'}
+                  style={styles.yessNo}
+                  onclick={() => deleteUser(userShow)}
                 />
-                 <PrimaryButton
-                   style={styles.yessNo}
-                label='No'
-                width={'40%'}
-                height={mvs(40)}
-                color={'white'}
-                onclick={() => setModalIsDelete(false)}
+                <PrimaryButton
+                  style={styles.yessNo}
+                  label='No'
+                  width={'40%'}
+                  height={mvs(40)}
+                  color={'white'}
+                  onclick={() => setModalIsDelete(false)}
                 />
-               
+
               </Row>
             </View>
           </Modal>

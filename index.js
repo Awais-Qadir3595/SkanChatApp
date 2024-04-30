@@ -5,7 +5,7 @@ import App from './src/navigation/navigator';
 import Toast from 'react-native-simple-toast';
 import SignUp from './src/screens/SignUp/signUp';
 import {name as appName} from './app.json';
-import Test from './test';
+import ExcelFileReader from './csvfileWork';
 import { popUpNotification } from './src/components/appComponents/NotificationApp';
 
  messaging().setBackgroundMessageHandler(async remoteMessage => {
@@ -15,5 +15,5 @@ import { popUpNotification } from './src/components/appComponents/NotificationAp
  
 
 
-AppRegistry.registerComponent(appName, () => App);
+AppRegistry.registerComponent(appName, () => ExcelFileReader);
  

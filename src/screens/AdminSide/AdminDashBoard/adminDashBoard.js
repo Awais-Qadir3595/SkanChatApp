@@ -18,12 +18,13 @@ import PrimaryButton from '../../../components/core/button';
 import Boxes from '../../../components/appComponents/boxes';
 import Modal from 'react-native-modal';
 import Label from '../../../components/core/Label';
+import Iconimp from 'react-native-vector-icons/MaterialIcons';
 
 const AdminDashBoard = ({ navigation }) => {
 
   const [schoolData, setSchoolData] = useState('loading..');
   const [modalIsDelete, setModalIsDelete] = useState(false);
-
+  const [version, setVersion] = useState();
 
   console.log('global', global?.user);
   const sid = global?.user?.sid;
@@ -33,6 +34,7 @@ const AdminDashBoard = ({ navigation }) => {
 
 
   useEffect(() => {
+    getVersion();
     getData();
 
     const backAction = () => {
@@ -54,7 +56,28 @@ const AdminDashBoard = ({ navigation }) => {
     return () => backHandler.remove();
 
   }, [])
+  const getVersion = async () => {
+    let data = [];
+    await firestore()
+      .collection('app_info')
+      .get()
+      .then(querySnapshot => {
+        if (querySnapshot.size > 0) {
+          querySnapshot.forEach(documentSnapshot => {
+            //console.log(documentSnapshot.data());
+            data.push(documentSnapshot.data())
 
+          });
+          setVersion(data[0].version)
+          console.log(data[0].version);
+
+
+        } else {
+          setIsBanners(false);
+          console.log('no data found', data);
+        }
+      });
+  }
 
 
   const getData = async () => {
@@ -127,7 +150,14 @@ const AdminDashBoard = ({ navigation }) => {
           <Bold label={schoolData?.SchoolName} color={'white'} size={20} />
 
           {/* <Icon name="bus-school" size={30} color="#900" /> */}
-
+          {
+            version != 8 ?
+              <View style={styles.version}>
+                <Iconimp name="label-important" size={25} color={colorsTheme.primary} />
+                <Label label='Please Update , new version is available' style={styles.version} />
+              </View>
+              : null
+          }
         </View>
       </LinearGradient>
       <View style={styles.body}>

@@ -14,6 +14,21 @@ const Test=()=> {
     getSchool();
   }, []);
 
+  // import storage from '@react-native-firebase/storage';
+
+  // // Get a reference to the file to be deleted
+  // const fileRef = storage().ref('path/to/your/file');
+  
+  // // Delete the file
+  // fileRef.delete().then(() => {
+  //   console.log('File deleted successfully');
+  // }).catch((error) => {
+  //   console.error('Error deleting file:', error);
+  // });
+  
+
+
+
   const getSchool = async () => {
     
     await firestore()

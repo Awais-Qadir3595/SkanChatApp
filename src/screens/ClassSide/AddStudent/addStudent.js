@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -11,23 +11,24 @@ import styles from './style';
 import PrimaryTextInput from '../../../components/core/PrimaryTextInput';
 import Bold from '../../../components/core/bold';
 import Label from '../../../components/core/Label';
-import {mvs} from '../../../services/metrices';
+import { mvs } from '../../../services/metrices';
 import PrimaryButton from '../../../components/core/button';
 
 import firestore from '@react-native-firebase/firestore';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {getToken} from '../../../components/appComponents/NotificationApp';
-import {SafeAreaView} from 'react-native-safe-area-context';
+import { getToken } from '../../../components/appComponents/NotificationApp';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import Toast from 'react-native-simple-toast';
 import LinearGradient from 'react-native-linear-gradient';
 const AddStudent = props => {
   // console.log('aaaa', props?.route?.params);
   const [name, setName] = useState(null);
-  const [userMail, setUserMail] = useState(null);
-  const [password, setPassword] = useState(null);
+  const [student_id, setStudentId] = useState(null);
+  const [passwd, setPassword] = useState(null);
   const [loading, setLoading] = useState(false);
   const [token, setToken] = useState(null);
   const [existThreat, setExistThreat] = useState(false);
+  const [systemId, setSystemId] = useState(null);
   useEffect(() => {
     getTokenFunction();
   }, []);
@@ -40,25 +41,25 @@ const AddStudent = props => {
     setName(v);
   };
 
-  const handleGmail = v => {
-    setUserMail(v);
+  const handleStudentId = v => {
+    setStudentId(v);
   };
 
   const handlePassword = v => {
     setPassword(v);
   };
   const checkExistance = async () => {
-    let username = userMail.trim();
+    
     const querySnapShot = await firestore()
       .collection('user')
       .where('role', '==', 'User')
-      .where('gmail', '==', username)
+      .where('student_id', '==', student_id)
       .get();
 
     if (querySnapShot.size > 0) {
       setExistThreat(true);
-      Toast.showWithGravity('user Exist please change UserName',  Toast.LONG,
-      Toast.TOP,)
+      Toast.showWithGravity('This student id exists', Toast.LONG,
+        Toast.TOP,)
       return 0;
     } else {
       setExistThreat(false);
@@ -66,21 +67,19 @@ const AddStudent = props => {
     }
   };
   const AddStudent = async () => {
-    
-    let gmail = userMail.trim();
+
+     
+    // let email = userMail.trim();
+    // let gmail = email.toLowerCase();
     let cid = global?.user?.id;
     let check = await checkExistance();
     //console.log('check  =  ',check);
     if (check == 0) {
       return;
     }
-    if(gmail.length<=2)
-    {
-      Toast.show('user Name must be atleast 3 letters',Toast.LONG)
-      return;
-    }
+     
 
-    if (name == null || userMail == null || password == null) {
+    if (name == null || student_id == null || passwd == null) {
       Toast.show('please fill All Fields');
     } else {
       setLoading(true);
@@ -88,22 +87,23 @@ const AddStudent = props => {
       let sid = props?.route?.params?.sid;
       console.log('sid = ', props?.route?.params?.sid);
       let role = 'User';
-
-      console.log('gmail = ',gmail);
-    console.log('name = ',name);
-    console.log('cid = ',global?.user);
-    console.log('passwd = ',password);
-    console.log('role = ',role);
-    console.log('sid = ',sid);
-    console.log('id = ',id);
+      let password = passwd.toLowerCase();
+let system_id=student_id;
+      //   console.log('gmail = ',gmail);
+      // console.log('name = ',name);
+      // console.log('cid = ',global?.user);
+      // console.log('passwd = ',passwd);
+      // console.log('role = ',role);
+      // console.log('sid = ',sid);
+      // console.log('id = ',id);
 
 
       await firestore()
         .collection('user')
         .doc(id)
         .set({
-           name,
-          gmail,
+          name,
+          system_id,
           password,
           id,
           sid,
@@ -112,11 +112,10 @@ const AddStudent = props => {
         })
         .then(() => {
           setLoading(false);
-
-          setUserMail('');
-          setPassword('');
+          setStudentId(null);
+          setPassword(null);
           setLoading(false);
-          setName('');
+          setName(null);
           Toast.show('user Added');
         });
     }
@@ -124,12 +123,12 @@ const AddStudent = props => {
 
   return (
     <SafeAreaView style={styles.container}>
-     <LinearGradient
+      <LinearGradient
         style={styles.upper}
         colors={['darkblue', 'darkblue', 'rgba(0,212,255,1)']}
-        start={{x: 0, y: 0}}
-        end={{x: 0.6, y: 1.3}}>
-        <Label label={'Wellcome !!'} size={20} color="white" />
+        start={{ x: 0, y: 0 }}
+        end={{ x: 0.6, y: 1.3 }}>
+
         <Image
           style={{
             height: mvs(110),
@@ -143,50 +142,53 @@ const AddStudent = props => {
         <Bold
           label={'Add Student'}
           size={20}
-          style={{alignSelf: 'center'}}
+          style={{ alignSelf: 'center' }}
           color={'white'}
         />
         <Bold
           label={props.route?.params?.SchoolName}
           size={20}
           color={'white'}
-          style={{alignSelf: 'center'}}
+          style={{ alignSelf: 'center' }}
         />
       </LinearGradient>
 
       <View style={styles.lower}>
         <PrimaryTextInput
-          placeholder="enter Name"
-          style={{width: '90%', marginLeft: 0}}
+          placeholder="Enter Name"
+          style={{ width: '90%', marginLeft: 0 }}
           onChangeText={handleName}
           inputValue={name}
         />
 
         <PrimaryTextInput
-          placeholder="enter userName"
+          placeholder="Enter Student_id"
           style={{
             width: '90%',
             marginLeft: 0,
             borderBottomColor: existThreat ? 'red' : 'gray',
           }}
-          onChangeText={handleGmail}
-          inputValue={userMail}
+          keyboardType="numeric"
+          onChangeText={handleStudentId}
+          inputValue={student_id}
           existThreat={existThreat}
           onBlur={() => checkExistance()}
         />
         <PrimaryTextInput
-          placeholder="enter Password"
-          style={{width: '90%', marginLeft: 0}}
+          placeholder="Enter Password"
+          style={{ width: '90%', marginLeft: 0 }}
           onChangeText={handlePassword}
-          inputValue={password}
+          inputValue={passwd}
         />
+
+
 
         <PrimaryButton
           label="Add"
           bgColor={'navy'}
           height={mvs(60)}
           color={'white'}
-          style={{marginTop: mvs(50), width: '90%'}}
+          style={{ marginTop: mvs(50), width: '90%' }}
           onclick={() => AddStudent()}
           loading={loading}
         />
@@ -195,7 +197,7 @@ const AddStudent = props => {
           {/* <Label label="Already have account? " /> */}
           <TouchableOpacity
             onPress={() => props.navigation.navigate('ClassDashboard')}>
-            <Bold label=" Back to DashBoard" color="navy" size={20} />
+            <Bold label=" Back to Dashboard" color="navy" size={20} />
           </TouchableOpacity>
         </Text>
       </View>

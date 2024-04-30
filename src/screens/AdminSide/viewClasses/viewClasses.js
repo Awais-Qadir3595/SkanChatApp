@@ -222,10 +222,10 @@ const ViewClasses = (props) => {
               </Row>
               <Row style={styles.rwModal}>
                 <View style={styles.linewise}>
-                  <Bold label="UserName" />
+                  <Bold label="Student_id" />
                 </View>
                 <View style={styles.linewise}>
-                  <Bold label={userShow?.gmail} />
+                  <Bold label={userShow?.system_id} />
                 </View>
               </Row>
               <Row style={styles.rwModal}>

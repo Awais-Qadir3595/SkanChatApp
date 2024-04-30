@@ -6,7 +6,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   upper: {
-    flex: 5,
+    flex: 4,
     backgroundColor:colorsTheme.primary,
     padding: mvs(10),
     borderBottomRightRadius: 30,

@@ -30,6 +30,10 @@ const styles=StyleSheet.create({
       yessNo:{
         width:'40%',alignItems:'center',backgroundColor:colorsTheme.primary,marginHorizontal:mvs(10),marginTop:mvs(10),borderRadius:5,
         marginTop:mvs(30),height:mvs(40),justifyContent:'center'
-      }
+      },
+      version:{
+        marginHorizontal:10,backgroundColor:'yellow',padding:3,borderRadius:10,flexDirection:'row',
+        alignItems:'center'
+    }
 })
 export {styles};

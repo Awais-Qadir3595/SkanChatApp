@@ -24,6 +24,8 @@
     "@react-navigation/native-stack": "^6.9.13",
     "@reduxjs/toolkit": "^2.0.1",
     "axios": "^1.5.0",
+    "convert-csv-to-json": "^2.46.0",
+    "csv-parser": "^3.0.0",
     "install": "^0.13.0",
     "react": "17.0.2",
     "react-native": "0.68.2",
@@ -49,7 +51,9 @@
     "react-native-svg-transformer": "^1.1.0",
     "react-native-vector-icons": "^10.0.0",
     "react-native-webview": "^13.6.2",
-    "react-redux": "^9.0.3"
+    "react-redux": "^9.0.3",
+    "stream": "^0.0.2",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",

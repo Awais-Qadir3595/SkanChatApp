@@ -71,7 +71,7 @@ const popUpNotification=async(msg)=>{
       android: {
         channelId: channelId,
         clickAction: {
-          activity: 'com.chatapplication',
+          activity: 'com.chatapplication1',
         },
       },
        

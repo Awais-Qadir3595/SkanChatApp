@@ -54,7 +54,7 @@ const Inbox = ({ navigation }) => {
   }, []);
 
   const getMsgList = () => {
-    console.log('/////////--------------------------------/////////////////')
+    
     firestore()
       .collection('chat')
       .where('receiverId', '==', global?.user?.id)
@@ -229,7 +229,9 @@ const Inbox = ({ navigation }) => {
                 }}
               />
             </TouchableOpacity>
-          ) : item.pdfUri ?
+          ) :null
+        }
+          { item.pdfUri ?
             (
 
 
@@ -251,7 +253,8 @@ const Inbox = ({ navigation }) => {
                 />
               </TouchableOpacity>
 
-            ) : null}
+            ) : null
+            }
 
 
 
@@ -280,26 +283,17 @@ const Inbox = ({ navigation }) => {
             source={require('../../../assets/images/user.png')}
           />
           <Bold
-            label={global?.user?.name}
+            label={'Skans school system'}
+            
             style={{ marginHorizontal: mvs(10) }}
             size={18}
           />
         </Row>
-        <Row
-        style={{
-      
-          alignItems: 'center',
-        }}>
-        <SchoolIcon
-        style={{
-          marginHorizontal: mvs(10),
-        }}/>
-        <Bold label={schoolName} size={15} />
-        </Row>
+       
       
 
       </Row>
-      <Bold label={'Messenger'} size={15} color={colorsTheme.primary} style={styles.heading} />
+      <Bold label={'Messages'} size={15} color={colorsTheme.primary} style={styles.heading} />
 
 
       <FlatList

@@ -133,7 +133,9 @@ def reactNativeArchitectures() {
 android {
 
       
-
+//  packagingOptions {
+//         exclude "lib/arm64-v8a/libc++_shared.so"
+//     }
 
     ndkVersion rootProject.ext.ndkVersion
 
@@ -141,11 +143,11 @@ android {
 
     defaultConfig {
         vectorDrawables.useSupportLibrary = true
-        applicationId "com.chatapplication"
+        applicationId "com.chatapplication1"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
+        versionCode 8
+        versionName "5.3"
          multiDexEnabled true 
         buildConfigField "boolean", "IS_NEW_ARCHITECTURE_ENABLED", isNewArchitectureEnabled().toString()
 
