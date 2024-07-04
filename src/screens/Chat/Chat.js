@@ -43,7 +43,8 @@ import { WebView } from 'react-native-webview';
 
 
 
-const ChatScreen = props => {
+const ChatScreen = props => { 
+  
   let threadId = props?.route?.params?.threadId;
   var sender = global.user.id;
   var reciverId = props?.route?.params?.item?.id;

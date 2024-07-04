@@ -13,6 +13,8 @@ import Row from "../../../components/core/Row";
 import PrimaryButton from "../../../components/core/button";
 import { StarBlue, StarYellow } from "../../../assets/svgs";
 import { WebView } from 'react-native-webview';
+import storage from '@react-native-firebase/storage';
+
 
 const ViewPosts = () => {
 
@@ -32,11 +34,11 @@ const ViewPosts = () => {
   }, []);
 
   const getPost = () => {
-    console.log('=====', global?.user?.id);
+    console.log('id =====', global?.user);
     firestore()
       .collection('post')
       // .orderBy('dateTime','desc')
-      .where('cid', '==', global?.user?.id)
+      .where('cid', '==', global?.user?.cid)
       .onSnapshot(querySnapshot => {
         if (querySnapshot.size > 0) {
           // console.log('size= ',querySnapshot);
@@ -63,15 +65,46 @@ const ViewPosts = () => {
 
   const longPressPost = (item, index) => {
     //console.log('he longed pressed',index);
-    setPostToBeDelete(item);
-    setModalPost(true);
-    setPostIndex(index);
+
+    console.log(item);
+  
+    if(item?.isAdmin)
+      {
+        Toast.show('Only Owner can delete this post');
+       
+      }
+      else{
+        setPostToBeDelete(item);
+        setModalPost(true);
+        setPostIndex(index);
+      }
+   
   }
 
+  const ModalDeletePost = async () => {
 
-  const ModalDeletePost = () => {
+    console.log(postToBeDelete);
 
-    console.log('mhr delete ', postToBeDelete);
+     
+
+    if (postToBeDelete.imgUri != null) {
+      console.log('img not null');
+      let path = postToBeDelete.imgUri.split('/o/')[1].split('?')[0];
+    
+
+      await storage().ref(path).delete();
+
+
+
+    }
+    if (postToBeDelete.pdfUri != null) {
+       
+       
+      const filePath = postToBeDelete?.pdfUri.split('/o/')[1].split('?')[0];
+      await storage().ref(decodeURIComponent(filePath)).delete();
+
+    }
+
     firestore()
       .collection('post')
       .doc(postToBeDelete.id)
@@ -86,21 +119,31 @@ const ViewPosts = () => {
 
 
       });
+    Alert.alert('Success', ' deleted successfully');
+
+
+
+
+
+
+
+
   }
-const openFullImage=(item)=>{
-
   
-  setFullImageUrl(item.imgUri);
-  setFullImageModal(true);
-}
+  const openFullImage = (item) => {
 
-const openFullPdf=(item)=>{
-  console.log('-------------------------');
-  console.log(item.pdfUri);
-   
-  setFullPdfUrl(item.pdfUri);
-  setFullPdfModal(true);
-}
+
+    setFullImageUrl(item.imgUri);
+    setFullImageModal(true);
+  }
+
+  const openFullPdf = (item) => {
+    // console.log('-------------------------');
+    // console.log(item.pdfUri);
+
+    setFullPdfUrl(item.pdfUri);
+    setFullPdfModal(true);
+  }
   const renderList = ({ item, index }) => {
 
 
@@ -179,28 +222,28 @@ const openFullPdf=(item)=>{
                 />
               </TouchableOpacity>
               : null}
-              
-              {
 
-              
-              item.pdfUri != null ? 
-                <TouchableOpacity
-                  onPress={() => openFullPdf(item)}
-                  style={{ borderWidth: 1, marginVertical: mvs(4) }}>
+          {
 
-                  <WebView
-                    source={{
-                      uri: `https://docs.google.com/gview?embedded=true&url=${item.url}`,
-                    }}
-                    style={{ height: 150, width: '100%' }}
-                  />
-                  <Label
-                    label={item.pdfName}
-                    style={{ backgroundColor: 'darkblue', padding: 4 }}
-                    color="white"
-                  />
-                </TouchableOpacity>
-               : null
+
+            item.pdfUri != null ?
+              <TouchableOpacity
+                onPress={() => openFullPdf(item)}
+                style={{ borderWidth: 1, marginVertical: mvs(4) }}>
+
+                <WebView
+                  source={{
+                    uri: `https://docs.google.com/gview?embedded=true&url=${item.url}`,
+                  }}
+                  style={{ height: 150, width: '100%' }}
+                />
+                <Label
+                  label={item.pdfName}
+                  style={{ backgroundColor: 'darkblue', padding: 4 }}
+                  color="white"
+                />
+              </TouchableOpacity>
+              : null
 
           }
 
@@ -284,7 +327,7 @@ const openFullPdf=(item)=>{
             style={{ width: '100%' }}
           />
         </View>
-      </Modal> 
+      </Modal>
 
       <Modal
         isVisible={fullImageModal}

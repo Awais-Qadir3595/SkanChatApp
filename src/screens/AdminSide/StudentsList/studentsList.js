@@ -69,7 +69,7 @@ const StudentList = props => {
       .collection('user')
       .where('role', '==', 'User')
       .where('sid', '==', global?.user?.sid)
-      .where('cid', '==', props?.route?.params?.id)
+      .where('cid', '==', props?.route?.params?.cid)
       .get()
       .then(querySnapshot => {
         if (querySnapshot.size > 0) {

@@ -26,6 +26,11 @@ const styles = StyleSheet.create({
     SchoolStyle: {
         alignItems: 'center', justifyContent: 'space-between', width: '100%', marginTop: 10, padding: 10
     },
+    SchoolStyle1: {
+        alignItems: 'center',   width: '90%', 
+          padding: 10,marginHorizontal:20,
+        // backgroundColor:'pink',
+    },
     deleteModal: {
         height: mvs(200), width: '80%', backgroundColor: 'white',
         borderRadius: 10, padding: mvs(20), alignItems: 'center', justifyContent: 'center'
@@ -50,6 +55,20 @@ const styles = StyleSheet.create({
     version:{
         marginHorizontal:10,backgroundColor:'yellow',padding:3,borderRadius:10,flexDirection:'row',
         alignItems:'center'
-    }
+    },
+    name:{
+        backgroundColor:'teal',padding:10,borderRadius:10
+    },
+    feeDescription:{
+        width:'100%',backgroundColor:'teal'
+    },
+    rwFee:{
+        alignItems:"center",margin:10,justifyContent:'flex-start'
+    },
+
+
+
+
+    
 })
 export { styles };

@@ -16,6 +16,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import com.oblador.vectoricons.VectorIconsPackage;
  import com.rnfs.RNFSPackage; 
+ import com.christopherdro.htmltopdf.RNHTMLtoPDFPackage;
  
 
 public class MainApplication extends Application implements ReactApplication {

@@ -283,10 +283,10 @@ const Inbox = ({ navigation }) => {
             source={require('../../../assets/images/user.png')}
           />
           <Bold
-            label={'Skans school system'}
+            label={'SKANS SCHOOL SYSTEM'}
             
             style={{ marginHorizontal: mvs(10) }}
-            size={18}
+            size={15}
           />
         </Row>
        

@@ -28,6 +28,7 @@ const App = () => {
     
    requestUserPermission();
    //popUpNotification();
+  //  checkStoragePermission();
    
    notifee();
     NotificationListener();
@@ -41,7 +42,70 @@ const App = () => {
 
     return unsubscribe;
   }, []);
+  const requestStoragePermission = async () => {
+    try {
+        const granted = await PermissionsAndroid.request(
+            PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+            {
+                title: 'Storage Permission',
+                message: 'App needs access to your storage to download files.',
+                buttonNeutral: 'Ask Me Later',
+                buttonNegative: 'Cancel',
+                buttonPositive: 'OK',
+            },
+        );
 
+        return granted === PermissionsAndroid.RESULTS.GRANTED;
+    } catch (err) {
+        console.warn('Error requesting WRITE_EXTERNAL_STORAGE permission:', err);
+        return false;
+    }
+};
+
+const requestManageStoragePermission = async () => {
+  try {
+      const granted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.MANAGE_EXTERNAL_STORAGE,
+          {
+              title: 'Manage Storage Permission',
+              message: 'App needs access to manage your storage.',
+              buttonNeutral: 'Ask Me Later',
+              buttonNegative: 'Cancel',
+              buttonPositive: 'OK',
+          },
+      );
+
+      return granted === PermissionsAndroid.RESULTS.GRANTED;
+  } catch (err) {
+      console.warn('Error requesting MANAGE_EXTERNAL_STORAGE permission:', err);
+      return false;
+  }
+};
+
+
+  const checkStoragePermission = async () => {
+    if (Platform.OS === 'android') {
+        if (Platform.Version >= 30) {
+            try {
+                const granted = await PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.MANAGE_EXTERNAL_STORAGE);
+                if (!granted) {
+                    await requestManageStoragePermission();
+                }
+            } catch (err) {
+                console.log('Error while checking MANAGE_EXTERNAL_STORAGE permission:', err);
+            }
+        } else {
+            try {
+                const granted = await PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE);
+                if (!granted) {
+                    await requestStoragePermission();
+                }
+            } catch (err) {
+                console.warn('Error while checking WRITE_EXTERNAL_STORAGE permission:', err);
+            }
+        }
+    }
+};
   const notifee=async(msg)=>{
     
 

@@ -32,7 +32,7 @@ const AddSchool = props => {
   },[])
    
   const [SchoolName, setName] = useState();
-  const [email, setEmail] = useState();
+  const [id, setId] = useState();
   const [passwd, setPassword] = useState();
   const [loading, setLoading] = useState(false);
   const [name, setPrincipalName] = useState(null);
@@ -43,8 +43,8 @@ const AddSchool = props => {
     setName(v);
   };
 
-  const handleEmail = v => {
-    setEmail(v);
+  const handleId = v => {
+  setId(v);
   };
 
   const handlePassword = v => {
@@ -53,12 +53,12 @@ const AddSchool = props => {
 
   const handleSignUp = async () => {
     
-    if (SchoolName == null || email == null || passwd == null) {
+    if (SchoolName == null || id == null || passwd == null) {
       Toast.show('please Fill All fields');
     } else {  
-       let gmail=email.toLowerCase();
+   //    let gmail=id.toLowerCase();
        let password=passwd.toLowerCase();
-        
+        let system_id=id;
       setLoading(true);
       let dateTime=new Date().getTime();
       let sid = 'sid-' + dateTime;
@@ -78,7 +78,7 @@ const AddSchool = props => {
             .doc(sid)
             .set({
                id:sid,
-               gmail,
+               system_id,
                password,
                name,
                role,
@@ -88,11 +88,13 @@ const AddSchool = props => {
                
                console.log('enter in user');
               setPrincipalName('');
-              setEmail('');
+              setId('');
               setPassword('');
               setLoading(false);
               setName('');
+             
               Toast.show('School Added');
+             props?.navigation?.navigate('DeveloperDashboard')
               
             });
        
@@ -164,10 +166,10 @@ const AddSchool = props => {
           inputValue={name}
         />
         <PrimaryTextInput
-          placeholder="enter gmail"
+          placeholder="enter System_id"
           style={{width: '90%', marginLeft: 0}}
-          onChangeText={handleEmail}
-          inputValue={email}
+          onChangeText={handleId}
+          inputValue={id}
         />
         <PrimaryTextInput
           placeholder="enter Password"

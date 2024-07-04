@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Alert, FlatList, Text, View, ActivityIndicator, TouchableOpacity ,Image} from 'react-native';
+import { Alert, FlatList, Text, View, ActivityIndicator, TouchableOpacity, Image } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 import Posts from '../../../../components/appComponents/posts';
 import Label from '../../../../components/core/Label';
@@ -14,6 +14,7 @@ import Row from '../../../../components/core/Row';
 import PrimaryButton from '../../../../components/core/button';
 import { StarBlue, StarYellow } from '../../../../assets/svgs';
 import { WebView } from 'react-native-webview';
+import storage from '@react-native-firebase/storage';
 
 const ViewPosts = props => {
 
@@ -40,10 +41,11 @@ const ViewPosts = props => {
   };
 
   const getPost = () => {
-    console.log(props?.route?.params);
+
+    //  console.log(props?.route?.params);
     firestore()
       .collection('post')
-      .where('cid', '==', props?.route?.params?.id)
+      .where('cid', '==', props?.route?.params?.cid)
       .onSnapshot(querySnapshot => {
         if (querySnapshot.size > 0) {
           let size = querySnapshot.size;
@@ -64,7 +66,29 @@ const ViewPosts = props => {
       });
   };
 
-  const ModalDeletePost = () => {
+  const ModalDeletePost = async () => {
+
+    console.log(postToBeDelete);
+
+    
+
+    if (postToBeDelete.imgUri != null) {
+      console.log('img not null');
+      let path = postToBeDelete.imgUri.split('/o/')[1].split('?')[0];
+    
+
+      await storage().ref(path).delete();
+
+
+
+    }
+    if (postToBeDelete.pdfUri != null) {
+       
+       
+      const filePath = postToBeDelete?.pdfUri.split('/o/')[1].split('?')[0];
+      await storage().ref(decodeURIComponent(filePath)).delete();
+
+    }
 
     firestore()
       .collection('post')
@@ -80,19 +104,36 @@ const ViewPosts = props => {
 
 
       });
+    Alert.alert('Success', ' deleted successfully');
+
+
+
+
+
+
+
+
   }
 
   const openImage = (url) => {
-  
+
     setFullImageUrl(url);
     setFullImageModal(true);
   }
-  
+
   const longPressPost = (item, index) => {
     //console.log('he longed pressed',index);
-    setPostToBeDelete(item);
-    setModalPost(true);
-    setPostIndex(index);
+if(item.isAdmin)
+{
+  setPostToBeDelete(item);
+  setModalPost(true);
+  setPostIndex(index);
+}
+else{
+  Toast.show('Class Teacher Can Delete This Post')
+}
+ 
+   
   }
   const renderList = ({ item, index }) => {
     const _seconds = item?.dateTime?.seconds;
@@ -129,31 +170,12 @@ const ViewPosts = props => {
       }
       timeResult = hours + ':' + minutes + ':' + seconds + ' : AM';
     }
-    console.log('=======',item);
+    // console.log('=======',item);
     return (
 
-      // <TouchableOpacity style={styles.rw} onLongPress={() => longPressPost(item, index)}>
-      //   {item?.isAdmin ?
-      //     <Row style={{ justifyContent: 'flex-start', alignItems: 'center' }}>
-      //       <StarYellow style={{ marginRight: mvs(10) }} />
-      //       <Bold label='School Management' size={12} color={colorsTheme.primary} />
 
-      //     </Row>
-      //     :
-      //     <Row style={{ justifyContent: 'flex-start', alignItems: 'center' }}>
-      //       <StarBlue style={{ marginRight: mvs(10) }} />
-      //       <Bold label='class Teacher' size={12} color={colorsTheme.primary} />
 
-      //     </Row>}
-      //   <View style={styles.desc}>
 
-      //     <Bold label={item.post} />
-      //     <View style={{ marginTop: mvs(20), alignSelf: 'flex-end' }}>
-      //       <Label label={date} color="gray" size={12} />
-      //       <Label label={timeResult} color="gray" size={12} />
-      //     </View>
-      //   </View>
-      // </TouchableOpacity>
 
       <TouchableOpacity style={styles.rw} onLongPress={() => longPressPost(item, index)}>
         {item?.isAdmin ?
@@ -171,41 +193,41 @@ const ViewPosts = props => {
           <Bold label={item?.post} />
           {
             item.imgUri != null ?
-            <TouchableOpacity onPress={() => openImage(item.imgUri)}>
-              <Image
-                resizeMode="contain"
-                style={{
-                  height: mvs(200),
-                  width: 200,
-                  backgroundColor: 'white',
-                  width: '100%',
-                  marginBottom: mvs(10),
-                }}
-                source={{
-                  uri: item.imgUri,
-                }}
-              />
-                </TouchableOpacity>
-          
-              : null}
-              { item.pdfUri != null ?(
-                <TouchableOpacity
-                onPress={() => openFullPdf(item)}
-                style={{ borderWidth: 1, marginVertical: mvs(4) }}>
-
-                <WebView
-                  source={{
-                    uri: `https://docs.google.com/gview?embedded=true&url=${item.url}`,
+              <TouchableOpacity onPress={() => openImage(item.imgUri)}>
+                <Image
+                  resizeMode="contain"
+                  style={{
+                    height: mvs(200),
+                    width: 200,
+                    backgroundColor: 'white',
+                    width: '100%',
+                    marginBottom: mvs(10),
                   }}
-                  style={{ height: 150, width: '100%' }}
-                />
-                <Label
-                  label={item.pdfName}
-                  style={{ backgroundColor: 'darkblue', padding: 4 }}
-                  color="white"
+                  source={{
+                    uri: item.imgUri,
+                  }}
                 />
               </TouchableOpacity>
-              ):null
+
+              : null}
+          {item.pdfUri != null ? (
+            <TouchableOpacity
+              onPress={() => openFullPdf(item)}
+              style={{ borderWidth: 1, marginVertical: mvs(4) }}>
+
+              <WebView
+                source={{
+                  uri: `https://docs.google.com/gview?embedded=true&url=${item.url}`,
+                }}
+                style={{ height: 150, width: '100%' }}
+              />
+              <Label
+                label={item.pdfName}
+                style={{ backgroundColor: 'darkblue', padding: 4 }}
+                color="white"
+              />
+            </TouchableOpacity>
+          ) : null
 
           }
 
@@ -286,7 +308,7 @@ const ViewPosts = props => {
             style={{ width: '100%' }}
           />
         </View>
-      </Modal> 
+      </Modal>
 
       <Modal
         isVisible={fullImageModal}

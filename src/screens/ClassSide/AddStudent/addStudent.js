@@ -53,7 +53,7 @@ const AddStudent = props => {
     const querySnapShot = await firestore()
       .collection('user')
       .where('role', '==', 'User')
-      .where('student_id', '==', student_id)
+      .where('system_id', '==', student_id)
       .get();
 
     if (querySnapShot.size > 0) {
@@ -71,9 +71,9 @@ const AddStudent = props => {
      
     // let email = userMail.trim();
     // let gmail = email.toLowerCase();
-    let cid = global?.user?.id;
+    let cid = global?.user?.cid;
     let check = await checkExistance();
-    //console.log('check  =  ',check);
+    console.log('check  =  ',check);
     if (check == 0) {
       return;
     }

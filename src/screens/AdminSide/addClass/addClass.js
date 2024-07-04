@@ -78,6 +78,8 @@ const AddClass = props => {
   }
   const handleAddStudent = async () => {
 
+     
+ 
     let system_id = userMail.trim().toLowerCase();
 
     let check = await checkExistance();
@@ -97,9 +99,9 @@ const AddClass = props => {
       Toast.show('please fill All Fields')
     } else {
 
-      setLoading(true);
+      setLoading(true);    
       let id = 'class-' + new Date().getTime();
-      let sid = global?.user?.id
+      let sid = global?.user?.sid
       let password = passwd.toLowerCase();
 
       let role = 'Class'
@@ -113,6 +115,7 @@ const AddClass = props => {
           id,
           sid,
           role,
+          cid:id
 
 
         })

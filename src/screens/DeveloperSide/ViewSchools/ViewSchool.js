@@ -101,9 +101,15 @@ const ViewSchools = () => {
     );
   };
   const copyPaste = async () => {
-    console.log('----', userShow);
+
+    console.log(userShow);
+    var userCredentials = `is : ${userShow.system_id}\n password : ${userShow.password}`;
+    await Clipboard.setString(userCredentials);
+
+
+    
     var userObj = {
-      userName: userCredientials?.gmail,
+      id: userCredientials?.system_id,
       password: userCredientials?.password,
     };
 
@@ -295,10 +301,10 @@ const ViewSchools = () => {
                 </Row>
                 <Row style={styles.rwModal}>
                   <View style={{width: '30%'}}>
-                    <Bold label="UserName" />
+                    <Bold label="id" />
                   </View>
                   <View style={{width: '50%'}}>
-                    <Bold label={userCredientials?.gmail} />
+                    <Bold label={userCredientials?.system_id} />
                   </View>
                 </Row>
                 <Row style={styles.rwModal}>

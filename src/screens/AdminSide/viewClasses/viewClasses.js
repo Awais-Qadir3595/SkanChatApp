@@ -48,7 +48,7 @@ const ViewClasses = (props) => {
           //console.log(querySnapshot.size);
           const list = [];
           querySnapshot.forEach(documentSnapshot => {
-           // console.log(documentSnapshot.data());
+            console.log(documentSnapshot.data());
             list.push(documentSnapshot.data());
           });
           setIsNoData(false);
@@ -97,8 +97,8 @@ const ViewClasses = (props) => {
     );
   };
   const copyPaste = async () => {
-    
-    var userCredentials = `Email : ${userShow.gmail}\n password : ${userShow.password}`;
+    console.log(userShow);
+    var userCredentials = `is : ${userShow.system_id}\n password : ${userShow.password}`;
     await Clipboard.setString(userCredentials);
   };
 
@@ -222,7 +222,7 @@ const ViewClasses = (props) => {
               </Row>
               <Row style={styles.rwModal}>
                 <View style={styles.linewise}>
-                  <Bold label="Student_id" />
+                  <Bold label=" id" />
                 </View>
                 <View style={styles.linewise}>
                   <Bold label={userShow?.system_id} />

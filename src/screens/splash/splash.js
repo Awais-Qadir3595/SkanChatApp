@@ -33,7 +33,7 @@ const Splash = ({navigation}) => {
       //  "role": "User", "sid": "sid-1712828105866",
       //  }
       // console.log('user Login');
-      console.log(myObject);
+      //console.log(myObject);
       if (myObject !== null) {
         global.user = myObject;
         switch (myObject.role) {
@@ -47,6 +47,7 @@ const Splash = ({navigation}) => {
             navigation.replace('ClassStack');
             break;
           default:
+            getDataDetail();
             navigation.replace('UserStack');
         }
       } else {
@@ -58,6 +59,25 @@ const Splash = ({navigation}) => {
     }
   };
   
+
+  const getDataDetail=async()=>{
+     
+    const schoolValue = await AsyncStorage.getItem('schoolData');
+    const schoolObj = JSON.parse(schoolValue);
+    global.school=schoolObj;
+
+    // const classValue = await AsyncStorage.getItem('classData');
+    
+   
+    // const classObj = JSON.parse(classValue);
+    // global.class=classObj;
+
+    const banersValue = await AsyncStorage.getItem('bannersData');
+   
+    const bannersObj = JSON.parse(banersValue);
+    global.banners=bannersObj;
+
+  }
 
   return (
     <LinearGradient

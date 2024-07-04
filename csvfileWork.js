@@ -40,10 +40,11 @@ const ExcelFileReader = () => {
 
     return (
 
-        <ScrollView style={{ flex: 1,   }}>
-            <Text>aa wyjjj</Text>
-            <TouchableOpacity onPress={() => generate()}>
-                <Text>press for change</Text>
+        <View style={{ flex: 1, backgroundColor:'white',justifyContent:'center',alignItems:'center'  }}>
+             
+            <TouchableOpacity onPress={() => generate()}
+            style={{padding:10,backgroundColor:'lightgray',borderWidth:1}}>
+                <Text style={{color:'black'}}>pick file</Text>
                 </TouchableOpacity>
                 {
                     dataSet?.map((item)=>{
@@ -60,7 +61,7 @@ const ExcelFileReader = () => {
                     })
                 }
             
-        </ScrollView>
+        </View>
     );
 };
 

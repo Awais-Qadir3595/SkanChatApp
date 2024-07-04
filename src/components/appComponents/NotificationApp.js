@@ -1,6 +1,7 @@
 import React from "react";
 import messaging from '@react-native-firebase/messaging';
 import notifee, { AndroidImportance, AndroidVisibility, AuthorizationStatus } from '@notifee/react-native';
+import { PermissionsAndroid } from "react-native";
 
 const NotificationListener=()=>{
     // Assume a message-notification contains a "type" property in the data payload of the screen to open
@@ -49,6 +50,18 @@ if (settings.authorizationStatus === AuthorizationStatus.DENIED) {
    //console.log('User provisionally granted permissions request');
 }
 
+ 
+
+// if (Platform.OS === 'android') {
+//   const granted = await PermissionsAndroid.request(
+//     PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
+//     {
+//       title: 'Storage Permission Required',
+//       message: 'This app needs access to your storage to read images',
+//     }
+//   );
+//   return granted === PermissionsAndroid.RESULTS.GRANTED;
+// }
  
 }
 

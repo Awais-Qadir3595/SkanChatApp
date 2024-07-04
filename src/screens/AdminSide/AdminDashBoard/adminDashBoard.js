@@ -26,7 +26,7 @@ const AdminDashBoard = ({ navigation }) => {
   const [modalIsDelete, setModalIsDelete] = useState(false);
   const [version, setVersion] = useState();
 
-  console.log('global', global?.user);
+  // console.log('global', global?.user);
   const sid = global?.user?.sid;
 
   //console.log('sid====',sid);
@@ -56,6 +56,8 @@ const AdminDashBoard = ({ navigation }) => {
     return () => backHandler.remove();
 
   }, [])
+
+
   const getVersion = async () => {
     let data = [];
     await firestore()
@@ -141,10 +143,7 @@ const AdminDashBoard = ({ navigation }) => {
         start={{ x: 0, y: 0 }}
         end={{ x: 0.5, y: 1.4 }}>
 
-        <Image
-          source={require('../../../assets/images/skan2.png')}
-          style={{ borderRadius: 90, height: mvs(120), width: mvs(120) }}
-        />
+
         <View style={styles.SchoolStyle}>
           <School />
           <Bold label={schoolData?.SchoolName} color={'white'} size={20} />

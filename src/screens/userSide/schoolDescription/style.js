@@ -20,6 +20,12 @@ const styles = StyleSheet.create({
     },
     whatsapp:{
         position:'absolute',bottom:40,right:30,
-    }
+    },
+    pictures:{
+        width:'80%',height:80,borderRadius:10
+    },
+    banner: {
+        width: '100%', marginVertical: 10
+    },
 })
 export { styles };

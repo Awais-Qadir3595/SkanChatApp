@@ -39,16 +39,17 @@ const ViewStudents = props => {
   const focus = useIsFocused();
 
   useEffect(() => {
-    console.log(' = = ', global?.user?.sid);
+    // console.log(' = = ', global?.user);
     getUsers();
   }, [focus]);
 
   const getUsers = () => {
+    console.log(global?.user);
     firestore()
       .collection('user')
       .where('role', '==', 'User')
       .where('sid', '==', global?.user?.sid)
-      .where('cid', '==', global?.user?.id)
+      .where('cid', '==', global?.user?.cid)
       .get()
       .then(querySnapshot => {
         if (querySnapshot.size > 0) {
@@ -113,11 +114,11 @@ const ViewStudents = props => {
   const copyPaste = async () => {
     console.log('----', userShow);
     // var userObj={userName:userShow.gmail,password:userShow.password}
-    var userCredentials = `Email : ${userShow.gmail}\n password : ${userShow.password}`;
+    var userCredentials = `Email : ${userShow.system_id}\n password : ${userShow.password}`;
 
     await Clipboard.setString(userCredentials);
     Toast.show(
-      'userName : ' + userShow.gmail + '\n Password : ' + userShow.password,
+      'userName : ' + userShow.system_id + '\n Password : ' + userShow.password,
     );
   };
 

@@ -41,6 +41,7 @@ const DeveloperDashboard = ({navigation}) => {
 
   const logout = async () => {
     console.log('mhr');
+
     try {
       await AsyncStorage.removeItem('userLogin');
       navigation.navigate('Login');
@@ -102,6 +103,14 @@ arr.map((item)=>{
   const AddMedia=()=>{
     navigation.navigate('AddMedia')
   }
+
+  const shareFile=()=>{
+    navigation.navigate('ShareFile')
+  }
+
+  const SendFeeMsg=()=>{
+    navigation.navigate('SendMSgOfFees')
+  }
   return (
     <View style={styles.main}>
       <View style={styles.upper}>
@@ -128,7 +137,14 @@ arr.map((item)=>{
           <TouchableOpacity style={styles.boxes} onPress={AddMedia}>
             <Bold label="Add Media" color={'white'} />
           </TouchableOpacity>
+          {/* i used this Add All data page to insert all schools , classes and students one by one by doinf changes and i git these data from an excel file  */}
+          <TouchableOpacity style={styles.boxes} onPress={shareFile}>
+            <Bold label="Add All Data" color={'white'} />
+          </TouchableOpacity>
           
+          <TouchableOpacity style={styles.boxes} onPress={SendFeeMsg}>
+            <Bold label="Send Fee Msg" color={'white'} />
+          </TouchableOpacity>
         </Row>
         
       </View>

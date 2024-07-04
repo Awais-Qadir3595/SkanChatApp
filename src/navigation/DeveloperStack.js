@@ -8,6 +8,8 @@ import ViewSchools from '../screens/DeveloperSide/ViewSchools/ViewSchool';
 import DeveloperDashboard from '../screens/DeveloperSide/dashboard/dashboard';
 import DeleteDashboard from '../screens/DeveloperSide/deleteSide/deleteDashBoard';
 import AddMedia from '../screens/DeveloperSide/addMedia/addMedia';
+import ShareFile from '../screens/DeveloperSide/feechalan';
+import SendMSgOfFees from '../screens/DeveloperSide/sendMsgOfFees/sendMsgOfFees';
 
 const Stack = createNativeStackNavigator();
 
@@ -58,6 +60,16 @@ const DeveloperStack = ({navigation}) => {
        <Stack.Screen
         name={'AddMedia'}
         component={AddMedia}
+        options={{headerShown: false}}
+      />
+       <Stack.Screen
+        name={'ShareFile'}
+        component={ShareFile}
+        options={{headerShown: false}}
+      />
+        <Stack.Screen
+        name={'SendMSgOfFees'}
+        component={SendMSgOfFees}
         options={{headerShown: false}}
       />
     </Stack.Navigator>

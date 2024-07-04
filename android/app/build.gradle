@@ -130,13 +130,29 @@ def reactNativeArchitectures() {
     return value ? value.split(",") : ["armeabi-v7a", "x86", "x86_64", "arm64-v8a"]
 }
 
-android {
+ 
 
+android {
       
+
+      packagingOptions {
+      pickFirst 'lib/x86/libc++_shared.so'
+       pickFirst 'lib/x86_64/libjsc.so'
+       pickFirst 'lib/arm64-v8a/libjsc.so'
+       pickFirst 'lib/arm64-v8a/libc++_shared.so'
+       pickFirst 'lib/x86_64/libc++_shared.so'
+       pickFirst 'lib/armeabi-v7a/libc++_shared.so'
+     }
 //  packagingOptions {
 //         exclude "lib/arm64-v8a/libc++_shared.so"
 //     }
 
+ 
+dexOptions {
+      jumboMode = true
+  }
+
+  
     ndkVersion rootProject.ext.ndkVersion
 
     compileSdkVersion rootProject.ext.compileSdkVersion
@@ -146,8 +162,8 @@ android {
         applicationId "com.chatapplication1"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 8
-        versionName "5.3"
+        versionCode 16
+        versionName "6.2"
          multiDexEnabled true 
         buildConfigField "boolean", "IS_NEW_ARCHITECTURE_ENABLED", isNewArchitectureEnabled().toString()
 
@@ -281,8 +297,14 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: "libs", include: ["*.jar"])
+
+implementation 'com.tom-roush:pdfbox-android:1.8.10.3'
+    implementation project(':react-native-image-to-pdf')
  
+    implementation fileTree(dir: "libs", include: ["*.jar"])
+ implementation project(':react-native-html-to-pdf')
+  implementation project(':react-native-print')
+
  implementation project(':react-native-vector-icons')
     //noinspection GradleDynamicVersion
     implementation "com.facebook.react:react-native:+"  // From node_modules

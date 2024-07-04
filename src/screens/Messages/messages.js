@@ -50,6 +50,8 @@ const Messages = ({ navigation }) => {
 
   console.log(global?.user);
   const getPostList = () => {
+
+    console.log('----',global.user);
     firestore()
       .collection('post')
       .where('cid', '==', global.user.cid)

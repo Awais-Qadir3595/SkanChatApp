@@ -7,25 +7,79 @@ import Row from '../../../components/core/Row';
 import Label from '../../../components/core/Label';
 import { Touchable } from "react-native";
 
-const SkansSchoolList = ({navigation}) => {
+const SkansSchoolList = ({ navigation }) => {
 
     const schoolsNames = [
-        { id: 1, name: 'Harley Street Campus', address: 'House No 53-B Harley Street Campus – Rawalpindi', email: 'school.info@skans.pk', mobile: '03328922225', telephone: '(+92)-51-5176138' },
-        { id: 2, name: 'Junior Chakri Road Campus', address: 'Raja Bashir Plaza, Moza Hayal Ranail, Opposite Pir Mehar Ali Shah Town, Chakri Road Rawalpindi.', email: 'school.info@skans.pk', mobile:'03103331131', telephone: '051- 5575082' },
-        { id: 3, name: 'Junior Westridge Campus', address: 'H.No. 9-B, Hali Road, Westridge-1, Rawalpindi', email: 'school.info@skans.pk', mobile:null, telephone: '051-8773091' },
-        { id: 4, name: 'Senior westridge Campus', address: '91 Hali Road, Street no. 8, Westridge-1, Rawalpindi', email: 'school.info@skans.pk', mobile: null, telehone: '(051) 8355546' },
-        { id: 5, name: 'Golra Mor Campus', address: 'Moaz Rd, Main Peshawar Rd, near Jamia Masjid Suqaina Golrah Morh, Islamabad', email: 'school.info@skans.pk', mobile:null, telephone: '(051) 2227475' },
-        { id: 6, name: 'Peshawar Road Campus', address: 'House No. 308-A, Main Peshawar Road, Rawalpindi', email: 'school.info@skans.pk', mobile:null, telephone: '(051) 8890534' },
-        { id: 7, name: 'SKANS PWD Campus', address: '233, Block A Sector A PWD, Islamabad, Punjab', email: 'school.info@skans.pk', mobile:null, telephone: '	(051) 8773775' },
-        { id: 8, name: 'SKANS AECHS Campus', address: '337 Street 17, Sector 1 Airport Employees CHS, Rawalpindi', email: 'school.info@skans.pk', mobile:null, telephone: '(051) 8468475' },
-        
+        {
+            id: 1, name: 'Harley Street Campus',
+            address: 'House No 53-B Harley Street Campus  Rawalpindi',
+            email: 'school.info@skans.pk',
+            mobile: '03328922225',
+            telephone: '(+92)-51-5176138',
+            pics: [require('../../../assets/images/harley.jpeg')]
+        },
+        {
+            id: 2, name: 'Junior Chakri Road Campus',
+            address: 'Raja Bashir Plaza, Moza Hayal Ranail, Opposite Pir Mehar Ali Shah Town, Chakri Road Rawalpindi.',
+            email: 'school.info@skans.pk',
+            mobile: '03103331131',
+            telephone: '051- 5575082',
+            pics: [require('../../../assets/images/chakri.jpeg')]
+        },
+        {
+            id: 3, name: 'Junior Westridge Campus',
+            address: 'H.No. 9-B, Hali Road, Westridge-1, Rawalpindi',
+            email: 'school.info@skans.pk',
+            mobile: null,
+            telephone: '051-8773091',
+            pics: [require('../../../assets/images/westridgeJunior.jpeg')]
+        },
+        {
+            id: 4, name: 'Senior westridge Campus',
+            address: '91 Hali Road, Street no. 8, Westridge-1, Rawalpindi',
+            email: 'school.info@skans.pk',
+            mobile: null,
+            telehone: '(051) 8355546',
+            pics: [require('../../../assets/images/westridgeSenior.jpeg')]
+        },
+        {
+            id: 5, name: 'Golra Mor Campus',
+            address: 'Moaz Rd, Main Peshawar Rd, near Jamia Masjid Suqaina Golrah Morh, Islamabad',
+            email: 'school.info@skans.pk',
+            mobile: null,
+            telephone: '(051) 2227475',
+            pics: [require('../../../assets/images/golra1.jpg'), require('../../../assets/images/golra2.jpeg')]
+        },
+        {
+            id: 6, name: 'Peshawar Road Campus',
+            address: 'House No. 308-A, Main Peshawar Road, Rawalpindi',
+            email: 'school.info@skans.pk',
+            mobile: null,
+            telephone: '(051) 8890534',
+            pics: [require('../../../assets/images/pishawarRoad.jpeg')]
+        },
+        {
+            id: 7, name: 'SKANS PWD Campus',
+            address: '233, Block A Sector A PWD, Islamabad, Punjab',
+            email: 'school.info@skans.pk',
+            mobile: null,
+            telephone: '	(051) 8773775',
+            pics: [require('../../../assets/images/pwd.jpeg')]
+        },
+        {
+            id: 8, name: 'SKANS AECHS Campus',
+            address: '337 Street 17, Sector 1 Airport Employees CHS, Rawalpindi',
+            email: 'school.info@skans.pk',
+            mobile: null,
+            telephone: '(051) 8468475',
+            pics: [require('../../../assets/images/westridgeSenior.jpeg')]
+        },
 
     ];
     const renderSchools = ({ item }) => {
         return (
-            <TouchableOpacity style={styles.box} onPress={()=>navigation.navigate('SchoolDescription',item)}>
-                <Bold label={item.name} style={styles.heading}/>
-               
+            <TouchableOpacity style={styles.box} onPress={() => navigation.navigate('SchoolDescription', item)}>
+                <Bold label={item.name} style={styles.heading} />
             </TouchableOpacity>
 
         )

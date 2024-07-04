@@ -1,14 +1,17 @@
 import React, { useState } from "react";
-import { View, Text, FlatList, TouchableOpacity, Linking } from 'react-native';
+import { View, Text, FlatList, TouchableOpacity, Linking, Image, ScrollView } from 'react-native';
 import Bold from "../../../components/core/bold";
 import { styles } from "./style";
 import { colorsTheme } from "../../../services/color";
 import Row from '../../../components/core/Row';
 import Label from '../../../components/core/Label';
 import Fontawesome from 'react-native-vector-icons/dist/FontAwesome';
+import { mvs } from "../../../services/metrices";
 
 const SchoolDescription = (props) => {
-    // console.log('qqq', props.route.params);
+    console.log('qqq', props.route.params.pics);
+    const picsArray = props?.route?.params?.pics;
+
     const [data, setData] = useState(props?.route?.params)
     console.log(data.mobile);
     const renderSchools = ({ item }) => {
@@ -23,6 +26,31 @@ const SchoolDescription = (props) => {
     const onWhatsapp = () => {
         Linking.openURL(`https://wa.me/${data.mobile}`);
     }
+
+
+
+    const renderBanners = ({ item }) => {
+
+
+         
+
+        return (
+            <Image
+                resizeMode="contain"
+                style={{
+                    height: mvs(200),
+                    width: 270,
+                    borderRadius: 10,
+                    margin: mvs(10),
+                }}
+                source={item}
+            />
+        )
+
+
+    }
+
+
     return (
         <View style={styles.main}>
             {
@@ -35,7 +63,18 @@ const SchoolDescription = (props) => {
             }
 
             <Bold label={data?.name} style={styles.heading} color={colorsTheme.primary} size={18} />
+
+
+            
             <View style={styles.boxView}>
+
+            <FlatList
+                style={styles.banner}
+                horizontal
+                data={picsArray}
+                renderItem={renderBanners}
+            />
+            
                 <Row style={styles.rowBox}>
                     <View style={styles.left}>
                         <Bold label="Address" />
@@ -84,6 +123,7 @@ const SchoolDescription = (props) => {
 
                     </View>
                 </Row>
+
 
 
             </View>

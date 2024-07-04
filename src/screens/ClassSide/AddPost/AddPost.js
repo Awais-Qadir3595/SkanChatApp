@@ -67,8 +67,8 @@ const AddPost = props => {
     }
   };
   const handlePost = async () => {
-setLoading(true);
- 
+    setLoading(true);
+
     const notificationClassId = [];
 
     if (message == '' && imageData == null && pdfUrl == null) {
@@ -86,26 +86,26 @@ setLoading(true);
 
       imgUri = await uploadImage(imageData.path, path);
     }
-if (pdfUrl != null) {
+    if (pdfUrl != null) {
       pdfUri = await uploadPdf();
       pdfName = pdfUrl[0].name;
-       
-      
+
+
     }
 
-
-    
+// console.log(global?.user?.cid);
+ 
     let id = 'id-' + new Date().getTime();
     let post = message;
     let sid = props?.route?.params?.sid;
-    let cid = global?.user?.id;
+    let cid = global?.user?.cid;
     var date = new Date();
     let isAdmin = false;
-    console.log('id---', id);
-    console.log('sid---', sid);
-    console.log('post---', post);
-    console.log('cid ---', cid);
-    console.log('date ---', date);
+    // console.log('id---', id);
+    // console.log('sid---', sid);
+    // console.log('post---', post);
+    // console.log('cid ---', cid);
+    // console.log('date ---', date);
     console.log(id);
     await firestore()
       .collection('post')
@@ -201,8 +201,8 @@ if (pdfUrl != null) {
         type: [DocumentPicker.types.pdf],
         copyTo: 'cachesDirectory',
       });
-console.log('//////////////////////');
-     
+      console.log('//////////////////////');
+
       setPdfName(res[0].name)
 
 
@@ -247,54 +247,56 @@ console.log('//////////////////////');
 
         <Row style={styles.imgpdfRow}>
           <TouchableOpacity style={styles.touchableStyle} onPress={() => imageFromGallery()}>
-             
-              <ImageSvg />
-              <Bold label={'Upload Image'} style={styles.itemMargin} size={12} />
-           
+
+            <ImageSvg />
+            <Bold label={'Upload Image'} style={styles.itemMargin} size={12} />
+
           </TouchableOpacity>
 
           <TouchableOpacity style={styles.touchableStyle} onPress={documentPicker}>
-            
-              <PdfSvg />
-              <Bold label='Upload Documents' style={styles.itemMargin} size={12} />
-            
+
+            <PdfSvg />
+            <Bold label='Upload Documents' style={styles.itemMargin} size={12} />
+
           </TouchableOpacity>
 
 
         </Row>
-<Row style={{alignItems:'center'}}>
-        {
-          imageData !== null ?
-            <Image
-              resizeMode="stretch"
-              style={{
-                width: '30%',
-                height: mvs(100),
-                borderRadius: 20,
-                borderWidth: 3,
-                borderColor: 'darkblue',
-              }}
-              source={{
-                uri: imageData?.path,
-              }}
-            /> : null
-        }
+        <Row style={{ alignItems: 'center' }}>
+          {
+            imageData !== null ?
+              <Image
+                resizeMode="stretch"
+                style={{
+                  width: '30%',
+                  height: mvs(100),
+                  borderRadius: 20,
+                  borderWidth: 3,
+                  borderColor: 'darkblue',
+                }}
+                source={{
+                  uri: imageData?.path,
+                }}
+              /> : null
+          }
 
-        {
-          pdfUrl !== null ?
-            <View style={{  backgroundColor:colorsTheme.primary,padding:10,width:'50%',alignSelf:'flex-end',
-            borderRadius:5}}>
-              {/* <WebView
+          {
+            pdfUrl !== null ?
+              <View style={{
+                backgroundColor: colorsTheme.primary, padding: 10, width: '50%', alignSelf: 'flex-end',
+                borderRadius: 5
+              }}>
+                {/* <WebView
                 source={{
                   uri: `https://docs.google.com/gview?embedded=true&url=${encodeURIComponent(pdfUrl)}`,
                 }}
                 style={{ width: '100%' }}
               /> */}
-              <Bold label={pdfName} color={'white'}  />
-            </View> : null
-        }
+                <Bold label={pdfName} color={'white'} />
+              </View> : null
+          }
 
-</Row>
+        </Row>
         <PrimaryButton
           label="Save"
           bgColor={colorsTheme.primary}

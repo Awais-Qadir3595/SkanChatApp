@@ -36,4 +36,6 @@ export {default as PostSvg} from './postSvg.svg';
 export {default as ImageSvg} from './image.svg';
 export {default as PdfSvg} from './pdfsvg.svg';
 export {default as BellIcon} from './bellIcon.svg';
+export {default as SchoolWhite} from './schoolWhite.svg';
+export {default as FeeStudent} from './feeStudent.svg';
 

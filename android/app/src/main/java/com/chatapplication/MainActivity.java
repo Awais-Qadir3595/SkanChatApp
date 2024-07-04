@@ -1,8 +1,9 @@
 package com.chatapplication1;
-
+import com.anyline.RNImageToPDF.RNImageToPdfPackage;
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;
 import com.facebook.react.ReactRootView;
+ import com.christopherdro.RNPrint.RNPrintPackage;
 
 public class MainActivity extends ReactActivity {
 
