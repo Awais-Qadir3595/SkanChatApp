@@ -18,6 +18,7 @@ import SendNotification from '../hooks/notification';
 import notifee  from '@notifee/react-native';
 import ClassStack from './ClassStack';
 import ChatScreen from '../screens/Chat/Chat';
+import HeadOffice from './HeadOffice';
 
  
 const Stack = createNativeStackNavigator();
@@ -116,7 +117,7 @@ const requestManageStoragePermission = async () => {
   }
   return (
     <NavigationContainer >
-      <Stack.Navigator initialRouteName='Splash'>
+      <Stack.Navigator initialRouteName='HeadOffice'>
       <Stack.Screen
           name={'Splash'}
           component={Splash}
@@ -131,6 +132,12 @@ const requestManageStoragePermission = async () => {
 <Stack.Screen
           name={'AdminStack'}
           component={AdminStack}
+          options={{headerShown: false}}
+        />
+
+<Stack.Screen
+          name={'HeadOffice'}
+          component={HeadOffice}
           options={{headerShown: false}}
         />
 

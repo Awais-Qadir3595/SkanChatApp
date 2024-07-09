@@ -128,7 +128,7 @@ let system_id=student_id;
         colors={['darkblue', 'darkblue', 'rgba(0,212,255,1)']}
         start={{ x: 0, y: 0 }}
         end={{ x: 0.6, y: 1.3 }}>
-
+        <Label label={'Wellcome !!'} size={20} color="white" style={{alignSelf:'center', }}/>
         <Image
           style={{
             height: mvs(110),

@@ -257,8 +257,8 @@ const DashBoard = ({ navigation }) => {
     };
 
     const renderBanners = ({ item }) => {
-
-
+        console.log('innnn');
+        console.log(item);
         return (
             <Image
                 resizeMode="contain"
@@ -303,11 +303,7 @@ const DashBoard = ({ navigation }) => {
 
         }
     }
-
-    const onStudentPortalClick = () => {
-        navigation.navigate('StudentPortal');
-
-    }
+ 
 
     const onSkansSchoolList = () => {
         navigation.navigate('SkansSchoolList');
@@ -333,6 +329,11 @@ const DashBoard = ({ navigation }) => {
 
     const onPayFee = () => {
         Linking.openURL('https://skans.pk/onlinepayments/challans.php');
+    }
+
+    const onStudentPortalClick = () => {
+        navigation.navigate('StudentPortal');
+
     }
     return (
         <View style={styles.main}>

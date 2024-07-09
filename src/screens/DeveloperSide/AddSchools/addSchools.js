@@ -62,6 +62,7 @@ const AddSchool = props => {
       setLoading(true);
       let dateTime=new Date().getTime();
       let sid = 'sid-' + dateTime;
+      let gmail=userGmail.toLowerCase();
       //let id='user-' + dateTime;
       let role = 'Admin';
       await firestore()
